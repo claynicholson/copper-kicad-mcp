@@ -132,8 +132,13 @@ def test_toml_block_and_remove():
 # ── client registration ───────────────────────────────────────────────────
 def _claude_cfg() -> Path:
     """Claude Desktop's primary config for THIS platform inside the active sandbox (call inside a Sandbox):
-    %APPDATA%/Claude on Windows, ~/Library/Application Support/Claude on macOS, $XDG_CONFIG_HOME/Claude on Linux."""
-    return clients._claude_desktop_dirs()[0] / "claude_desktop_config.json"
+    %APPDATA%/Claude on Windows, ~/Library/Application Support/Claude on macOS, $XDG_CONFIG_HOME/Claude on Linux.
+    Spelled out here from the sandbox home, NOT taken from the product, so a wrong folder in clients fails these tests."""
+    home = Path(os.environ["COPPER_CONFIG_HOME_OVERRIDE"])
+    base = {"win32": "AppData/Roaming", "darwin": "Library/Application Support"}.get(sys.platform, ".config")
+    p = home / base / "Claude" / "claude_desktop_config.json"
+    assert clients._claude_desktop_dirs()[0] / "claude_desktop_config.json" == p, (clients._claude_desktop_dirs(), p)
+    return p
 
 
 def _seed_clients(sb: Sandbox):
