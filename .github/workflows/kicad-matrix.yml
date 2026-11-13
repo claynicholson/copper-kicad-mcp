@@ -63,16 +63,18 @@ jobs:
     steps:
       # checkout runs as root: the mounted workspace belongs to the runner's uid, not to the image's user
       - uses: actions/checkout@v4
-      - run: kicad-cli version
       - name: Pillow is in the image
         run: python3 -c "import PIL; print('pillow', PIL.__version__)"
       - name: A copy of the checkout owned by the image's user
-        # HOME is set explicitly below: Actions injects HOME=/github/home, which belongs to root
+        # HOME is set explicitly below: Actions injects HOME=/github/home, which belongs to root.
+        # Nothing may run kicad-cli as root before this: it would create /tmp/kicad-config/<series> owned by root,
+        # and the tests (as kicad) could not seed the global library tables there.
         run: |
           id kicad
           cp -a "$GITHUB_WORKSPACE" /tmp/src
           chown -R kicad:kicad /tmp/src
           install -d -o kicad -g kicad /tmp/kicad-config /tmp/copper-home /tmp/home
+      - run: runuser -u kicad -- env HOME=/tmp/home kicad-cli version
       - name: Compatibility suite
         working-directory: /tmp/src
         run: runuser -u kicad -- env HOME=/tmp/home python3 tests/test_compat.py
