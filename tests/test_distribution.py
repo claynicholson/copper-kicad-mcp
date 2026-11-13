@@ -130,9 +130,14 @@ def test_toml_block_and_remove():
 
 
 # ── client registration ───────────────────────────────────────────────────
+def _claude_cfg() -> Path:
+    """Claude Desktop's primary config for THIS platform inside the active sandbox (call inside a Sandbox):
+    %APPDATA%/Claude on Windows, ~/Library/Application Support/Claude on macOS, $XDG_CONFIG_HOME/Claude on Linux."""
+    return clients._claude_desktop_dirs()[0] / "claude_desktop_config.json"
+
+
 def _seed_clients(sb: Sandbox):
-    appdata = clients.appdata()
-    claude = appdata / "Claude" / "claude_desktop_config.json"
+    claude = _claude_cfg()
     claude.parent.mkdir(parents=True)
     orig_claude = '{\n  "mcpServers": {\n    "fs": {"command": "npx", "args": ["-y", "fs"]}\n  },\n  "globalShortcut": ""\n}\n'
     claude.write_text(orig_claude, encoding="utf-8")
@@ -483,7 +488,6 @@ def test_one_line_installers():
 
 
 # ── regressions found by the skeptical-tester pass ───────────────────────
-CLAUDE_CFG = "AppData/Roaming/Claude/claude_desktop_config.json"
 LAUNCHER = r"C:\Program Files\Copper\copper.exe"
 
 
@@ -491,7 +495,7 @@ def test_utf16_config_does_not_crash_doctor_or_status():
     # PowerShell 5.1 `Out-File`/`Set-Content -Encoding Unicode` writes UTF-16.
     from copper_kicad.install import doctor
     with Sandbox() as sb:
-        p = sb.home / CLAUDE_CFG
+        p = _claude_cfg()
         p.parent.mkdir(parents=True)
         p.write_text('{"mcpServers": {}}', encoding="utf-16")
         before = p.read_bytes()
@@ -523,7 +527,7 @@ def test_non_utf8_bytes_survive_round_trip():
 def test_duplicate_copper_keys_are_collapsed():
     # JSON parsers keep the LAST duplicate: editing only the first one was a silent no-op.
     with Sandbox() as sb:
-        p = sb.write(CLAUDE_CFG, '{"mcpServers": {"copper": {"command": "old"}, "x": {"command": "y"}, '
+        p = sb.write(_claude_cfg(), '{"mcpServers": {"copper": {"command": "old"}, "x": {"command": "y"}, '
                                  '"copper": {"command": "old2"}}}')
         res = clients.install("claude-desktop", launcher=LAUNCHER)
         assert res["changes"][0]["action"] == "updated"
@@ -532,7 +536,7 @@ def test_duplicate_copper_keys_are_collapsed():
         assert d["mcpServers"]["x"] == {"command": "y"}
         assert p.read_text(encoding="utf-8").count('"copper"') == 1
         assert clients.install("claude-desktop", launcher=LAUNCHER)["changes"][0]["action"] == "unchanged"
-        sb.write(CLAUDE_CFG, '{"mcpServers": {"copper": {"command": "a"}, "copper": {"command": "b"}}}')
+        sb.write(_claude_cfg(), '{"mcpServers": {"copper": {"command": "a"}, "copper": {"command": "b"}}}')
         clients.uninstall("claude-desktop")
         assert "copper" not in json.loads(p.read_text(encoding="utf-8"))["mcpServers"]
 
@@ -545,8 +549,8 @@ def test_readonly_config_reports_and_leaves_no_temp_file():
             ch = clients.install("cursor", launcher=LAUNCHER)["changes"][0]
         finally:
             os.chmod(p, 0o666)
-        if ch["action"] == "error":       # (root on POSIX can write anyway)
-            assert "read-only" in ch["detail"], ch
+        # refused on every OS: a POSIX rename ignores the target's mode, so clients._write checks it itself
+        assert ch["action"] == "error" and "read-only" in ch["detail"], ch
         assert not list(p.parent.glob("*.copper-tmp"))
 
 
@@ -755,7 +759,7 @@ def test_invalid_escape_config_is_reported_not_a_traceback():
         msg = str(e)
         assert "line 2, column 11" in msg and "doubled" in msg, msg
     with Sandbox() as sb:
-        p = sb.write(CLAUDE_CFG, BAD_ESCAPE)
+        p = sb.write(_claude_cfg(), BAD_ESCAPE)
         es = [e for e in clients.entries() if e["client"] == "claude-desktop"]
         assert es and es[0]["status"] == "fail" and "not valid JSON" in es[0]["detail"], es
         for args in (("doctor", "--fast", "--offline"), ("status",), ("doctor", "--json", "--fast", "--offline")):

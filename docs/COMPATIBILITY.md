@@ -4,12 +4,13 @@ Which KiCad versions Copper works with, how it decides which installed KiCad to 
 KiCad update (or a second KiCad on the same machine) never damages a design. The code is in
 `src/copper_kicad/kicad/compat.py` (rules) and `src/copper_kicad/kicad/compat_report.py` (the `copper doctor` table).
 
-Status of this page: written 2026-11-09 against **KiCad 10.0.6**, the only KiCad binary the behaviour below was run
-on. Every statement about another version carries one of these marks:
+Status of this page: written 2026-11-09 against **KiCad 10.0.6** on Windows; updated 2026-11-13 with what the CI
+matrix (`.github/workflows/kicad-matrix.yml`, the official Linux Docker images of KiCad 10.0.8, 10.0.6 and 9.0.9)
+measured on real binaries. Every statement about another version carries one of these marks:
 
 | Mark | Meaning |
 |---|---|
-| **verified** | run against the real KiCad 10.0.6 binary by `tests/test_compat.py` |
+| **verified** | run against a real KiCad binary by `tests/test_compat.py` (10.0.6 on Windows and Linux; 10.0.8 and 9.0.9 on Linux in CI where the row says so) |
 | **modelled** | covered by a test that uses `tests/data/fake_kicad_cli.py`, a stand-in built from the real 10.0.6 command tree plus KiCad's release notes and CLI documentation. Proves Copper's logic, not that KiCad version's behaviour |
 | **unverified** | read from release notes, documentation or source only; no test |
 
@@ -18,9 +19,9 @@ on. Every statement about another version carries one of these marks:
 | KiCad | Status | What works | Evidence |
 |---|---|---|---|
 | 10.0.6 | supported | everything | verified |
-| 10.0.7, 10.0.8 (latest stable, 2026-10-30) | supported, recommended | everything; same file formats and the same kicad-cli command tree as 10.0.6 according to the release notes | **modelled, unverified on a real binary** |
+| 10.0.7, 10.0.8 (latest stable, 2026-10-30) | supported, recommended | everything; same file formats and the same kicad-cli command tree as 10.0.6 | 10.0.8: **verified** in CI (kicad/kicad:10.0 image): the same learned format stamps (sch 20260306, pcb 20260206, sym 20251024) and the same kicad-cli command tree as `tests/data/cli-10.0.json`. 10.0.7: modelled |
 | 10.0.x release candidates (`-rc1`) | treated as pre-releases: used only when pinned or when it is the only install; same file format as 10.0, so writes are allowed | selection modelled | unverified on a real binary |
-| 9.0.x | view and verify only | renders, ERC, DRC (without the zone refill), exports that exist in 9. Every edit answers `KICAD_TOO_OLD`. Copper never writes KiCad 9 files | **modelled from the 9.0 CLI documentation, unverified on a real binary** |
+| 9.0.x | view and verify only | renders, ERC, DRC (without the zone refill), exports that exist in 9. Every edit answers `KICAD_TOO_OLD`. Copper never writes KiCad 9 files | 9.0.9 in CI: `copper doctor` reports it view/verify only; the missing flags below are checked against the real 9.0.9 command tree. The `KICAD_TOO_OLD` refusal of a tool call: **modelled** |
 | 10.99 nightlies (KiCad 11 development) | never chosen by default | used only when pinned or when the project is already in its format; reads work through kicad-cli, PCB edits answer `PCB_ENGINE_UNAVAILABLE` (KiCad 11 has no pcbnew Python module) | **modelled, unverified on a real binary** |
 | 11.0 (planned for early 2027) | not supported for PCB editing yet | as for nightlies. Keep KiCad 10.0.x installed next to it: Copper prefers the stable install that can edit boards | **modelled, unverified** |
 
@@ -53,7 +54,8 @@ A nightly installed next to a stable release therefore never becomes active by i
 `10.99 > 10.0`). The Python that runs board edits always belongs to the active install; the worker also compares
 `pcbnew.Version()` with the active kicad-cli before it loads a board and refuses with `ENGINE_MISMATCH` when they
 differ (on Linux every KiCad shares the system `python3`, so a path check cannot tell).
-Verified on 10.0.6 with a simulated second install; the Linux case is unverified (no Linux machine).
+Verified on 10.0.6 with a simulated second install; the Linux case with two KiCads is unverified (the CI images
+have one KiCad each).
 
 Two projects opened in one session can be served by two different KiCads. The `reason` field in `copper_status`
 and `copper doctor` is where that shows.
@@ -62,13 +64,17 @@ and `copper doctor` is where that shows.
 
 | File | KiCad 9.0 | KiCad 10.0.x | Evidence |
 |---|---|---|---|
-| `.kicad_sch` | 20250114 | 20260306 | 10.0: verified (measured by running `sch upgrade`); 9.0: unverified |
+| `.kicad_sch` | 20250114 | 20260306 | 10.0: verified on 10.0.6 and 10.0.8 (measured by running `sch upgrade`); 9.0: read from files KiCad 9.0 saved (`tests/data/demo-v9`); 9.0.9 has no `sch upgrade` to measure it with |
 | `.kicad_pcb`, `.kicad_mod` | 20241229 | 20260206 | 10.0: verified; 9.0: verified for reading (KiCad's bundled demos are in this format) |
-| `.kicad_sym` | 20241209 | 20251024 | 10.0: verified |
+| `.kicad_sym` | 20241209 | 20251024 | 10.0: verified; 9.0: verified (measured on 9.0.9 in CI) |
 
 For a series that is not in this table Copper does not guess: it runs `sch upgrade`, `pcb upgrade` and
 `sym upgrade` once on three one-line files in a temporary folder and reads the stamps the binary wrote (cached
-with the capability probe). Verified on 10.0.6 (0.7 s once); for other versions modelled.
+with the capability probe). Verified on 10.0.6 (0.7 s once) and 10.0.8; for other versions modelled.
+
+KiCad 10.0.8 re-saved its bundled `complex_hierarchy` demo in the 10.0 format, so the format-upgrade tests take
+their KiCad 9 design from `tests/data/demo-v9` (a frozen copy of that demo as KiCad 9.0 saved it) instead of the
+installed KiCad.
 
 Rules, all enforced in one place each (`project.resolve`, `project.guard_writable`, `env.run`, `pcb/worker.run`):
 
@@ -117,8 +123,9 @@ then carries a `kicad_notes` line saying what was skipped:
 | `pcb export svg` | `--fit-page-to-board` | the plot is not cropped to the board |
 
 All of them exist in 10.0.6 (verified by `tests/data/cli-10.0.json`, the recorded command tree, and a test that
-checks every flag literal in Copper's source against it). That KiCad 9.0 lacks them comes from the 9.0 CLI
-documentation: **modelled, unverified on a real 9.0 binary**.
+checks every flag literal in Copper's source against it). That KiCad 9.0 lacks `--refill-zones`, `--save-board`
+and `--check-zones` is **verified** against the real 9.0.9 command tree, which the CI matrix records on every run;
+9.0.9 does have `--fit-page-to-board`.
 
 Commands that exist only in KiCad 11 development builds (`api-server`, `sch export png`, `pcb export png`,
 `sch diff`, `pcb diff`, `pcb export specctra`) are detected by the same probe and shown in the doctor table. Copper
@@ -132,7 +139,7 @@ KiCad's release notes; revisit at every KiCad release (see `docs/RELEASING.md`).
 | Affects | Issue | What Copper does | Evidence |
 |---|---|---|---|
 | 10.0.0 to 10.0.6 | zone fills can short through-hole pins and other-net pads (KiCad #25141, #25670), fixed in 10.0.7 | doctor warns; the first DRC on a board with zones adds one `kicad_advisory` line per project | the bug and its fix are from the 10.0.7 release notes: unverified |
-| up to 10.0.6 | ERC JSON positions are 100 times too small (KiCad #25582), fixed in 10.0.7 | the scale is measured from the report itself (a symbol's real position against the reported one), so it is right on both sides of the fix; the reported `kicad_version` decides only when no marker is on a symbol | the bug: verified on 10.0.6 (44 markers within 0.01 mm). The fixed behaviour in 10.0.7 and later: **unverified** |
+| up to 10.0.6 | ERC JSON positions are 100 times too small (KiCad #25582), fixed in 10.0.7 | the scale is measured from the report itself (a symbol's real position against the reported one), so it is right on both sides of the fix; the reported `kicad_version` decides only when no marker is on a symbol | the bug: verified on 10.0.6 (44 markers within 0.01 mm). The fix: verified on 10.0.8 in CI (scale x1, 44 markers within 0.01 mm) |
 | 10.0.0 to 10.0.7 | spurious error from `sch export bom --preset` (#25834); crash opening a board with a via padstack (#25683) | listed for information | unverified |
 | KiCad 11, 10.99 nightlies | the pcbnew Python module is removed | PCB edits answer `PCB_ENGINE_UNAVAILABLE` and say to install KiCad 10.0.x alongside | unverified |
 
@@ -178,8 +185,8 @@ layer mocked.
   pcbnew).
 * Linux nightly and Flatpak layouts (`Install.cli_argv` exists for the Flatpak launcher, discovery does not use it
   yet).
-* The CI matrix in `.github/workflows/kicad-matrix.yml` has never run. It is the first real check of everything
-  marked modelled or unverified above (KiCad 10.0.8 and 9.0.9 Docker images).
+* The CI matrix (`.github/workflows/kicad-matrix.yml`) runs the KiCad suites on Linux only; macOS is not covered
+  by any real-KiCad run.
 * KiCad 10 design variants (`--variant` on netlist, BOM, position, Gerber, PDF, STEP exports) and the schematic
   PDF are not offered by `fab_export` yet. `compat.variant_args()` is the version-gated helper for it (an
   unsupported command is an error, never a silent fall-back to the default variant).

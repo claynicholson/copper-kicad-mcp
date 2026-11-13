@@ -1,7 +1,12 @@
 # KiCad compatibility matrix for Copper.
 #
-# NEVER RUN YET: written on a machine with KiCad 10.0.6 only. It is the first real check of everything
-# docs/COMPATIBILITY.md marks "modelled" or "unverified" (KiCad 10.0.8, 9.0.9, Linux discovery).
+# STATUS: runs on GitHub Actions since the repository went public. The first runs found Linux-only bugs (a
+# read-only file was replaced anyway, Claude Desktop seeded in the wrong place in demo mode) and that KiCad 10.0.8
+# re-saved the complex_hierarchy demo in the 10.0 format; the KiCad 9 design the format tests need now lives in
+# tests/data/demo-v9. KiCad 10.0.8 (the kicad/kicad:10.0 image) and 9.0.9 are checked on real binaries here.
+#
+# The tests run as the image's own user (kicad), not root: root can write read-only files and folders, which
+# would hide exactly the bugs the read-only tests are there to catch.
 #
 # The fast no-KiCad checks are in ci.yml.
 name: kicad-matrix
@@ -56,26 +61,41 @@ jobs:
       COPPER_HOME: /tmp/copper-home
       COPPER_NO_UPDATE_CHECK: "1"
     steps:
+      # checkout runs as root: the mounted workspace belongs to the runner's uid, not to the image's user
       - uses: actions/checkout@v4
       - run: kicad-cli version
-      - run: python3 -m pip install --break-system-packages pillow || apt-get update && apt-get install -y python3-pil
+      - name: Pillow is in the image
+        run: python3 -c "import PIL; print('pillow', PIL.__version__)"
+      - name: A copy of the checkout owned by the image's user
+        # HOME is set explicitly below: Actions injects HOME=/github/home, which belongs to root
+        run: |
+          id kicad
+          cp -a "$GITHUB_WORKSPACE" /tmp/src
+          chown -R kicad:kicad /tmp/src
+          install -d -o kicad -g kicad /tmp/kicad-config /tmp/copper-home /tmp/home
       - name: Compatibility suite
-        run: python3 tests/test_compat.py
+        working-directory: /tmp/src
+        run: runuser -u kicad -- env HOME=/tmp/home python3 tests/test_compat.py
       - name: Compatibility table
-        run: PYTHONPATH=src python3 -m copper_kicad doctor --json --fast --offline || true
+        if: ${{ !cancelled() }}
+        working-directory: /tmp/src
+        run: runuser -u kicad -- env HOME=/tmp/home PYTHONPATH=src python3 -m copper_kicad doctor --json --fast --offline || true
       - name: Full suites (KiCad 10 only)
-        if: matrix.tag != '9.0'
+        # runs even when the compatibility suite failed, so one failure never hides the others
+        if: ${{ !cancelled() && matrix.tag != '9.0' }}
+        working-directory: /tmp/src
         run: |
           for t in protocol schematic verify pcb guided_route focus parts distribution; do
             echo "::group::test_$t"
-            python3 tests/test_$t.py || echo "test_$t failed" >> /tmp/failed
+            runuser -u kicad -- env HOME=/tmp/home python3 tests/test_$t.py || echo "test_$t failed" >> /tmp/failed
             echo "::endgroup::"
           done
           if [ -f /tmp/failed ]; then cat /tmp/failed; exit 1; fi
       - name: Record the kicad-cli command tree
         if: always()
+        working-directory: /tmp/src
         run: |
-          PYTHONPATH=src python3 - <<'PY'
+          runuser -u kicad -- env HOME=/tmp/home PYTHONPATH=src python3 - <<'PY'
           import json
           from copper_kicad.kicad import compat, env
           k = env.kicad(); c = compat.caps(k); c.count()

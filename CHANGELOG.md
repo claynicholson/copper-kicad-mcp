@@ -6,6 +6,17 @@ All notable changes to Copper for KiCad are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Linux and macOS: Copper no longer overwrites a schematic, board, project or AI-app config file that is marked
+  read-only. It now refuses with `WRITE_FAILED`, as it already did on Windows.
+- Linux and macOS: editing a schematic or board no longer changes the file's permissions (a schematic used to
+  end up readable only by its owner).
+- Linux: Copper now also detects Claude Desktop from the community `claude-desktop` launcher, and
+  `copper setup --demo` puts the demo Claude Desktop config where Copper looks for it on Linux and macOS.
+- Linux and macOS: a client entry that starts Copper by a Windows-style path (`C:\...\copper.exe`) is now
+  recognised as Copper.
+
 ## [1.1.1] — 2026-11-13
 
 ### Added

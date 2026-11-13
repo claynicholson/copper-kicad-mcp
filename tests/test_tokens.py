@@ -292,11 +292,26 @@ def test_captured_flow_shrinks_and_keeps_every_count():
     before = after = 0
     worst = (0, "")
     d = Path(tempfile.mkdtemp(prefix="copper flow "))
-    for c in FIX["calls"]:
+    proj, calls = PROJ, FIX["calls"]
+    if os.name != "nt":
+        # The fixture was captured on Windows. compact.Paths follows the host's path rules (and resolve()s the
+        # project dir), so on POSIX a C:\ folder is not a path at all: Path(...).name of it is the whole string and
+        # the summary keeps the absolute folder. A POSIX server never sends that; give the fixture the spelling it
+        # really sends (a macOS-style path, so the "Users/dev/Documents" check below stays meaningful).
+        proj = "/Users/dev/Documents/Copper/proj dir/c3ref"
+
+        def posix(o):
+            if isinstance(o, dict):
+                return {k: posix(v) for k, v in o.items()}
+            if isinstance(o, list):
+                return [posix(v) for v in o]
+            return o.replace(PROJ, proj).replace("\\", "/") if isinstance(o, str) and PROJ in o else o
+        calls = posix(calls)
+    for c in calls:
         res = mcp(c["payload"], c["summary"])
         before += len(res["content"][0]["text"].encode())
         with Env(COPPER_MAX_RESULT_BYTES="0"):          # the rules alone, no cut
-            out = compact.to_wire(json.loads(json.dumps(res)), PROJ, tool=c["tool"], args=c["args"])
+            out = compact.to_wire(json.loads(json.dumps(res)), proj, tool=c["tool"], args=c["args"])
         text = out["content"][0]["text"]
         after += len(text.encode())
         got = RP.payload_of(out)

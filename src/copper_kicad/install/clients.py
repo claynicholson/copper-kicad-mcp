@@ -236,6 +236,10 @@ def _claude_desktop_detect() -> bool:
         return (localappdata() / "AnthropicClaude").exists() or (localappdata() / "Programs" / "Claude").exists()
     if IS_MAC and not override_home():
         return Path("/Applications/Claude.app").exists()
+    if not IS_WIN and not IS_MAC:
+        # no official Linux build; the community packages install a `claude-desktop` launcher, and the app
+        # creates $XDG_CONFIG_HOME/Claude only on its first run
+        return bool(_which("claude-desktop"))
     return False
 
 
@@ -382,6 +386,15 @@ def _read(p: Path) -> str:
     return raw.decode("utf-8", "surrogateescape")
 
 
+def _read_only(p: Path) -> bool:
+    """The file exists and is marked read-only (no write bit, or not writable by this user)."""
+    try:
+        st = p.stat()
+    except OSError:
+        return False
+    return not (st.st_mode & 0o222) or not os.access(p, os.W_OK)
+
+
 def _write(p: Path, text: str):
     # Follow a symlinked config (dotfile managers) instead of replacing the link with a file.
     try:
@@ -390,6 +403,10 @@ def _write(p: Path, text: str):
     except OSError:
         pass
     p.parent.mkdir(parents=True, exist_ok=True)
+    if _read_only(p):
+        # a POSIX rename ignores the target's own mode, so without this a chmod a-w config was replaced anyway
+        raise ConfigFileError(
+            f"cannot write {p} — it is read-only; clear the read-only flag, then run `copper install` again")
     if p.exists() and not Path(str(p) + BACKUP_SUFFIX).exists():
         shutil.copy2(p, str(p) + BACKUP_SUFFIX)
     tmp = p.with_name(p.name + ".copper-tmp")
@@ -399,6 +416,11 @@ def _write(p: Path, text: str):
             f.write(data)
             f.flush()
             os.fsync(f.fileno())
+        if p.exists():
+            try:
+                shutil.copymode(p, tmp)     # keep the config's own permissions
+            except OSError:
+                pass
         for attempt in range(5):
             try:
                 os.replace(tmp, p)

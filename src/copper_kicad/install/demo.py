@@ -3,8 +3,8 @@
 Before anything else runs, every location Copper and KiCad read or write is pointed inside ``DIR``:
 
     USERPROFILE / HOME            DIR                         (Path.home(), ~/.cursor, ~/.codex, ~/.claude.json …)
-    APPDATA / LOCALAPPDATA        DIR/AppData/Roaming|Local   (Claude Desktop, VS Code, Zed …)
-    XDG_CONFIG_HOME / _DATA / _CACHE   DIR/.config|.local/share|.cache
+    APPDATA / LOCALAPPDATA        DIR/AppData/Roaming|Local   (Windows: Claude Desktop, VS Code, Zed …)
+    XDG_CONFIG_HOME / _DATA / _CACHE   DIR/.config|.local/share|.cache   (Linux: Claude Desktop, Zed …)
     TEMP / TMP / TMPDIR           DIR/AppData/Local/Temp      (kicad-cli probes use throw-away config roots there)
     COPPER_CONFIG_HOME_OVERRIDE   DIR                         (Copper's own sandbox switch; see clients.py)
     COPPER_HOME                   DIR/.copper
@@ -127,7 +127,10 @@ def seed(d: str | os.PathLike) -> Path:
     d.mkdir(parents=True, exist_ok=True)
     roam, docs = d / "AppData" / "Roaming", d / "Documents"
     # AI apps (installed, Copper not connected yet)
-    _w(roam / "Claude" / "claude_desktop_config.json", json.dumps({"preferences": {"quickEntryShortcut": "off"}}, indent=2) + "\n")
+    # where clients.py looks for Claude Desktop once the demo env is active: %APPDATA% on Windows,
+    # ~/Library/Application Support on macOS, $XDG_CONFIG_HOME (DIR/.config) on Linux
+    cfg = roam if IS_WIN else d / "Library" / "Application Support" if sys.platform == "darwin" else d / ".config"
+    _w(cfg / "Claude" / "claude_desktop_config.json", json.dumps({"preferences": {"quickEntryShortcut": "off"}}, indent=2) + "\n")
     _w(d / ".claude.json", json.dumps({"numStartups": 12, "theme": "dark"}, indent=2) + "\n")
     (d / ".claude").mkdir(exist_ok=True)
     _w(d / ".codex" / "config.toml", '# Codex settings\napproval_policy = "on-request"\n')

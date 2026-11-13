@@ -498,9 +498,22 @@ def _replace(path: Path, data: bytes):
     nothing is left behind and the error says so."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        st = path.stat()
+    except OSError:
+        st = None
+    if st is not None and (not (st.st_mode & 0o222) or not os.access(path, os.W_OK)):
+        # a POSIX rename ignores the target's own mode: refuse a read-only file here, as Windows does
+        raise PermissionError(f"{path} could not be written (read-only, or open in another program); "
+                              "it was left as it is")
     tmp = path.with_name(path.name + ".copper-tmp")
     try:
         tmp.write_bytes(data)
+        if st is not None:
+            try:
+                os.chmod(tmp, st.st_mode & 0o7777)      # keep the file's own permissions
+            except OSError:
+                pass
         os.replace(tmp, path)
     except OSError as e:
         try:

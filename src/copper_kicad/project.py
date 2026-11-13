@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import shutil
+import stat
 import tempfile
 import time
 from dataclasses import dataclass
@@ -246,6 +247,23 @@ def live_host(path) -> dict | None:
         return None
 
 
+def refuse_read_only(path: Path):
+    """Refuse to write over a file marked read-only, on every OS. Copper writes through a temp file and
+    os.replace; on Windows the read-only attribute makes that fail, but a POSIX rename only needs write
+    access to the folder and ignores the target's own mode, so a chmod a-w file (a released revision, a
+    locked PDM/Perforce file) was silently replaced. KiCad itself refuses to save such a file. The
+    write-bit test also holds for root, as the read-only attribute holds for a Windows admin."""
+    p = Path(path)
+    try:
+        st = p.stat()
+    except OSError:
+        return                                  # a new file: nothing to protect
+    if not (st.st_mode & 0o222) or not os.access(p, os.W_OK):
+        raise ToolError(f"{p.name} is read-only", code="WRITE_FAILED",
+                        fix="clear the read-only flag (chmod u+w, or file Properties on Windows) or check the file "
+                            "out in your version control, then retry the same call. Nothing was written.")
+
+
 def guard_writable(path: Path, while_open: str = "refuse", *, format_check: bool = True):
     """Refuse to clobber a document open in the KiCad GUI (KiCad 9/10 have no
     live schematic API and would overwrite our edits on save), and apply the
@@ -253,6 +271,7 @@ def guard_writable(path: Path, while_open: str = "refuse", *, format_check: bool
     active KiCad cannot read, never silently move a file to a pre-release
     format, snapshot once before an old design is upgraded."""
     p = Path(path)
+    refuse_read_only(p)
     if format_check and p.suffix in (".kicad_sch", ".kicad_pcb"):
         from .kicad import compat, env
         try:
@@ -296,6 +315,7 @@ def atomic_write(path: Path, text: str, base_revision: str | None = None):
     if base_revision and path.exists() and revision(path) != base_revision:
         raise ToolError(f"{path.name} changed since revision {base_revision} (now {revision(path)})",
                         code="STALE_REVISION", fix="re-read the design and retry with the new revision")
+    refuse_read_only(path)
     try:
         fd, tmp = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=str(path.parent))
     except OSError as e:
@@ -306,6 +326,10 @@ def atomic_write(path: Path, text: str, base_revision: str | None = None):
             f.write(text)
             f.flush()
             os.fsync(f.fileno())
+        try:    # mkstemp makes the temp file 0600: keep the file's own permissions (a 0644 schematic stays 0644)
+            os.chmod(tmp, stat.S_IMODE(path.stat().st_mode))
+        except OSError:
+            pass
         for attempt in range(5):
             try:
                 os.replace(tmp, path)
