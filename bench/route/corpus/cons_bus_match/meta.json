@@ -1,0 +1,82 @@
+{
+ "name": "cons_bus_match",
+ "kind": "synthetic",
+ "suite": "cons",
+ "difficulty": 2,
+ "note": "constraints: SD bus, 5 nets matched to 0.5 mm (natural spread about 8 mm), 2 layers",
+ "source": "prepare.py",
+ "reference_kind": null,
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "B.Cu"
+  ],
+  "footprints": 2,
+  "pads": 12,
+  "smd_pads": 12,
+  "tht_pads": 0,
+  "min_pad_pitch_mm": 0.8,
+  "nets": 6,
+  "size_mm": [
+   40.1,
+   30.1
+  ],
+  "origin_mm": [
+   99.95,
+   99.95
+  ],
+  "zones": 0,
+  "zone_nets": [],
+  "rule_areas": 0,
+  "min_clearance": 0.0,
+  "min_track": 0.2,
+  "mst_mm": {
+   "/SD_D0": 27.803,
+   "/SD_D1": 25.97,
+   "/SD_D2": 24.19,
+   "/SD_D3": 22.476,
+   "/SD_CLK": 20.843,
+   "/IRQ": 19.313
+  },
+  "mst_total_mm": 140.6
+ },
+ "reference": null,
+ "constraints": {
+  "groups": [
+   {
+    "nets": [
+     "/SD_CLK",
+     "/SD_D0",
+     "/SD_D1",
+     "/SD_D2",
+     "/SD_D3"
+    ],
+    "tol": 0.5,
+    "natural_spread": 6.96
+   }
+  ],
+  "pairs": [],
+  "short": []
+ },
+ "unrouted": {
+  "connections": 6,
+  "by_net": {
+   "/SD_D0": 1,
+   "/SD_D1": 1,
+   "/SD_D2": 1,
+   "/SD_D3": 1,
+   "/SD_CLK": 1,
+   "/IRQ": 1
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 4,
+   "unconnected": 6,
+   "by_type": {
+    "warning:lib_footprint_issues": 2,
+    "warning:silk_edge_clearance": 2
+   }
+  },
+  "drc_error_list": []
+ }
+}

@@ -1,0 +1,34 @@
+# build outputs
+/build/
+/dist/
+/release-preview/
+/preview/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# npm launcher: vendored at pack time
+/npm/py/
+/npm/LICENSE
+/npm/node_modules/
+*.tgz
+
+# benchmarks: scratch and generated output
+/bench/**/.work/
+/bench/**/out/
+/bench/**/out-*/
+/bench/route/results/
+/bench/parts/cache/
+/bench/parts/out/
+
+# local test / render output
+copper-render/
+*.copper-tmp
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

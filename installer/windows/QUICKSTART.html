@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copper for KiCad: quick start</title>
+<style>
+  :root { --paper:#F7F5F0; --ink:#1D1B18; --text:#3A3631; --muted:#69645C; --line:#E2DDD3; --code:#EFEBE3; --link:#9A5424;
+          --mono:"Cascadia Mono","Cascadia Code",Consolas,ui-monospace,monospace; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--text); font:16px/1.65 "Segoe UI", system-ui, -apple-system, sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:56px 24px 64px; }
+  h1 { font-size:28px; margin:0 0 8px; color:var(--ink); font-weight:600; letter-spacing:-.01em; }
+  h2 { font-size:19px; margin:40px 0 10px; color:var(--ink); font-weight:600; }
+  li { margin:6px 0; } li b { color:var(--ink); font-weight:600; }
+  code, pre { font-family:var(--mono); font-size:13.5px; }
+  code { background:var(--code); padding:1px 5px; border-radius:3px; color:var(--ink); }
+  pre { background:var(--code); padding:14px 16px; border-radius:4px; overflow-x:auto; white-space:pre-wrap; color:var(--ink); }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  td { padding:8px 10px 8px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+  td:first-child { white-space:nowrap; padding-right:18px; }
+  a { color:var(--link); text-underline-offset:3px; }
+  footer { margin-top:48px; color:var(--muted); font-size:14px; border-top:1px solid var(--line); padding-top:16px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Copper for KiCad: quick start</h1>
+  <p>Your AI app can now design boards in KiCad: schematics, real orderable parts (LCSC/JLCPCB by default), layout,
+  routing and fabrication files. KiCad checks every change.</p>
+
+  <h2>Restart your AI app</h2>
+  <ul>
+    <li><b>Claude Desktop</b>: right-click the tray icon, choose <i>Quit</i>, then reopen it. Copper appears under the tools menu.</li>
+    <li><b>Claude Code, Codex, Gemini CLI</b>: start a new session. <code>/mcp</code> lists <code>copper</code>.</li>
+    <li><b>Cursor, VS Code, Windsurf, Zed</b>: open the MCP settings and check that <code>copper</code> is enabled.</li>
+  </ul>
+  <p>Installed an AI app after Copper? Connect it with <code>copper install --client claude-desktop</code>
+  (or <code>claude-code</code>, <code>codex</code>, <code>cursor</code>, <code>vscode</code>, <code>windsurf</code>,
+  <code>zed</code>, <code>gemini</code>, <code>copilot-cli</code>).</p>
+
+  <h2>Ask for a board</h2>
+  <pre>Use Copper to design a USB-C powered ESP32-C3 board with a status LED and a
+BOOT button. Use JLCPCB Basic parts, 2 layers, 30×40 mm. Show me the
+schematic, then lay out and route the PCB and give me the fab files.</pre>
+  <p>Or start from an existing project:</p>
+  <pre>Open ~/Documents/KiCad/my-board with Copper, run a design review and
+fix anything that would stop me ordering it.</pre>
+  <p>Routing uses the Freerouting autorouter. If you unticked it in Setup, run
+  <code>copper freerouting --install</code> once (about 120 MB); <code>copper doctor</code> tells you whether it is there.</p>
+
+  <h2>What Copper does, in order</h2>
+  <table>
+    <tr><td><code>parts_search</code></td><td>Finds in-stock parts from your parts providers (default: LCSC, Basic parts first, no JLC setup fee).</td></tr>
+    <tr><td><code>sch_apply</code></td><td>Places parts and connects pins to nets by name, in big batches.</td></tr>
+    <tr><td><code>verify</code></td><td>Runs KiCad's own ERC and DRC after every change. Each finding comes with a fix.</td></tr>
+    <tr><td><code>render</code></td><td>Images of the schematic, the board and a 3D view.</td></tr>
+    <tr><td><code>pcb_*</code></td><td>Sync, outline, placement, routing and ground pours.</td></tr>
+    <tr><td><code>fab_export</code></td><td>Gerbers, drill, BOM and placement file for your fab profile (default: JLCPCB; also PCBWay, OSH Park, generic or your own).</td></tr>
+  </table>
+
+  <h2>Something not working?</h2>
+  <p>Open Start, then Copper for KiCad, then Copper setup (it re-checks everything and makes a test call), or run
+  <code>copper doctor</code> in a terminal. Every problem it lists comes with the command that fixes it.
+  <code>copper install --client all</code> re-registers Copper with every AI app it finds, and
+  <code>copper uninstall</code> removes it again. Each config file Copper touched has a <code>*.copper-backup</code> copy.</p>
+
+  <h2>Privacy</h2>
+  <p>Copper runs on your computer, and your designs stay there. It goes online only to search and download parts
+  (LCSC, JLCPCB, EasyEDA), to check for a newer KiCad during setup and <code>copper doctor</code>, to download
+  Freerouting and a Java runtime when you ask for autorouting, and to sign in to GitHub if you link it.</p>
+
+  <footer>MIT License · <a href="https://coppereda.com">coppereda.com</a> · <a href="https://github.com/claynicholson/copper-kicad-mcp">github.com/claynicholson/copper-kicad-mcp</a><br>
+  KiCad is a trademark of the KiCad project; Copper is an independent project.</footer>
+</main>
+</body>
+</html>

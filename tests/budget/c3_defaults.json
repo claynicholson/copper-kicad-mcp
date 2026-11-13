@@ -1,0 +1,436 @@
+[
+ {
+  "tool": "copper_status",
+  "stage": "0 orient",
+  "args": {}
+ },
+ {
+  "tool": "project_create",
+  "stage": "0 orient",
+  "args": {
+   "name": "c3ref",
+   "dir": "$DIR",
+   "template": "jlc-2layer",
+   "board_size": [
+    60,
+    36
+   ]
+  }
+ },
+ {
+  "tool": "sch_apply",
+  "stage": "2 schematic",
+  "args": {
+   "ops": [
+    {
+     "op": "place",
+     "lib_id": "Connector:USB_C_Receptacle_USB2.0_16P",
+     "id": "usb",
+     "group": "connector",
+     "footprint": "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+     "fields": {
+      "LCSC": "C165948"
+     }
+    },
+    {
+     "op": "place",
+     "spec": "5.1k 0402",
+     "id": "rcc1",
+     "near": "usb"
+    },
+    {
+     "op": "place",
+     "spec": "5.1k 0402",
+     "id": "rcc2",
+     "near": "usb"
+    },
+    {
+     "op": "place",
+     "lib_id": "Regulator_Linear:AMS1117-3.3",
+     "id": "ldo",
+     "group": "power",
+     "fields": {
+      "LCSC": "C6186"
+     }
+    },
+    {
+     "op": "place",
+     "spec": "10uF 0603",
+     "id": "cin",
+     "near": "ldo"
+    },
+    {
+     "op": "place",
+     "spec": "22uF 0805",
+     "id": "cout",
+     "near": "ldo"
+    },
+    {
+     "op": "place",
+     "lib_id": "RF_Module:ESP32-C3-WROOM-02",
+     "id": "mcu",
+     "group": "mcu",
+     "fields": {
+      "LCSC": "C2934560"
+     }
+    },
+    {
+     "op": "place",
+     "spec": "100nF 0402",
+     "id": "c1",
+     "near": "mcu"
+    },
+    {
+     "op": "place",
+     "spec": "10uF 0603",
+     "id": "c2",
+     "near": "mcu"
+    },
+    {
+     "op": "place",
+     "spec": "10k 0402",
+     "id": "ren",
+     "near": "mcu"
+    },
+    {
+     "op": "place",
+     "spec": "1uF 0402",
+     "id": "cen",
+     "near": "mcu"
+    },
+    {
+     "op": "place",
+     "id": "swrst",
+     "lib_id": "Switch:SW_Push",
+     "footprint": "Button_Switch_SMD:SW_SPST_TL3342",
+     "fields": {
+      "LCSC": "C318884"
+     }
+    },
+    {
+     "op": "place",
+     "spec": "10k 0402",
+     "id": "rboot",
+     "near": "mcu"
+    },
+    {
+     "op": "place",
+     "id": "swboot",
+     "lib_id": "Switch:SW_Push",
+     "footprint": "Button_Switch_SMD:SW_SPST_TL3342",
+     "fields": {
+      "LCSC": "C318884"
+     }
+    },
+    {
+     "op": "place",
+     "spec": "LED blue 0603",
+     "id": "led"
+    },
+    {
+     "op": "place",
+     "spec": "1k 0402",
+     "id": "rled",
+     "near": "led"
+    },
+    {
+     "op": "place",
+     "lib_id": "Connector_Generic:Conn_01x10",
+     "id": "hdr",
+     "group": "connector",
+     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical",
+     "fields": {
+      "LCSC": "C57369"
+     }
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "usb.VBUS",
+      "ldo.VI",
+      "cin.1"
+     ],
+     "net": "VBUS"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "usb.GND",
+      "usb.SHIELD",
+      "rcc1.2",
+      "rcc2.2",
+      "ldo.GND",
+      "cin.2",
+      "cout.2",
+      "mcu.GND",
+      "c1.2",
+      "c2.2",
+      "cen.2",
+      "swrst.2",
+      "swboot.2",
+      "hdr.2"
+     ],
+     "net": "GND"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "ldo.VO",
+      "cout.1",
+      "mcu.3V3",
+      "c1.1",
+      "c2.1",
+      "ren.1",
+      "rboot.1",
+      "led.A",
+      "hdr.1"
+     ],
+     "net": "+3V3"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "usb.CC1",
+      "rcc1.1"
+     ],
+     "net": "CC1"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "usb.CC2",
+      "rcc2.1"
+     ],
+     "net": "CC2"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "usb.D+",
+      "mcu.IO19"
+     ],
+     "net": "USB_DP"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "usb.D-",
+      "mcu.IO18"
+     ],
+     "net": "USB_DN"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "mcu.EN",
+      "ren.2",
+      "cen.1",
+      "swrst.1"
+     ],
+     "net": "EN"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "mcu.IO9",
+      "rboot.2",
+      "swboot.1"
+     ],
+     "net": "BOOT"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "led.K",
+      "rled.1"
+     ],
+     "net": "LED_K"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "rled.2",
+      "mcu.IO8"
+     ],
+     "net": "LED"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.3",
+      "mcu.IO21/TXD"
+     ],
+     "net": "TX"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.4",
+      "mcu.IO20/RXD"
+     ],
+     "net": "RX"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.5",
+      "mcu.IO2"
+     ],
+     "net": "IO2"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.6",
+      "mcu.IO3"
+     ],
+     "net": "IO3"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.7",
+      "mcu.IO4"
+     ],
+     "net": "IO4"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.8",
+      "mcu.IO5"
+     ],
+     "net": "IO5"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.9",
+      "mcu.IO6"
+     ],
+     "net": "IO6"
+    },
+    {
+     "op": "connect",
+     "pins": [
+      "hdr.10",
+      "mcu.IO7"
+     ],
+     "net": "IO7"
+    },
+    {
+     "op": "no_connect",
+     "pins": [
+      "usb.SBU1",
+      "usb.SBU2",
+      "mcu.IO0",
+      "mcu.IO1",
+      "mcu.IO10"
+     ]
+    },
+    {
+     "op": "pwr_flag",
+     "net": "VBUS"
+    },
+    {
+     "op": "pwr_flag",
+     "net": "GND"
+    }
+   ]
+  }
+ },
+ {
+  "tool": "sch_tidy",
+  "stage": "2 schematic",
+  "args": {}
+ },
+ {
+  "tool": "verify",
+  "stage": "2 schematic",
+  "args": {}
+ },
+ {
+  "tool": "render",
+  "stage": "2 schematic",
+  "args": {
+   "target": "schematic"
+  }
+ },
+ {
+  "tool": "design_review",
+  "stage": "2 schematic",
+  "args": {}
+ },
+ {
+  "tool": "pcb_sync",
+  "stage": "3 board",
+  "args": {}
+ },
+ {
+  "tool": "pcb_setup",
+  "stage": "3 board",
+  "args": {
+   "width": 60,
+   "height": 36,
+   "radius": 1.5
+  }
+ },
+ {
+  "tool": "pcb_place",
+  "stage": "3 board",
+  "args": {
+   "auto": true
+  }
+ },
+ {
+  "tool": "pcb_route_guided",
+  "stage": "3 board",
+  "args": {}
+ },
+ {
+  "tool": "pcb_pour",
+  "stage": "3 board",
+  "args": {
+   "net": "GND",
+   "stitch": true
+  }
+ },
+ {
+  "tool": "verify",
+  "stage": "4 verify",
+  "args": {}
+ },
+ {
+  "tool": "render",
+  "stage": "4 verify",
+  "args": {
+   "target": "pcb"
+  }
+ },
+ {
+  "tool": "render",
+  "stage": "4 verify",
+  "args": {
+   "target": "pcb3d"
+  }
+ },
+ {
+  "tool": "pcb_read",
+  "stage": "4 verify",
+  "args": {}
+ },
+ {
+  "tool": "fab_export",
+  "stage": "5 fab",
+  "args": {
+   "waive": [
+    "all"
+   ]
+  }
+ },
+ {
+  "tool": "copper_status",
+  "stage": "6 status",
+  "args": {}
+ }
+]

@@ -1,0 +1,20 @@
+(version 1)
+# JLCPCB standard-service capabilities, written by Copper for KiCad.
+# Board-wide minimums (track, clearance, via, edge clearance) live in the
+# .kicad_pro design rules; this file adds the rules KiCad's minimums can't say.
+# Later rules take precedence over earlier ones.
+
+(rule "JLC: maximum drill 6.3 mm"
+	(constraint hole_size (max 6.3mm)))
+
+(rule "JLC: NPTH minimum hole 0.5 mm"
+	(constraint hole_size (min 0.5mm))
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical'"))
+
+(rule "JLC: hole to hole, different nets 0.5 mm"
+	(constraint hole_to_hole (min 0.5mm))
+	(condition "A.Net != B.Net"))
+
+(rule "JLC: PTH pad annular ring 0.15 mm"
+	(constraint annular_width (min 0.15mm))
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'"))

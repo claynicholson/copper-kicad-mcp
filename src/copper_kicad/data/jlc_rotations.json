@@ -1,0 +1,251 @@
+{
+ "_about": "Footprint-name \u2192 JLCPCB CPL rotation/offset corrections. KiCad footprints use IPC-7351 zero orientation (pin 1 top-left), JLC's assembly library mostly uses the reel (EIA-481) orientation, so some packages need a fixed rotation added before upload. Patterns are Python regexes matched (re.search) against the footprint name without its library prefix; the first match wins. Values are the community-maintained JLC correction facts (the cpl_rotations_db that Bouni's kicad-jlcpcb-tools downloads from matthewlai/JLCKicadTools), re-expressed as data. Per-part overrides: put a 'JLC Rotation Offset' (degrees) and/or 'JLC Position Offset' ('x,y' mm) field on the symbol/footprint, or add rules to <project>/.copper/jlc_rotations.json (same format; project rules are tried first). Always confirm orientation in JLC's 3D/CPL preview.",
+ "bottom_side": "rotation_bottom = (180 - kicad_rotation) % 360, then + correction (same convention as kicad-jlcpcb-tools)",
+ "rules": [
+  {
+   "pattern": "^R_Array_Convex_",
+   "rotation": 90
+  },
+  {
+   "pattern": "^R_Array_Concave_",
+   "rotation": 90
+  },
+  {
+   "pattern": "^SOT-223",
+   "rotation": 180
+  },
+  {
+   "pattern": "^SOT-23",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SOT-89",
+   "rotation": 180
+  },
+  {
+   "pattern": "^TSOT-23",
+   "rotation": 180
+  },
+  {
+   "pattern": "^SOT-353",
+   "rotation": 180
+  },
+  {
+   "pattern": "^SOT-363",
+   "rotation": 180
+  },
+  {
+   "pattern": "^LQFP-",
+   "rotation": 270
+  },
+  {
+   "pattern": "^TQFP-",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SOP-4_",
+   "rotation": 0
+  },
+  {
+   "pattern": "^SOP-(?!18_)",
+   "rotation": 270
+  },
+  {
+   "pattern": "^TSSOP-",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SSOP-",
+   "rotation": 270
+  },
+  {
+   "pattern": "^DFN-",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SOIC-",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SOP-18_",
+   "rotation": 0
+  },
+  {
+   "pattern": "^VSSOP-8_3.0x3.0mm_P0.65mm",
+   "rotation": 270
+  },
+  {
+   "pattern": "^VSSOP-8_",
+   "rotation": 180
+  },
+  {
+   "pattern": "^VSSOP-10_",
+   "rotation": 270
+  },
+  {
+   "pattern": "^VSON-8_",
+   "rotation": 270
+  },
+  {
+   "pattern": "^TSOP-6",
+   "rotation": 270
+  },
+  {
+   "pattern": "^UDFN-10",
+   "rotation": 270
+  },
+  {
+   "pattern": "^USON-10",
+   "rotation": 270
+  },
+  {
+   "pattern": "^TDSON-8-1",
+   "rotation": 270
+  },
+  {
+   "pattern": "^CP_EIA-",
+   "rotation": 180
+  },
+  {
+   "pattern": "^CP_Elec_8x5.4",
+   "rotation": 180
+  },
+  {
+   "pattern": "^CP_Elec_8x10.5",
+   "rotation": 180
+  },
+  {
+   "pattern": "^CP_Elec_6.3x7.7",
+   "rotation": 180
+  },
+  {
+   "pattern": "^CP_Elec_8x6.7",
+   "rotation": 180
+  },
+  {
+   "pattern": "^CP_Elec_8x10",
+   "rotation": 180
+  },
+  {
+   "pattern": "^CP_Elec_10x10",
+   "rotation": 180
+  },
+  {
+   "pattern": "^(.*?_|V)?QFN-(16|20|24|28|40)(-|_|$)",
+   "rotation": 270
+  },
+  {
+   "pattern": "^Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering",
+   "rotation": 90
+  },
+  {
+   "pattern": "^PowerPAK_SO-8_Single",
+   "rotation": 270
+  },
+  {
+   "pattern": "^HTSSOP-28-1EP_4.4x9.7mm*",
+   "rotation": 270
+  },
+  {
+   "pattern": "^PUIAudio_SMT_0825_S_4_R*",
+   "rotation": 270
+  },
+  {
+   "pattern": "^USB_C_Receptacle_HRO_TYPE-C-31-M-12*",
+   "rotation": 180
+  },
+  {
+   "pattern": "^ESP32-W",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SOIC127P798X216-8N",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SW_DIP_SPSTx01_Slide_Copal_CHS-01B_W7.62mm_P1.27mm",
+   "rotation": 180
+  },
+  {
+   "pattern": "^BatteryHolder_Keystone_1060_1x2032",
+   "rotation": 180
+  },
+  {
+   "pattern": "^SO-14",
+   "rotation": 270
+  },
+  {
+   "pattern": "^HTSSOP-",
+   "rotation": 270
+  },
+  {
+   "pattern": "^USB_C_Receptacle_XKB_U262-16XN-4BVC11",
+   "rotation": 0,
+   "offset": [
+    1.44,
+    0.0
+   ]
+  },
+  {
+   "pattern": "^Relay_DPDT_Omron_G6K-2F-Y",
+   "rotation": 270
+  },
+  {
+   "pattern": "^RP2040-QFN-56",
+   "rotation": 270
+  },
+  {
+   "pattern": "^TO-277",
+   "rotation": 90
+  },
+  {
+   "pattern": "^SW_SPST_B3",
+   "rotation": 90
+  },
+  {
+   "pattern": "^Transformer_Ethernet_Pulse_HX0068ANL",
+   "rotation": 270
+  },
+  {
+   "pattern": "^JST_GH_SM",
+   "rotation": 180
+  },
+  {
+   "pattern": "^JST_PH_S",
+   "rotation": 180
+  },
+  {
+   "pattern": "^Diodes_PowerDI3333-8",
+   "rotation": 270
+  },
+  {
+   "pattern": "^Quectel_L80-R",
+   "rotation": 270
+  },
+  {
+   "pattern": "^SC-74-6",
+   "rotation": 180
+  },
+  {
+   "pattern": "^SOT-143",
+   "rotation": 180
+  },
+  {
+   "pattern": "^PinHeader_2x05_P1\\.27mm_Vertical",
+   "rotation": 90,
+   "offset": [
+    2.54,
+    0.635
+   ]
+  },
+  {
+   "pattern": "^LED_WS2812B-2020_PLCC4_2.0x2.0mm",
+   "rotation": 90
+  },
+  {
+   "pattern": "^WSON-8-1EP_6x5mm_P1.27mm",
+   "rotation": 270
+  }
+ ],
+ "source": "https://github.com/matthewlai/JLCKicadTools/blob/master/jlc_kicad_tools/cpl_rotations_db.csv (via Bouni/kicad-jlcpcb-tools)"
+}

@@ -1,0 +1,76 @@
+{
+  "name": "jlcpcb",
+  "label": "JLCPCB",
+  "short": "JLC",
+  "url": "https://jlcpcb.com/quote",
+  "notes": "Copper's default profile. Design rules: 'standard' sits slightly ABOVE JLCPCB's published minimums so boards stay in the no-surcharge tier; 'advanced' is close to the published limits. Checked against jlcpcb.com/capabilities/pcb-capabilities on 2026-11-09: published minimums are track/space 0.10 mm (1-2 layer) and 0.09 mm (multilayer), via hole 0.15 mm (0.2 mm preferred) with 0.25 mm via diameter, copper to routed edge 0.2 mm, silkscreen text 1.0 mm high / 0.15 mm line, max drill 6.3 mm, NPTH min 0.5 mm, pad-hole to pad-hole 0.45 mm. Every number here is at or above those except min_text_height. UNVERIFIED (carried over from Copper's earlier preset, not re-confirmed against a JLCPCB page): the 0.3 mm 'no surcharge' via-drill threshold, the 100x100 mm cheap price tier, the 10x10 mm minimum for assembly, the $3 Extended feeder-loading fee, min_text_height 0.8 mm (JLCPCB publishes 1.0 mm; raise it if small text matters) and the JLC04161H-7628 stackup name. BOM/CPL column names follow JLCPCB's assembly upload template; the rotation table is the community cpl_rotations_db.",
+  "rules": {
+    "standard": {
+      "label": "JLCPCB standard (no surcharge)",
+      "min_track": 0.127, "min_clearance": 0.127, "min_via_diameter": 0.6, "min_via_drill": 0.3,
+      "min_annular": 0.13, "min_hole": 0.3, "hole_to_hole": 0.5, "edge_clearance": 0.3,
+      "hole_clearance": 0.2, "silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.15,
+      "via": [0.6, 0.3], "power_via": [0.8, 0.4], "pth_annular": 0.15, "max_hole": 6.3, "npth_min": 0.5
+    },
+    "advanced": {
+      "label": "JLCPCB advanced (0.1 mm / 0.2 mm vias, may cost extra)",
+      "min_track": 0.09, "min_clearance": 0.09, "min_via_diameter": 0.45, "min_via_drill": 0.2,
+      "min_annular": 0.1, "min_hole": 0.2, "hole_to_hole": 0.5, "edge_clearance": 0.3,
+      "hole_clearance": 0.2, "silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.15,
+      "via": [0.45, 0.2], "power_via": [0.6, 0.3], "pth_annular": 0.15, "max_hole": 6.3, "npth_min": 0.5
+    }
+  },
+  "presets": {"jlc": "standard", "jlc_advanced": "advanced"},
+  "templates": {"2": "jlc-2layer", "4": "jlc-4layer"},
+  "gerber": {
+    "x2": false, "netlist_attributes": false, "protel_extensions": true, "subtract_soldermask": true, "precision": 6,
+    "layers": ["copper", "F.Paste", "B.Paste", "F.SilkS", "B.SilkS", "F.Mask", "B.Mask", "Edge.Cuts"]
+  },
+  "drill": {"units": "mm", "zeros": "decimal", "oval": "alternate", "origin": "absolute", "separate_th": true},
+  "naming": {
+    "gerber_dir": "gerbers",
+    "zip": "{name}-JLCPCB.zip",
+    "bom": "{name}-BOM-JLCPCB.csv",
+    "placement": "{name}-CPL-JLCPCB.csv"
+  },
+  "zip": {"folder": "", "include_assembly": false},
+  "assembly": {"offered": true},
+  "bom": {
+    "part_field": "LCSC",
+    "part_label": "LCSC number",
+    "part_provider": "lcsc",
+    "columns": [["Comment", "{value}"], ["Designator", "{refs}"], ["Footprint", "{footprint}"], ["LCSC Part #", "{part}"]]
+  },
+  "placement": {
+    "format": "columns",
+    "columns": [["Designator", "{ref}"], ["Mid X", "{x:.4f}"], ["Mid Y", "{y:.4f}"], ["Layer", "{layer}"], ["Rotation", "{rotation:g}"]],
+    "position": "pads_center",
+    "layer_names": {"top": "Top", "bottom": "Bottom"},
+    "rotation": {
+      "table": "jlc_rotations.json",
+      "project_tables": ["rotations.json", "jlc_rotations.json"],
+      "offset_fields": ["JLC Rotation Offset", "JLCPCB Rotation Offset", "JLC_ROT", "JLC Rotation"],
+      "position_offset_fields": ["JLC Position Offset", "JLCPCB Position Offset", "JLC_POS"],
+      "native_libraries": "^(?:copper-lcsc|easyeda2kicad|easyeda|lcsc|jlcpcb|jlc[-_ ]?\\w*|lceda)$",
+      "native_source": "easyeda|jlceda|lceda"
+    }
+  },
+  "part_classes": {
+    "field": "JLC Class",
+    "aliases": ["JLC Type", "JLCPCB Class", "Part Class", "LCSC Class", "Basic/Extended"],
+    "fee_usd": {"extended": 3.0},
+    "fee_label": "Extended-part feeder-loading fee"
+  },
+  "blocks": ["erc", "drc", "unrouted", "parity", "parts", "outline", "empty"],
+  "limits": {
+    "price_tier_mm": [100, 100],
+    "assembly_min_mm": [10, 10],
+    "small_drill_surcharge_mm": 0.3,
+    "through_vias_only": true,
+    "tht_note": "JLC hand-solders THT at extra cost",
+    "stackup_notes": {"4": "JLC04161H-7628 matches Copper's jlc-4layer template"}
+  },
+  "order_notes": [
+    "Order: upload the zip at jlcpcb.com/quote → enable PCB Assembly → upload BOM + CPL → check every part's orientation in JLC's placement preview before paying"
+  ]
+}

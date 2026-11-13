@@ -1,0 +1,49 @@
+{
+  "name": "pcbway",
+  "label": "PCBWay",
+  "short": "PCBWay",
+  "url": "https://www.pcbway.com/orderonline.aspx",
+  "notes": "Checked against pcbway.com/capabilities.html on 2026-11-09: minimum track/space 0.1 mm (4 mil), minimum CNC drill 0.15 mm, maximum drill 6.0 mm, minimum annular ring 0.15 mm, silkscreen characters 0.8 mm high / 0.15 mm line, hole-to-hole 16 mil for component holes, track to milled board edge 0.25 mm. PCBWay's KiCad guide asks for Protel extensions, X2 off, one zip; its assembly help accepts a KiCad .pos file as the centroid file (mm). 'standard' rules are deliberately looser than the minimums. UNVERIFIED: that 0.15 mm (6 mil) track/space and 0.3 mm via drill are the no-surcharge defaults of the quote form; the 0.2 mm via drill / 0.5 mm via diameter used for 'advanced'; hole_clearance; npth_min; the BOM column headers (modelled on PCBWay's sample BOM: Item #, Designator, Qty, Manufacturer, Mfg Part #, Description / Value, Package/Footprint, Type); whether PCBWay prefers one merged drill file. Unsourced parts do not block the export because PCBWay sources by MPN or by description; they are listed in the result instead. No assembly rotation table: PCBWay's engineers review orientation against the silkscreen.",
+  "rules": {
+    "standard": {
+      "label": "PCBWay standard (6 mil, 0.3 mm vias)",
+      "min_track": 0.15, "min_clearance": 0.15, "min_via_diameter": 0.6, "min_via_drill": 0.3,
+      "min_annular": 0.15, "min_hole": 0.3, "hole_to_hole": 0.41, "edge_clearance": 0.3,
+      "hole_clearance": 0.2, "silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.15,
+      "via": [0.6, 0.3], "power_via": [0.8, 0.4], "pth_annular": 0.15, "max_hole": 6.0, "npth_min": 0.5
+    },
+    "advanced": {
+      "label": "PCBWay tight (4 mil, 0.2 mm vias, may cost extra)",
+      "min_track": 0.1, "min_clearance": 0.1, "min_via_diameter": 0.5, "min_via_drill": 0.2,
+      "min_annular": 0.15, "min_hole": 0.2, "hole_to_hole": 0.41, "edge_clearance": 0.25,
+      "hole_clearance": 0.2, "silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.15,
+      "via": [0.5, 0.2], "power_via": [0.6, 0.3], "pth_annular": 0.15, "max_hole": 6.0, "npth_min": 0.5
+    }
+  },
+  "gerber": {
+    "x2": false, "netlist_attributes": false, "protel_extensions": true, "subtract_soldermask": true, "precision": 6,
+    "layers": ["copper", "F.Paste", "B.Paste", "F.SilkS", "B.SilkS", "F.Mask", "B.Mask", "Edge.Cuts"]
+  },
+  "drill": {"units": "mm", "zeros": "decimal", "oval": "alternate", "origin": "absolute", "separate_th": true},
+  "naming": {
+    "gerber_dir": "gerbers",
+    "zip": "{name}-PCBWay.zip",
+    "bom": "{name}-BOM-PCBWay.csv",
+    "placement": "{name}-centroid-PCBWay.csv"
+  },
+  "zip": {"folder": "", "include_assembly": false},
+  "assembly": {"offered": true},
+  "bom": {
+    "part_field": "MPN",
+    "part_label": "manufacturer part number (MPN)",
+    "columns": [["Item #", "{item}"], ["Designator", "{refs}"], ["Qty", "{qty}"], ["Manufacturer", "{manufacturer}"],
+                ["Mfg Part #", "{mpn}"], ["Description / Value", "{value}"], ["Package/Footprint", "{footprint}"],
+                ["Type", "{mount}"], ["Your Instructions / Notes", "{supplier_notes}"]]
+  },
+  "placement": {"format": "kicad", "side": "both", "units": "mm"},
+  "blocks": ["erc", "drc", "unrouted", "parity", "outline", "empty"],
+  "limits": {"through_vias_only": true},
+  "order_notes": [
+    "Order: upload the zip at pcbway.com (PCB Instant Quote); for assembly add the BOM and the centroid file and confirm part orientation with PCBWay's engineer before production"
+  ]
+}

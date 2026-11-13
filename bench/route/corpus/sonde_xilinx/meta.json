@@ -1,0 +1,424 @@
+{
+ "name": "sonde_xilinx",
+ "kind": "real",
+ "difficulty": 1,
+ "note": "2-layer, 26 nets, mixed THT/SMD",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/sonde xilinx/sonde xilinx.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "top_copper",
+   "bottom_copper"
+  ],
+  "footprints": 25,
+  "pads": 108,
+  "smd_pads": 34,
+  "tht_pads": 74,
+  "min_pad_pitch_mm": 1.385,
+  "nets": 26,
+  "size_mm": [
+   80.6,
+   43.38
+  ],
+  "origin_mm": [
+   103.2,
+   67.21
+  ],
+  "zones": 1,
+  "zone_nets": [
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.0,
+  "min_track": 0.2032,
+  "mst_mm": {
+   "/TD0-DONE": 20.136,
+   "Net-(U1A-O)": 45.025,
+   "Net-(U1D-D)": 14.556,
+   "/TMS-PROG-D2": 6.254,
+   "Net-(U2A-O)": 25.209,
+   "/DONE-SELECT*": 6.446,
+   "/TMS-PROG": 26.712,
+   "Net-(U1D-O)": 23.429,
+   "/TCK-CCLK": 23.502,
+   "Net-(U1C-O)": 19.88,
+   "/TDI-DIN": 21.62,
+   "Net-(U1B-O)": 30.393,
+   "Net-(U1B-E)": 21.332,
+   "/CTRL-D3": 7.455,
+   "Net-(U1B-D)": 5.08,
+   "/TDI-DIN-D0": 18.541,
+   "Net-(U1A-E)": 5.224,
+   "/TD0-PROG-D4": 6.747,
+   "VCC": 37.294,
+   "GND": 173.086,
+   "Net-(U1C-D)": 22.057,
+   "/CLK-D1": 6.3,
+   "/PWR_3,3-5V": 22.49,
+   "Net-(D1-K)": 5.289,
+   "/VCC_SENSE-ERROR*": 6.837,
+   "Net-(J1-Pad11)": 11.08
+  },
+  "mst_total_mm": 612.0
+ },
+ "reference": {
+  "tracks": 208,
+  "vias": 3,
+  "arcs": 0,
+  "blind_or_micro_vias": 0,
+  "length_mm": 637.75,
+  "unconnected": 0,
+  "nets": {
+   "/CLK-D1": {
+    "length": 6.607,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.635": 6.607
+    },
+    "layers": {
+     "top_copper": 6.607
+    }
+   },
+   "/CTRL-D3": {
+    "length": 9.074,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.635": 9.074
+    },
+    "layers": {
+     "top_copper": 9.074
+    }
+   },
+   "/DONE-SELECT*": {
+    "length": 7.121,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.635": 7.121
+    },
+    "layers": {
+     "top_copper": 7.121
+    }
+   },
+   "/PWR_3,3-5V": {
+    "length": 27.94,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "1.016": 27.94
+    },
+    "layers": {
+     "bottom_copper": 27.94
+    }
+   },
+   "/TCK-CCLK": {
+    "length": 25.272,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.635": 25.272
+    },
+    "layers": {
+     "bottom_copper": 25.272
+    }
+   },
+   "/TD0-DONE": {
+    "length": 21.864,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.635": 21.864
+    },
+    "layers": {
+     "bottom_copper": 21.864
+    }
+   },
+   "/TD0-PROG-D4": {
+    "length": 17.239,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.635": 17.239
+    },
+    "layers": {
+     "top_copper": 17.239
+    }
+   },
+   "/TDI-DIN": {
+    "length": 24.041,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.635": 24.041
+    },
+    "layers": {
+     "bottom_copper": 24.041
+    }
+   },
+   "/TDI-DIN-D0": {
+    "length": 36.701,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.635": 36.701
+    },
+    "layers": {
+     "top_copper": 36.701
+    }
+   },
+   "/TMS-PROG": {
+    "length": 28.846,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.635": 28.846
+    },
+    "layers": {
+     "bottom_copper": 28.846
+    }
+   },
+   "/TMS-PROG-D2": {
+    "length": 6.291,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.635": 6.291
+    },
+    "layers": {
+     "top_copper": 6.291
+    }
+   },
+   "/VCC_SENSE-ERROR*": {
+    "length": 7.318,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.635": 7.318
+    },
+    "layers": {
+     "bottom_copper": 7.318
+    }
+   },
+   "GND": {
+    "length": 19.059,
+    "vias": 1,
+    "segments": 7,
+    "widths": {
+     "1.016": 19.059
+    },
+    "layers": {
+     "top_copper": 16.519,
+     "bottom_copper": 2.54
+    }
+   },
+   "VCC": {
+    "length": 42.744,
+    "vias": 0,
+    "segments": 15,
+    "widths": {
+     "1.016": 42.744
+    },
+    "layers": {
+     "top_copper": 17.716,
+     "bottom_copper": 25.028
+    }
+   },
+   "Net-(U1B-O)": {
+    "length": 37.972,
+    "vias": 0,
+    "segments": 15,
+    "widths": {
+     "0.635": 32.892,
+     "0.4318": 5.08
+    },
+    "layers": {
+     "bottom_copper": 37.972
+    }
+   },
+   "Net-(U1A-O)": {
+    "length": 79.664,
+    "vias": 1,
+    "segments": 23,
+    "widths": {
+     "0.635": 72.679,
+     "0.4318": 6.985
+    },
+    "layers": {
+     "top_copper": 35.868,
+     "bottom_copper": 43.796
+    }
+   },
+   "Net-(U1D-O)": {
+    "length": 57.766,
+    "vias": 0,
+    "segments": 21,
+    "widths": {
+     "0.635": 43.533,
+     "0.4318": 14.233
+    },
+    "layers": {
+     "bottom_copper": 57.766
+    }
+   },
+   "Net-(U1C-O)": {
+    "length": 28.922,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.635": 28.922
+    },
+    "layers": {
+     "bottom_copper": 28.922
+    }
+   },
+   "Net-(D1-K)": {
+    "length": 6.181,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.635": 6.181
+    },
+    "layers": {
+     "bottom_copper": 6.181
+    }
+   },
+   "Net-(J1-Pad11)": {
+    "length": 23.513,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.635": 23.513
+    },
+    "layers": {
+     "top_copper": 23.513
+    }
+   },
+   "Net-(U2A-O)": {
+    "length": 32.212,
+    "vias": 1,
+    "segments": 4,
+    "widths": {
+     "0.635": 32.212
+    },
+    "layers": {
+     "top_copper": 18.723,
+     "bottom_copper": 13.489
+    }
+   },
+   "Net-(U1A-E)": {
+    "length": 5.606,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.635": 5.606
+    },
+    "layers": {
+     "bottom_copper": 5.606
+    }
+   },
+   "Net-(U1B-D)": {
+    "length": 5.08,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.635": 5.08
+    },
+    "layers": {
+     "bottom_copper": 5.08
+    }
+   },
+   "Net-(U1B-E)": {
+    "length": 27.767,
+    "vias": 0,
+    "segments": 12,
+    "widths": {
+     "0.635": 23.322,
+     "0.4318": 4.445
+    },
+    "layers": {
+     "bottom_copper": 27.767
+    }
+   },
+   "Net-(U1D-D)": {
+    "length": 18.622,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.635": 18.622
+    },
+    "layers": {
+     "bottom_copper": 18.622
+    }
+   },
+   "Net-(U1C-D)": {
+    "length": 34.331,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.635": 30.521,
+     "0.4318": 3.81
+    },
+    "layers": {
+     "bottom_copper": 34.331
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 0,
+   "warnings": 25,
+   "unconnected": 0,
+   "by_type": {
+    "warning:lib_footprint_issues": 25
+   }
+  },
+  "drc_error_list": []
+ },
+ "unrouted": {
+  "connections": 48,
+  "by_net": {
+   "/TD0-DONE": 2,
+   "Net-(U1A-O)": 4,
+   "Net-(U1D-D)": 1,
+   "/TMS-PROG-D2": 1,
+   "Net-(U2A-O)": 1,
+   "/DONE-SELECT*": 1,
+   "/TMS-PROG": 2,
+   "Net-(U1D-O)": 2,
+   "/TCK-CCLK": 2,
+   "Net-(U1C-O)": 2,
+   "/TDI-DIN": 2,
+   "Net-(U1B-O)": 2,
+   "Net-(U1B-E)": 3,
+   "/CTRL-D3": 1,
+   "Net-(U1B-D)": 1,
+   "/TDI-DIN-D0": 1,
+   "Net-(U1A-E)": 1,
+   "/TD0-PROG-D4": 1,
+   "VCC": 6,
+   "GND": 4,
+   "Net-(U1C-D)": 1,
+   "/CLK-D1": 1,
+   "/PWR_3,3-5V": 2,
+   "Net-(D1-K)": 1,
+   "/VCC_SENSE-ERROR*": 1,
+   "Net-(J1-Pad11)": 2
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 25,
+   "unconnected": 48,
+   "by_type": {
+    "warning:lib_footprint_issues": 25
+   }
+  },
+  "drc_error_list": []
+ },
+ "stripped": {
+  "tracks_and_vias": 211,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

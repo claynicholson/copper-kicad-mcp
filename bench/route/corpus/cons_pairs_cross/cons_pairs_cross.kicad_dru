@@ -1,0 +1,5 @@
+(version 1)
+(rule "a_skew" (condition "A.inDiffPair('/A_')") (constraint skew (max 0.2mm)))
+(rule "a_gap" (condition "A.inDiffPair('/A_')") (constraint diff_pair_gap (min 0.15mm) (max 1.2mm)) (constraint diff_pair_uncoupled (max 8mm)))
+(rule "b_skew" (condition "A.inDiffPair('/B_')") (constraint skew (max 0.2mm)))
+(rule "b_gap" (condition "A.inDiffPair('/B_')") (constraint diff_pair_gap (min 0.15mm) (max 1.2mm)) (constraint diff_pair_uncoupled (max 8mm)))

@@ -1,0 +1,184 @@
+{
+ "name": "ecc83",
+ "kind": "real",
+ "difficulty": 1,
+ "note": "2-layer THT tube amp, 9 nets, GND pour",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/ecc83/ecc83-pp.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "top_cu",
+   "bottom_cu"
+  ],
+  "footprints": 15,
+  "pads": 33,
+  "smd_pads": 0,
+  "tht_pads": 33,
+  "min_pad_pitch_mm": 3.61,
+  "nets": 9,
+  "size_mm": [
+   52.197,
+   46.482
+  ],
+  "origin_mm": [
+   121.2215,
+   90.1065
+  ],
+  "zones": 1,
+  "zone_nets": [
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.0,
+  "min_track": 0.2,
+  "mst_mm": {
+   "Net-(P3-P1)": 23.525,
+   "GND": 83.958,
+   "Net-(P2-P1)": 16.755,
+   "Net-(U1A-K)": 11.956,
+   "Net-(U1A-G)": 19.529,
+   "Net-(U1B-K)": 16.06,
+   "Net-(P1-PM)": 27.004,
+   "Net-(P4-P1)": 12.728,
+   "Net-(P4-PM)": 25.972
+  },
+  "mst_total_mm": 237.5
+ },
+ "reference": {
+  "tracks": 59,
+  "vias": 0,
+  "arcs": 0,
+  "blind_or_micro_vias": 0,
+  "length_mm": 211.0,
+  "unconnected": 0,
+  "nets": {
+   "Net-(P3-P1)": {
+    "length": 26.556,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.8": 26.556
+    },
+    "layers": {
+     "bottom_cu": 26.556
+    }
+   },
+   "Net-(P2-P1)": {
+    "length": 19.129,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.8": 19.129
+    },
+    "layers": {
+     "bottom_cu": 19.129
+    }
+   },
+   "Net-(U1A-K)": {
+    "length": 11.839,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.8": 11.839
+    },
+    "layers": {
+     "bottom_cu": 11.839
+    }
+   },
+   "Net-(P1-PM)": {
+    "length": 29.134,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.8": 29.134
+    },
+    "layers": {
+     "bottom_cu": 29.134
+    }
+   },
+   "Net-(P4-P1)": {
+    "length": 11.287,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.8": 11.287
+    },
+    "layers": {
+     "bottom_cu": 11.287
+    }
+   },
+   "Net-(P4-PM)": {
+    "length": 27.89,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.8": 27.89
+    },
+    "layers": {
+     "bottom_cu": 27.89
+    }
+   },
+   "Net-(U1A-G)": {
+    "length": 68.59,
+    "vias": 0,
+    "segments": 17,
+    "widths": {
+     "0.8": 68.59
+    },
+    "layers": {
+     "bottom_cu": 68.59
+    }
+   },
+   "Net-(U1B-K)": {
+    "length": 16.574,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.8": 16.574
+    },
+    "layers": {
+     "bottom_cu": 16.574
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 0,
+   "warnings": 17,
+   "unconnected": 0,
+   "by_type": {
+    "warning:lib_footprint_issues": 15,
+    "warning:silk_edge_clearance": 2
+   }
+  },
+  "drc_error_list": []
+ },
+ "unrouted": {
+  "connections": 14,
+  "by_net": {
+   "Net-(P3-P1)": 2,
+   "Net-(P2-P1)": 2,
+   "Net-(U1A-K)": 2,
+   "Net-(U1A-G)": 2,
+   "Net-(U1B-K)": 1,
+   "Net-(P1-PM)": 2,
+   "Net-(P4-P1)": 1,
+   "Net-(P4-PM)": 2
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 17,
+   "unconnected": 14,
+   "by_type": {
+    "warning:lib_footprint_issues": 15,
+    "warning:silk_edge_clearance": 2
+   }
+  },
+  "drc_error_list": []
+ },
+ "stripped": {
+  "tracks_and_vias": 59,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

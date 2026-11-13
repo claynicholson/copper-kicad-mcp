@@ -1,0 +1,5 @@
+(version 1)
+(rule "qspi_match" (condition "A.NetName == '/Q_IO?' || A.NetName == '/Q_CLK'") (constraint skew (max 0.3mm)))
+(rule "usb_skew" (condition "A.inDiffPair('/USB_D_')") (constraint skew (max 0.15mm)))
+(rule "usb_gap" (condition "A.inDiffPair('/USB_D_')") (constraint diff_pair_gap (min 0.15mm) (max 0.9mm)) (constraint diff_pair_uncoupled (max 6mm)))
+(rule "xtal_short" (condition "A.NetName == '/XI' || A.NetName == '/XO'") (constraint length (max 8mm)))

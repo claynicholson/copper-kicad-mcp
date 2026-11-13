@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "copper-lcsc")(type "KiCad")(uri "${KIPRJMOD}/libs/copper-lcsc.kicad_sym")(options "")(descr "LCSC/JLCPCB parts imported by Copper (source: JLCEDA/EasyEDA Official Library)"))
+)

@@ -1,0 +1,48 @@
+{
+  "name": "oshpark",
+  "label": "OSH Park",
+  "short": "OSH Park",
+  "url": "https://oshpark.com/",
+  "notes": "Bare boards only (OSH Park does not assemble). Checked against docs.oshpark.com on 2026-11-09: 2-layer prototype service 6 mil (0.1524 mm) track and space, 10 mil (0.254 mm) drill, 5 mil (0.127 mm) annular ring, 15 mil (0.381 mm) board-edge keepout; 4-layer service 5 mil (0.127 mm) track and space, 10 mil drill, 4 mil (0.1016 mm) annular ring, same edge keepout. Its KiCad guide recommends Gerber X2, the layers listed here (paste optional), drill origin absolute, decimal zeros, alternate oval mode. UNVERIFIED: silkscreen minimums (0.8 mm / 0.15 mm used), hole_to_hole, hole_clearance, npth_min, and that PTH and NPTH should be merged into ONE drill file (the guide does not say; Copper merges them). OSH Park also accepts the .kicad_pcb file directly, which avoids every Gerber setting.",
+  "rules": {
+    "standard": {
+      "label": "OSH Park 2-layer (6 mil / 10 mil drill)",
+      "min_track": 0.1524, "min_clearance": 0.1524, "min_via_diameter": 0.508, "min_via_drill": 0.254,
+      "min_annular": 0.127, "min_hole": 0.254, "hole_to_hole": 0.4, "edge_clearance": 0.381,
+      "hole_clearance": 0.2, "silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.15,
+      "via": [0.6, 0.3], "power_via": [0.8, 0.4], "pth_annular": 0.127, "npth_min": 0.254
+    }
+  },
+  "rules_by_layers": {
+    "4": {
+      "label": "OSH Park 4-layer (5 mil / 10 mil drill)",
+      "min_track": 0.127, "min_clearance": 0.127, "min_via_diameter": 0.4572, "min_annular": 0.1016,
+      "via": [0.5, 0.254], "pth_annular": 0.1016
+    }
+  },
+  "gerber": {
+    "x2": true, "netlist_attributes": true, "protel_extensions": true, "subtract_soldermask": false, "precision": 6,
+    "layers": ["copper", "F.Paste", "B.Paste", "F.SilkS", "B.SilkS", "F.Mask", "B.Mask", "Edge.Cuts"]
+  },
+  "drill": {"units": "mm", "zeros": "decimal", "oval": "alternate", "origin": "absolute", "separate_th": false},
+  "naming": {
+    "gerber_dir": "gerbers",
+    "zip": "{name}-OSHPark.zip",
+    "bom": "{name}-BOM.csv",
+    "placement": "{name}-pos.csv"
+  },
+  "zip": {"folder": "", "include_assembly": false},
+  "assembly": {"offered": false},
+  "bom": {
+    "part_field": null,
+    "part_label": "part number",
+    "columns": [["Refs", "{refs}"], ["Qty", "{qty}"], ["Value", "{value}"], ["Footprint", "{footprint}"],
+                ["MPN", "{mpn}"], ["Manufacturer", "{manufacturer}"], ["Supplier Part #", "{supplier}"]]
+  },
+  "placement": {"format": "kicad", "side": "both", "units": "mm"},
+  "blocks": ["erc", "drc", "unrouted", "parity", "outline", "empty"],
+  "limits": {"through_vias_only": true},
+  "order_notes": [
+    "Order: upload the zip (or the .kicad_pcb itself) at oshpark.com and check every layer in the upload preview; boards come bare, so assembly=true only writes a BOM and a position file for your own use"
+  ]
+}

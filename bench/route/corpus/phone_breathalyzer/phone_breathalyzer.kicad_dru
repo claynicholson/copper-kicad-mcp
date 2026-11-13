@@ -1,0 +1,57 @@
+(version 1)
+# JLCPCB standard-service capabilities, written by Copper for KiCad.
+# Board-wide minimums (track, clearance, via, edge clearance) live in the
+# .kicad_pro design rules; this file adds the rules KiCad's minimums can't say.
+# Later rules take precedence over earlier ones.
+
+(rule "JLC: maximum drill 6.3 mm"
+	(constraint hole_size (max 6.3mm)))
+
+(rule "JLC: NPTH minimum hole 0.5 mm"
+	(constraint hole_size (min 0.5mm))
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical'"))
+
+(rule "JLC: hole to hole, different nets 0.5 mm"
+	(constraint hole_to_hole (min 0.5mm))
+	(condition "A.Net != B.Net"))
+
+(rule "JLC: PTH pad annular ring 0.15 mm"
+	(constraint annular_width (min 0.15mm))
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'"))
+
+# --- copper:begin (managed by Copper; edits inside are overwritten) ---
+(rule "Copper jlc: track width"
+	(condition "A.Type == 'track' || A.Type == 'arc'")
+	(constraint track_width (min 0.127mm)))
+
+(rule "Copper jlc: copper clearance"
+	(constraint clearance (min 0.127mm)))
+
+(rule "Copper jlc: via size"
+	(condition "A.Type == 'via'")
+	(constraint hole_size (min 0.3mm))
+	(constraint via_diameter (min 0.6mm))
+	(constraint annular_width (min 0.13mm)))
+
+(rule "Copper jlc: PTH annular ring"
+	(condition "A.Type == 'pad' && A.isPlated()")
+	(constraint annular_width (min 0.15mm)))
+
+(rule "Copper jlc: min drill"
+	(constraint hole_size (min 0.3mm)))
+
+(rule "Copper jlc: hole to hole"
+	(constraint hole_to_hole (min 0.5mm)))
+
+(rule "Copper jlc: board edge"
+	(constraint edge_clearance (min 0.3mm)))
+
+(rule "Copper jlc: hole to copper"
+	(condition "A.Type != 'Pad' || B.Type != 'Pad'")
+	(constraint hole_clearance (min 0.2mm)))
+
+(rule "Copper jlc: silkscreen text"
+	(layer "?.Silkscreen")
+	(constraint text_height (min 0.8mm))
+	(constraint text_thickness (min 0.15mm)))
+# --- copper:end ---

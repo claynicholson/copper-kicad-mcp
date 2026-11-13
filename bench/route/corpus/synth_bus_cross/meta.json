@@ -1,0 +1,100 @@
+{
+ "name": "synth_bus_cross",
+ "kind": "synthetic",
+ "difficulty": 3,
+ "note": "synthetic: 24-net reversed SMD bus (every net crosses every other), 2 layers",
+ "source": "prepare.py",
+ "reference_kind": null,
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "B.Cu"
+  ],
+  "footprints": 2,
+  "pads": 48,
+  "smd_pads": 48,
+  "tht_pads": 0,
+  "min_pad_pitch_mm": 1.0,
+  "nets": 24,
+  "size_mm": [
+   40.1,
+   35.1
+  ],
+  "origin_mm": [
+   99.95,
+   99.95
+  ],
+  "zones": 0,
+  "zone_nets": [],
+  "rule_areas": 0,
+  "min_clearance": 0.0,
+  "min_track": 0.2,
+  "mst_mm": {
+   "/B23": 39.408,
+   "/B22": 38.275,
+   "/B21": 37.216,
+   "/B20": 36.235,
+   "/B19": 35.341,
+   "/B18": 34.54,
+   "/B17": 33.838,
+   "/B16": 33.242,
+   "/B15": 32.757,
+   "/B14": 32.388,
+   "/B13": 32.14,
+   "/B12": 32.016,
+   "/B11": 32.016,
+   "/B10": 32.14,
+   "/B09": 32.388,
+   "/B08": 32.757,
+   "/B07": 33.242,
+   "/B06": 33.838,
+   "/B05": 34.54,
+   "/B04": 35.341,
+   "/B03": 36.235,
+   "/B02": 37.216,
+   "/B01": 38.275,
+   "/B00": 39.408
+  },
+  "mst_total_mm": 834.8
+ },
+ "reference": null,
+ "unrouted": {
+  "connections": 24,
+  "by_net": {
+   "/B23": 1,
+   "/B22": 1,
+   "/B21": 1,
+   "/B20": 1,
+   "/B19": 1,
+   "/B18": 1,
+   "/B17": 1,
+   "/B16": 1,
+   "/B15": 1,
+   "/B14": 1,
+   "/B13": 1,
+   "/B12": 1,
+   "/B11": 1,
+   "/B10": 1,
+   "/B09": 1,
+   "/B08": 1,
+   "/B07": 1,
+   "/B06": 1,
+   "/B05": 1,
+   "/B04": 1,
+   "/B03": 1,
+   "/B02": 1,
+   "/B01": 1,
+   "/B00": 1
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 4,
+   "unconnected": 24,
+   "by_type": {
+    "warning:lib_footprint_issues": 2,
+    "warning:silk_edge_clearance": 2
+   }
+  },
+  "drc_error_list": []
+ }
+}

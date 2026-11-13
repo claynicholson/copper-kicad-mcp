@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/schemas/mcpb-manifest-v0.4.schema.json",
+  "manifest_version": "0.4",
+  "name": "copper",
+  "display_name": "Copper for KiCad",
+  "version": "1.1.0",
+  "description": "Design real, orderable KiCad boards: schematics, parts sourcing, PCB layout, verification and fab files for any PCB fab.",
+  "long_description": "Copper connects your AI assistant to KiCad 10. It places parts and connects pins to nets by name, sources every part from the configured parts providers (LCSC with JLCPCB Basic parts first by default; a local catalogue file or generic KiCad parts work offline), runs KiCad's own ERC/DRC after every change, renders the schematic, board and 3D view as images, and produces the Gerber/BOM/placement package for a fab profile (JLCPCB by default; PCBWay, OSH Park, generic, or your own).\n\nRequires KiCad 10 (kicad.org); KiCad 9 can only view and check designs. Copper runs locally, never calls a language model and sends no telemetry. It goes online to search and download parts (LCSC, JLCPCB, EasyEDA, with the jlcsearch.tscircuit.com mirror as a fallback), to check for a newer KiCad on gitlab.com during setup and doctor (COPPER_NO_UPDATE_CHECK=1 turns it off), and to download Freerouting and a Java runtime when you ask for autorouting.",
+  "author": {
+    "name": "Clay Nicholson",
+    "url": "https://github.com/claynicholson"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/claynicholson/copper-kicad-mcp"
+  },
+  "homepage": "https://coppereda.com",
+  "documentation": "https://github.com/claynicholson/copper-kicad-mcp#readme",
+  "support": "https://github.com/claynicholson/copper-kicad-mcp/issues",
+  "icon": "icon.png",
+  "server": {
+    "type": "uv",
+    "entry_point": "src/copper_kicad/__main__.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": ["run", "--directory", "${__dirname}", "--no-dev", "--quiet", "copper", "serve"],
+      "env": {
+        "COPPER_KICAD_CLI": "${user_config.kicad_cli}",
+        "PYTHONUTF8": "1"
+      }
+    }
+  },
+  "tools_generated": true,
+  "prompts_generated": true,
+  "keywords": ["kicad", "pcb", "schematic", "electronics", "eda", "lcsc", "jlcpcb", "gerber"],
+  "license": "MIT",
+  "privacy_policies": ["https://github.com/claynicholson/copper-kicad-mcp#privacy"],
+  "compatibility": {
+    "platforms": ["win32", "darwin", "linux"],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  },
+  "user_config": {
+    "kicad_cli": {
+      "type": "file",
+      "title": "kicad-cli executable (optional)",
+      "description": "Leave empty to auto-detect KiCad. Set it only if KiCad is installed in an unusual place, e.g. C:/Program Files/KiCad/10.0/bin/kicad-cli.exe.",
+      "required": false,
+      "default": ""
+    }
+  }
+}

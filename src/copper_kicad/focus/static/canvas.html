@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Copper Canvas</title>
+<link rel="icon" href="data:,">
+<style nonce="__NONCE__">/*__CSS__*/</style>
+</head>
+<body>
+<header id="bar">
+  <div class="brand"><span class="dot" aria-hidden="true"></span><span>Copper</span><span id="proj" class="proj"></span></div>
+  <nav id="tabs" aria-label="Document"></nav>
+  <div id="layers" aria-label="Layers"></div>
+  <div class="spacer"></div>
+  <div id="focus" class="focus empty" title="This is what your AI sees when it calls the focus tool. Click to copy.">
+    <span class="lbl">Focus</span><span id="chip">nothing yet</span>
+    <button id="clear" type="button" title="Clear focus (Esc)" aria-label="Clear focus">&times;</button>
+  </div>
+</header>
+<main id="view" tabindex="0" aria-label="Design view">
+  <div id="stage"></div>
+  <canvas id="overlay"></canvas>
+  <div id="tip" hidden></div>
+  <div id="msg" hidden></div>
+</main>
+<footer id="status">
+  <span id="coord" class="mono"></span>
+  <span id="hover"></span>
+  <span class="spacer"></span>
+  <span id="hint">click = point &middot; drag = box &middot; shift = add &middot; Esc = clear &middot; wheel = zoom &middot; right-drag / space = pan &middot; F = fit</span>
+  <span id="live" title="Reloads by itself when the design files change on disk">live</span>
+</footer>
+<script nonce="__NONCE__">/*__JS__*/</script>
+</body>
+</html>

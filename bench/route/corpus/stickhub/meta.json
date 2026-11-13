@@ -1,0 +1,709 @@
+{
+ "name": "stickhub",
+ "kind": "real",
+ "difficulty": 4,
+ "note": "2-layer dense SMD USB hub 16.6x40 mm, 0.5 mm pitch, 5 pours, arcs",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/stickhub/StickHub.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "B.Cu"
+  ],
+  "footprints": 94,
+  "pads": 278,
+  "smd_pads": 268,
+  "tht_pads": 0,
+  "min_pad_pitch_mm": 0.5,
+  "nets": 45,
+  "size_mm": [
+   16.6,
+   40.1
+  ],
+  "origin_mm": [
+   141.7,
+   79.95
+  ],
+  "zones": 5,
+  "zone_nets": [
+   "+1V8",
+   "+5V",
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.15,
+  "min_track": 0.15,
+  "mst_mm": {
+   "GND": 123.924,
+   "/U2D+": 6.028,
+   "+5V": 60.316,
+   "/U6D-": 5.025,
+   "/U6D+": 4.129,
+   "/U7D-": 9.293,
+   "/U7D+": 7.896,
+   "/U5D+": 6.058,
+   "Net-(D15-1)": 9.499,
+   "/LC": 25.101,
+   "/U4D+": 16.439,
+   "/U5D-": 4.659,
+   "Net-(D16-1)": 11.259,
+   "/U1D-": 5.696,
+   "/U3D-": 10.756,
+   "/U2D-": 5.191,
+   "/U1D+": 4.356,
+   "Net-(D19-1)": 7.155,
+   "/U4D-": 15.04,
+   "Net-(D20-1)": 8.702,
+   "/U3D+": 11.885,
+   "Net-(J1-Pin_1)": 8.981,
+   "/D-": 13.821,
+   "/D+": 13.579,
+   "Net-(D21-1)": 10.43,
+   "Net-(D17-1)": 13.096,
+   "Net-(D18-1)": 15.716,
+   "/LED1": 1.999,
+   "+1V8": 17.905,
+   "/LED7": 1.611,
+   "VIN": 5.941,
+   "Net-(U2-CAP)": 2.108,
+   "+3.3V": 32.362,
+   "Net-(U1-TEST3#)": 1.57,
+   "/LED5": 1.797,
+   "Net-(U1-VBUS_SENSE)": 3.819,
+   "Net-(U1-REXT)": 1.401,
+   "/LED4": 1.773,
+   "/LED2": 1.896,
+   "/XI": 2.913,
+   "/XO": 3.521,
+   "/LED6": 1.688,
+   "/LED3": 1.822,
+   "Net-(U1-EXT_RST#)": 1.607,
+   "Net-(U1-TEST1#)": 1.611
+  },
+  "mst_total_mm": 521.4
+ },
+ "reference": {
+  "tracks": 1293,
+  "vias": 87,
+  "arcs": 180,
+  "blind_or_micro_vias": 0,
+  "length_mm": 742.67,
+  "unconnected": 0,
+  "nets": {
+   "GND": {
+    "length": 196.526,
+    "vias": 49,
+    "segments": 219,
+    "widths": {
+     "0.15": 39.648,
+     "0.6": 8.806,
+     "0.25": 60.224,
+     "0.4": 79.567,
+     "0.5": 5.267,
+     "0.3": 3.013
+    },
+    "layers": {
+     "F.Cu": 123.964,
+     "B.Cu": 72.562
+    }
+   },
+   "+5V": {
+    "length": 87.696,
+    "vias": 9,
+    "segments": 120,
+    "widths": {
+     "0.6": 50.864,
+     "0.2": 7.086,
+     "0.4": 15.686,
+     "0.5": 10.213,
+     "0.3": 3.846
+    },
+    "layers": {
+     "F.Cu": 60.789,
+     "B.Cu": 26.907
+    }
+   },
+   "Net-(U1-VBUS_SENSE)": {
+    "length": 4.416,
+    "vias": 0,
+    "segments": 13,
+    "widths": {
+     "0.15": 4.416
+    },
+    "layers": {
+     "B.Cu": 4.416
+    }
+   },
+   "+3.3V": {
+    "length": 43.136,
+    "vias": 0,
+    "segments": 81,
+    "widths": {
+     "0.25": 31.931,
+     "0.3": 10.076,
+     "0.2": 1.13
+    },
+    "layers": {
+     "B.Cu": 43.136
+    }
+   },
+   "+1V8": {
+    "length": 20.56,
+    "vias": 2,
+    "segments": 41,
+    "widths": {
+     "0.3": 2.676,
+     "0.25": 15.166,
+     "0.15": 2.718
+    },
+    "layers": {
+     "F.Cu": 1.079,
+     "B.Cu": 19.481
+    }
+   },
+   "Net-(U2-CAP)": {
+    "length": 2.173,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.25": 2.173
+    },
+    "layers": {
+     "B.Cu": 2.173
+    }
+   },
+   "Net-(D15-1)": {
+    "length": 12.693,
+    "vias": 1,
+    "segments": 15,
+    "widths": {
+     "0.15": 12.693
+    },
+    "layers": {
+     "F.Cu": 2.384,
+     "B.Cu": 10.309
+    }
+   },
+   "Net-(D16-1)": {
+    "length": 13.319,
+    "vias": 1,
+    "segments": 14,
+    "widths": {
+     "0.15": 13.319
+    },
+    "layers": {
+     "F.Cu": 2.358,
+     "B.Cu": 10.961
+    }
+   },
+   "Net-(D17-1)": {
+    "length": 14.714,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.15": 14.714
+    },
+    "layers": {
+     "F.Cu": 2.371,
+     "B.Cu": 12.344
+    }
+   },
+   "Net-(D18-1)": {
+    "length": 17.183,
+    "vias": 1,
+    "segments": 15,
+    "widths": {
+     "0.15": 17.183
+    },
+    "layers": {
+     "F.Cu": 2.328,
+     "B.Cu": 14.855
+    }
+   },
+   "Net-(D19-1)": {
+    "length": 9.801,
+    "vias": 1,
+    "segments": 11,
+    "widths": {
+     "0.15": 9.801
+    },
+    "layers": {
+     "F.Cu": 2.455,
+     "B.Cu": 7.345
+    }
+   },
+   "Net-(D20-1)": {
+    "length": 12.108,
+    "vias": 1,
+    "segments": 13,
+    "widths": {
+     "0.15": 12.108
+    },
+    "layers": {
+     "F.Cu": 2.342,
+     "B.Cu": 9.766
+    }
+   },
+   "Net-(D21-1)": {
+    "length": 13.93,
+    "vias": 1,
+    "segments": 14,
+    "widths": {
+     "0.15": 13.93
+    },
+    "layers": {
+     "F.Cu": 2.3,
+     "B.Cu": 11.63
+    }
+   },
+   "Net-(J1-Pin_1)": {
+    "length": 13.768,
+    "vias": 1,
+    "segments": 9,
+    "widths": {
+     "0.6": 10.355,
+     "0.4": 3.413
+    },
+    "layers": {
+     "F.Cu": 6.914,
+     "B.Cu": 6.854
+    }
+   },
+   "Net-(U1-EXT_RST#)": {
+    "length": 1.703,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 1.703
+    },
+    "layers": {
+     "B.Cu": 1.703
+    }
+   },
+   "Net-(U1-TEST3#)": {
+    "length": 1.62,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.15": 1.62
+    },
+    "layers": {
+     "B.Cu": 1.62
+    }
+   },
+   "Net-(U1-TEST1#)": {
+    "length": 1.71,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 1.71
+    },
+    "layers": {
+     "B.Cu": 1.71
+    }
+   },
+   "Net-(U1-REXT)": {
+    "length": 1.435,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 1.435
+    },
+    "layers": {
+     "B.Cu": 1.435
+    }
+   },
+   "/U1D-": {
+    "length": 8.937,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.15": 8.937
+    },
+    "layers": {
+     "F.Cu": 7.517,
+     "B.Cu": 1.42
+    }
+   },
+   "/U1D+": {
+    "length": 8.946,
+    "vias": 1,
+    "segments": 48,
+    "widths": {
+     "0.15": 8.946
+    },
+    "layers": {
+     "F.Cu": 7.428,
+     "B.Cu": 1.518
+    }
+   },
+   "/U2D-": {
+    "length": 5.909,
+    "vias": 1,
+    "segments": 10,
+    "widths": {
+     "0.15": 5.909
+    },
+    "layers": {
+     "F.Cu": 2.509,
+     "B.Cu": 3.4
+    }
+   },
+   "/U2D+": {
+    "length": 7.042,
+    "vias": 1,
+    "segments": 17,
+    "widths": {
+     "0.15": 7.042
+    },
+    "layers": {
+     "F.Cu": 2.582,
+     "B.Cu": 4.46
+    }
+   },
+   "/U3D-": {
+    "length": 14.57,
+    "vias": 1,
+    "segments": 85,
+    "widths": {
+     "0.15": 14.57
+    },
+    "layers": {
+     "F.Cu": 13.179,
+     "B.Cu": 1.391
+    }
+   },
+   "/U3D+": {
+    "length": 14.604,
+    "vias": 1,
+    "segments": 19,
+    "widths": {
+     "0.15": 14.604
+    },
+    "layers": {
+     "F.Cu": 13.205,
+     "B.Cu": 1.398
+    }
+   },
+   "/U4D-": {
+    "length": 20.626,
+    "vias": 1,
+    "segments": 19,
+    "widths": {
+     "0.15": 20.626
+    },
+    "layers": {
+     "F.Cu": 18.463,
+     "B.Cu": 2.162
+    }
+   },
+   "/U4D+": {
+    "length": 20.627,
+    "vias": 1,
+    "segments": 47,
+    "widths": {
+     "0.15": 20.627
+    },
+    "layers": {
+     "F.Cu": 19.925,
+     "B.Cu": 0.702
+    }
+   },
+   "/U5D-": {
+    "length": 9.916,
+    "vias": 1,
+    "segments": 46,
+    "widths": {
+     "0.15": 9.916
+    },
+    "layers": {
+     "F.Cu": 3.168,
+     "B.Cu": 6.748
+    }
+   },
+   "/U5D+": {
+    "length": 9.896,
+    "vias": 1,
+    "segments": 20,
+    "widths": {
+     "0.15": 9.896
+    },
+    "layers": {
+     "F.Cu": 2.678,
+     "B.Cu": 7.218
+    }
+   },
+   "/U6D-": {
+    "length": 15.53,
+    "vias": 1,
+    "segments": 19,
+    "widths": {
+     "0.15": 15.53
+    },
+    "layers": {
+     "F.Cu": 7.3,
+     "B.Cu": 8.23
+    }
+   },
+   "/U6D+": {
+    "length": 15.513,
+    "vias": 1,
+    "segments": 76,
+    "widths": {
+     "0.15": 15.513
+    },
+    "layers": {
+     "F.Cu": 8.837,
+     "B.Cu": 6.676
+    }
+   },
+   "/U7D-": {
+    "length": 12.43,
+    "vias": 1,
+    "segments": 44,
+    "widths": {
+     "0.15": 12.43
+    },
+    "layers": {
+     "F.Cu": 11.339,
+     "B.Cu": 1.091
+    }
+   },
+   "/U7D+": {
+    "length": 12.363,
+    "vias": 1,
+    "segments": 19,
+    "widths": {
+     "0.15": 12.363
+    },
+    "layers": {
+     "F.Cu": 9.885,
+     "B.Cu": 2.478
+    }
+   },
+   "/LED1": {
+    "length": 2.142,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 2.142
+    },
+    "layers": {
+     "B.Cu": 2.142
+    }
+   },
+   "/D-": {
+    "length": 18.655,
+    "vias": 2,
+    "segments": 21,
+    "widths": {
+     "0.15": 18.655
+    },
+    "layers": {
+     "F.Cu": 15.907,
+     "B.Cu": 2.748
+    }
+   },
+   "/D+": {
+    "length": 18.752,
+    "vias": 2,
+    "segments": 89,
+    "widths": {
+     "0.15": 18.752
+    },
+    "layers": {
+     "F.Cu": 16.705,
+     "B.Cu": 2.048
+    }
+   },
+   "/LED2": {
+    "length": 2.039,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 2.039
+    },
+    "layers": {
+     "B.Cu": 2.039
+    }
+   },
+   "/LED3": {
+    "length": 1.916,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 1.916
+    },
+    "layers": {
+     "B.Cu": 1.916
+    }
+   },
+   "/LED4": {
+    "length": 1.802,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.15": 1.802
+    },
+    "layers": {
+     "B.Cu": 1.802
+    }
+   },
+   "/LED5": {
+    "length": 1.93,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.15": 1.93
+    },
+    "layers": {
+     "B.Cu": 1.93
+    }
+   },
+   "/LED6": {
+    "length": 1.816,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 1.816
+    },
+    "layers": {
+     "B.Cu": 1.816
+    }
+   },
+   "/LED7": {
+    "length": 1.71,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 1.71
+    },
+    "layers": {
+     "B.Cu": 1.71
+    }
+   },
+   "/LC": {
+    "length": 28.767,
+    "vias": 1,
+    "segments": 59,
+    "widths": {
+     "0.15": 28.767
+    },
+    "layers": {
+     "F.Cu": 20.77,
+     "B.Cu": 7.997
+    }
+   },
+   "/XO": {
+    "length": 4.849,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.15": 4.849
+    },
+    "layers": {
+     "B.Cu": 4.849
+    }
+   },
+   "/XI": {
+    "length": 3.393,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.15": 3.393
+    },
+    "layers": {
+     "B.Cu": 3.393
+    }
+   },
+   "VIN": {
+    "length": 9.495,
+    "vias": 0,
+    "segments": 14,
+    "widths": {
+     "0.6": 5.392,
+     "0.25": 1.418,
+     "0.2": 1.11,
+     "0.4": 1.575
+    },
+    "layers": {
+     "B.Cu": 9.495
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 0,
+   "warnings": 94,
+   "unconnected": 0,
+   "by_type": {
+    "warning:lib_footprint_issues": 94
+   }
+  },
+  "drc_error_list": []
+ },
+ "unrouted": {
+  "connections": 128,
+  "by_net": {
+   "GND": 2,
+   "/U2D+": 2,
+   "+5V": 21,
+   "/U6D-": 2,
+   "/U6D+": 2,
+   "/U7D-": 2,
+   "/U7D+": 2,
+   "/U5D+": 2,
+   "Net-(D15-1)": 2,
+   "/LC": 14,
+   "/U4D+": 2,
+   "/U5D-": 2,
+   "Net-(D16-1)": 2,
+   "/U1D-": 2,
+   "/U3D-": 2,
+   "/U2D-": 2,
+   "/U1D+": 2,
+   "Net-(D19-1)": 2,
+   "/U4D-": 2,
+   "Net-(D20-1)": 2,
+   "/U3D+": 2,
+   "Net-(J1-Pin_1)": 1,
+   "/D-": 2,
+   "/D+": 2,
+   "Net-(D21-1)": 2,
+   "Net-(D17-1)": 2,
+   "Net-(D18-1)": 2,
+   "/LED1": 1,
+   "+1V8": 6,
+   "/LED7": 1,
+   "VIN": 5,
+   "Net-(U2-CAP)": 1,
+   "+3.3V": 16,
+   "Net-(U1-TEST3#)": 1,
+   "/LED5": 1,
+   "Net-(U1-VBUS_SENSE)": 3,
+   "Net-(U1-REXT)": 1,
+   "/LED4": 1,
+   "/LED2": 1,
+   "/XI": 1,
+   "/XO": 1,
+   "/LED6": 1,
+   "/LED3": 1,
+   "Net-(U1-EXT_RST#)": 1,
+   "Net-(U1-TEST1#)": 1
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 94,
+   "unconnected": 128,
+   "by_type": {
+    "warning:lib_footprint_issues": 94
+   }
+  },
+  "drc_error_list": []
+ },
+ "stripped": {
+  "tracks_and_vias": 1380,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

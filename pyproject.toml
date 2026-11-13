@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "copper-kicad"
+version = "1.1.0"
+description = "Copper for KiCad — the MCP server that lets any AI agent design real, orderable KiCad boards (LCSC/JLCPCB by default; any parts vendor and PCB fab by configuration)."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Clay Nicholson" }]
+keywords = ["kicad", "mcp", "pcb", "eda", "lcsc", "jlcpcb", "pcbway", "oshpark", "gerber", "bom", "model-context-protocol"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Manufacturing",
+  "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+  "Programming Language :: Python :: 3",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX :: Linux",
+]
+dependencies = ["pillow>=10"]
+
+[project.optional-dependencies]
+live = ["kicad-python>=0.8.0"]
+
+[project.scripts]
+copper = "copper_kicad.cli:main"
+copper-kicad = "copper_kicad.cli:main"
+
+[project.gui-scripts]
+# no console window: Start-menu entries and the installer's finish page (`copperw setup --web`)
+copperw = "copper_kicad.cli:main"
+
+[project.urls]
+Homepage = "https://coppereda.com"
+Repository = "https://github.com/claynicholson/copper-kicad-mcp"
+Issues = "https://github.com/claynicholson/copper-kicad-mcp/issues"
+Changelog = "https://github.com/claynicholson/copper-kicad-mcp/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/copper_kicad"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/copper_kicad", "README.md", "LICENSE", "pyproject.toml"]

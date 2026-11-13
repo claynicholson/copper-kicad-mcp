@@ -1,0 +1,45 @@
+name: Bug report
+description: Copper did something wrong, crashed, or would not install.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please run `copper doctor` (or `npx -y copper-kicad doctor`) first: it often names the fix.
+        Do not paste API keys, tokens or private schematics.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked for, what Copper did, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: The prompt or tool call (e.g. `pcb_route` arguments), and a small project if you can share one.
+  - type: dropdown
+    id: install
+    attributes:
+      label: How Copper is installed
+      options:
+        - Windows installer (Setup.exe)
+        - Claude Desktop extension (.mcpb)
+        - Claude Code plugin
+        - npx copper-kicad
+        - One-line installer (install.ps1 / install.sh)
+        - From source
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: AI app and model
+      placeholder: e.g. Claude Desktop, Cursor, Codex
+  - type: textarea
+    id: doctor
+    attributes:
+      label: copper doctor output
+      description: Output of `copper doctor` (versions of Copper, KiCad and the OS).
+      render: text

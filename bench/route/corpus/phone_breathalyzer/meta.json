@@ -1,0 +1,305 @@
+{
+ "name": "phone_breathalyzer",
+ "kind": "real",
+ "difficulty": 2,
+ "note": "2-layer SMD 22x48 mm, 0.5 mm pitch; reference = the routing currently on the user's board (not hand-made)",
+ "source": "$COPPER_BENCH_EXTERNAL (a Copper-made phone-breathalyzer board)",
+ "reference_kind": "existing",
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "B.Cu"
+  ],
+  "footprints": 30,
+  "pads": 100,
+  "smd_pads": 94,
+  "tht_pads": 6,
+  "min_pad_pitch_mm": 0.5,
+  "nets": 17,
+  "size_mm": [
+   22.05,
+   48.05
+  ],
+  "origin_mm": [
+   99.975,
+   99.975
+  ],
+  "zones": 2,
+  "zone_nets": [
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.127,
+  "min_track": 0.127,
+  "mst_mm": {
+   "/SUPPLY_SENSE": 11.811,
+   "GND": 81.327,
+   "+3V3": 42.678,
+   "/BOOT0": 14.116,
+   "VBUS": 43.805,
+   "/LED_A": 4.066,
+   "/CC": 3.077,
+   "/ALC_SENSE": 25.402,
+   "/LED": 2.871,
+   "/HEAT_GATE": 4.566,
+   "/HEAT_SW": 15.51,
+   "/USB_DP": 17.693,
+   "/USB_DM": 17.655,
+   "/NRST": 8.559,
+   "/HEAT_EN": 4.884,
+   "/SWDIO": 7.366,
+   "/SWCLK": 7.649
+  },
+  "mst_total_mm": 313.0
+ },
+ "reference": {
+  "tracks": 142,
+  "vias": 21,
+  "arcs": 0,
+  "blind_or_micro_vias": 0,
+  "length_mm": 277.21,
+  "unconnected": 0,
+  "nets": {
+   "/SUPPLY_SENSE": {
+    "length": 14.022,
+    "vias": 0,
+    "segments": 12,
+    "widths": {
+     "0.2": 14.022
+    },
+    "layers": {
+     "F.Cu": 14.022
+    }
+   },
+   "GND": {
+    "length": 0.0,
+    "vias": 12,
+    "segments": 0,
+    "widths": {},
+    "layers": {}
+   },
+   "+3V3": {
+    "length": 47.809,
+    "vias": 0,
+    "segments": 30,
+    "widths": {
+     "0.45": 47.809
+    },
+    "layers": {
+     "F.Cu": 40.904,
+     "B.Cu": 6.905
+    }
+   },
+   "/BOOT0": {
+    "length": 14.986,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.2": 14.986
+    },
+    "layers": {
+     "F.Cu": 14.986
+    }
+   },
+   "VBUS": {
+    "length": 59.179,
+    "vias": 0,
+    "segments": 21,
+    "widths": {
+     "0.24": 59.179
+    },
+    "layers": {
+     "F.Cu": 59.179
+    }
+   },
+   "/LED_A": {
+    "length": 4.8,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 4.8
+    },
+    "layers": {
+     "F.Cu": 4.8
+    }
+   },
+   "/CC": {
+    "length": 3.389,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 3.389
+    },
+    "layers": {
+     "F.Cu": 3.389
+    }
+   },
+   "/ALC_SENSE": {
+    "length": 26.747,
+    "vias": 1,
+    "segments": 15,
+    "widths": {
+     "0.2": 26.747
+    },
+    "layers": {
+     "F.Cu": 21.974,
+     "B.Cu": 4.774
+    }
+   },
+   "/LED": {
+    "length": 3.051,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 3.051
+    },
+    "layers": {
+     "F.Cu": 3.051
+    }
+   },
+   "/HEAT_GATE": {
+    "length": 4.614,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 4.614
+    },
+    "layers": {
+     "F.Cu": 4.614
+    }
+   },
+   "/HEAT_SW": {
+    "length": 16.59,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 16.59
+    },
+    "layers": {
+     "F.Cu": 16.59
+    }
+   },
+   "/USB_DP": {
+    "length": 24.762,
+    "vias": 3,
+    "segments": 16,
+    "widths": {
+     "0.2": 24.762
+    },
+    "layers": {
+     "F.Cu": 7.358,
+     "B.Cu": 17.404
+    }
+   },
+   "/USB_DM": {
+    "length": 24.7,
+    "vias": 2,
+    "segments": 13,
+    "widths": {
+     "0.2": 24.7
+    },
+    "layers": {
+     "F.Cu": 7.968,
+     "B.Cu": 16.732
+    }
+   },
+   "/NRST": {
+    "length": 11.66,
+    "vias": 1,
+    "segments": 7,
+    "widths": {
+     "0.2": 11.66
+    },
+    "layers": {
+     "F.Cu": 8.033,
+     "B.Cu": 3.627
+    }
+   },
+   "/HEAT_EN": {
+    "length": 5.221,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 5.221
+    },
+    "layers": {
+     "F.Cu": 5.221
+    }
+   },
+   "/SWDIO": {
+    "length": 7.456,
+    "vias": 1,
+    "segments": 3,
+    "widths": {
+     "0.2": 7.456
+    },
+    "layers": {
+     "F.Cu": 2.727,
+     "B.Cu": 4.729
+    }
+   },
+   "/SWCLK": {
+    "length": 8.222,
+    "vias": 1,
+    "segments": 3,
+    "widths": {
+     "0.2": 8.222
+    },
+    "layers": {
+     "F.Cu": 3.226,
+     "B.Cu": 4.996
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 0,
+   "warnings": 38,
+   "unconnected": 0,
+   "by_type": {
+    "warning:lib_footprint_issues": 30,
+    "warning:silk_over_copper": 5,
+    "warning:silk_overlap": 3
+   }
+  },
+  "drc_error_list": []
+ },
+ "unrouted": {
+  "connections": 44,
+  "by_net": {
+   "/SUPPLY_SENSE": 3,
+   "GND": 1,
+   "+3V3": 10,
+   "/BOOT0": 2,
+   "VBUS": 7,
+   "/LED_A": 1,
+   "/CC": 1,
+   "/ALC_SENSE": 4,
+   "/LED": 1,
+   "/HEAT_GATE": 2,
+   "/HEAT_SW": 1,
+   "/USB_DP": 3,
+   "/USB_DM": 3,
+   "/NRST": 2,
+   "/HEAT_EN": 1,
+   "/SWDIO": 1,
+   "/SWCLK": 1
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 38,
+   "unconnected": 44,
+   "by_type": {
+    "warning:lib_footprint_issues": 30,
+    "warning:silk_over_copper": 5,
+    "warning:silk_overlap": 3
+   }
+  },
+  "drc_error_list": []
+ },
+ "stripped": {
+  "tracks_and_vias": 163,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

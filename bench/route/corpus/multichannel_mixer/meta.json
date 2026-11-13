@@ -1,0 +1,1261 @@
+{
+ "name": "multichannel_mixer",
+ "kind": "real",
+ "difficulty": 3,
+ "note": "2-layer mixed SMD/THT, 79 nets, two pours",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/multichannel/multichannel_mixer.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "B.Cu"
+  ],
+  "footprints": 114,
+  "pads": 327,
+  "smd_pads": 192,
+  "tht_pads": 135,
+  "min_pad_pitch_mm": 1.27,
+  "nets": 79,
+  "size_mm": [
+   110.05,
+   111.05
+  ],
+  "origin_mm": [
+   89.435,
+   43.635
+  ],
+  "zones": 2,
+  "zone_nets": [
+   "GND",
+   "vbias"
+  ],
+  "rule_areas": 4,
+  "min_clearance": 0.3,
+  "min_track": 0.3,
+  "mst_mm": {
+   "+12V": 114.163,
+   "GND": 356.388,
+   "Net-(C16-Pad2)": 5.05,
+   "Net-(C18-Pad1)": 6.8,
+   "Net-(C16-Pad1)": 15.162,
+   "Net-(IC1B-IN+)": 11.71,
+   "Net-(C32-Pad2)": 14.397,
+   "Net-(C4-Pad2)": 37.488,
+   "Net-(C34-Pad2)": 5.05,
+   "Net-(C36-Pad1)": 6.8,
+   "Net-(C34-Pad1)": 15.162,
+   "Net-(C35-Pad2)": 15.152,
+   "Net-(R44-Pad1)": 2.95,
+   "Net-(C35-Pad1)": 7.174,
+   "Net-(C26-Pad2)": 15.152,
+   "Net-(R33-Pad1)": 2.95,
+   "Net-(C26-Pad1)": 7.174,
+   "vbias": 121.973,
+   "Net-(C14-Pad2)": 14.397,
+   "Net-(R47-Pad1)": 5.1,
+   "Net-(IC5B-OUT)": 67.222,
+   "Net-(C23-Pad1)": 4.433,
+   "Net-(C23-Pad2)": 14.397,
+   "Net-(C40-Pad1)": 68.505,
+   "/CH1/OUT": 107.381,
+   "Net-(C13-Pad1)": 68.505,
+   "Net-(C22-Pad1)": 68.505,
+   "Net-(C5-Pad1)": 4.433,
+   "Net-(C5-Pad2)": 14.397,
+   "Net-(C7-Pad2)": 5.05,
+   "Net-(C9-Pad1)": 6.8,
+   "Net-(C7-Pad1)": 15.162,
+   "Net-(R8-Pad1)": 5.635,
+   "Net-(C10-Pad1)": 2.9,
+   "Net-(R12-Pad2)": 5.635,
+   "Net-(IC1A-OUT)": 5.729,
+   "Net-(C8-Pad2)": 15.152,
+   "Net-(R11-Pad1)": 2.95,
+   "Net-(C8-Pad1)": 7.174,
+   "Net-(C17-Pad2)": 15.152,
+   "Net-(R22-Pad1)": 2.95,
+   "Net-(C17-Pad1)": 7.174,
+   "Net-(R41-Pad1)": 5.635,
+   "Net-(C37-Pad1)": 2.9,
+   "Net-(R45-Pad2)": 5.635,
+   "Net-(C14-Pad1)": 4.433,
+   "Net-(C25-Pad2)": 5.05,
+   "Net-(C27-Pad1)": 6.8,
+   "Net-(C25-Pad1)": 15.162,
+   "Net-(R14-Pad1)": 5.1,
+   "Net-(IC2B-OUT)": 67.222,
+   "Net-(R30-Pad1)": 5.635,
+   "Net-(C28-Pad1)": 2.9,
+   "Net-(R34-Pad2)": 5.635,
+   "Net-(R25-Pad1)": 5.1,
+   "Net-(IC3B-OUT)": 67.222,
+   "Net-(R19-Pad1)": 5.635,
+   "Net-(C19-Pad1)": 2.9,
+   "Net-(R23-Pad2)": 5.635,
+   "Net-(R36-Pad1)": 5.1,
+   "Net-(IC4B-OUT)": 67.222,
+   "Net-(C31-Pad1)": 68.505,
+   "Net-(C32-Pad1)": 4.433,
+   "Net-(IC5A-OUT)": 60.441,
+   "Net-(IC3A-IN-)": 10.116,
+   "Net-(IC3A-OUT)": 60.441,
+   "Net-(C29-Pad2)": 3.7,
+   "Net-(IC4B-IN-)": 41.928,
+   "Net-(IC5B-IN-)": 41.928,
+   "Net-(IC5A-IN-)": 10.116,
+   "Net-(IC4A-OUT)": 60.441,
+   "Net-(IC4A-IN-)": 10.116,
+   "Net-(IC2B-IN-)": 41.928,
+   "Net-(C38-Pad2)": 3.7,
+   "Net-(IC2A-IN-)": 10.116,
+   "Net-(C20-Pad2)": 3.7,
+   "Net-(IC3B-IN-)": 41.928,
+   "Net-(C11-Pad2)": 3.7,
+   "Net-(IC2A-OUT)": 60.441
+  },
+  "mst_total_mm": 2124.0
+ },
+ "reference": {
+  "tracks": 576,
+  "vias": 29,
+  "arcs": 0,
+  "blind_or_micro_vias": 0,
+  "length_mm": 1959.31,
+  "unconnected": 0,
+  "nets": {
+   "GND": {
+    "length": 34.312,
+    "vias": 14,
+    "segments": 23,
+    "widths": {
+     "0.5": 34.312
+    },
+    "layers": {
+     "B.Cu": 34.312
+    }
+   },
+   "Net-(IC1B-IN+)": {
+    "length": 12.223,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 12.223
+    },
+    "layers": {
+     "B.Cu": 12.223
+    }
+   },
+   "vbias": {
+    "length": 21.274,
+    "vias": 9,
+    "segments": 14,
+    "widths": {
+     "0.5": 21.274
+    },
+    "layers": {
+     "B.Cu": 21.274
+    }
+   },
+   "+12V": {
+    "length": 159.474,
+    "vias": 6,
+    "segments": 37,
+    "widths": {
+     "1.5": 135.901,
+     "0.5": 23.573
+    },
+    "layers": {
+     "F.Cu": 125.746,
+     "B.Cu": 33.728
+    }
+   },
+   "Net-(IC1A-OUT)": {
+    "length": 5.63,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 5.63
+    },
+    "layers": {
+     "B.Cu": 5.63
+    }
+   },
+   "Net-(C4-Pad2)": {
+    "length": 40.558,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 40.558
+    },
+    "layers": {
+     "B.Cu": 40.558
+    }
+   },
+   "Net-(C5-Pad1)": {
+    "length": 4.627,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 4.627
+    },
+    "layers": {
+     "B.Cu": 4.627
+    }
+   },
+   "Net-(C5-Pad2)": {
+    "length": 14.812,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 14.812
+    },
+    "layers": {
+     "B.Cu": 14.812
+    }
+   },
+   "Net-(IC2A-OUT)": {
+    "length": 69.067,
+    "vias": 0,
+    "segments": 17,
+    "widths": {
+     "0.5": 69.067
+    },
+    "layers": {
+     "B.Cu": 69.067
+    }
+   },
+   "Net-(IC2A-IN-)": {
+    "length": 13.754,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.5": 13.754
+    },
+    "layers": {
+     "B.Cu": 13.754
+    }
+   },
+   "Net-(C7-Pad1)": {
+    "length": 16.653,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 16.653
+    },
+    "layers": {
+     "B.Cu": 16.653
+    }
+   },
+   "Net-(C7-Pad2)": {
+    "length": 5.071,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.071
+    },
+    "layers": {
+     "B.Cu": 5.071
+    }
+   },
+   "Net-(C8-Pad2)": {
+    "length": 17.257,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.5": 17.257
+    },
+    "layers": {
+     "B.Cu": 17.257
+    }
+   },
+   "Net-(C8-Pad1)": {
+    "length": 8.551,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 8.551
+    },
+    "layers": {
+     "B.Cu": 8.551
+    }
+   },
+   "Net-(C9-Pad1)": {
+    "length": 7.794,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 7.794
+    },
+    "layers": {
+     "B.Cu": 7.794
+    }
+   },
+   "Net-(IC2B-IN-)": {
+    "length": 48.456,
+    "vias": 0,
+    "segments": 18,
+    "widths": {
+     "0.5": 48.456
+    },
+    "layers": {
+     "B.Cu": 48.456
+    }
+   },
+   "Net-(C10-Pad1)": {
+    "length": 2.9,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.9
+    },
+    "layers": {
+     "B.Cu": 2.9
+    }
+   },
+   "Net-(C11-Pad2)": {
+    "length": 3.721,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 3.721
+    },
+    "layers": {
+     "B.Cu": 3.721
+    }
+   },
+   "Net-(C13-Pad1)": {
+    "length": 74.153,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.5": 74.153
+    },
+    "layers": {
+     "B.Cu": 74.153
+    }
+   },
+   "/CH1/OUT": {
+    "length": 120.081,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.5": 120.081
+    },
+    "layers": {
+     "F.Cu": 66.0,
+     "B.Cu": 54.081
+    }
+   },
+   "Net-(C14-Pad2)": {
+    "length": 14.812,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 14.812
+    },
+    "layers": {
+     "B.Cu": 14.812
+    }
+   },
+   "Net-(C14-Pad1)": {
+    "length": 4.627,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 4.627
+    },
+    "layers": {
+     "B.Cu": 4.627
+    }
+   },
+   "Net-(IC3A-IN-)": {
+    "length": 13.754,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.5": 13.754
+    },
+    "layers": {
+     "B.Cu": 13.754
+    }
+   },
+   "Net-(IC3A-OUT)": {
+    "length": 69.067,
+    "vias": 0,
+    "segments": 17,
+    "widths": {
+     "0.5": 69.067
+    },
+    "layers": {
+     "B.Cu": 69.067
+    }
+   },
+   "Net-(C16-Pad1)": {
+    "length": 16.653,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 16.653
+    },
+    "layers": {
+     "B.Cu": 16.653
+    }
+   },
+   "Net-(C16-Pad2)": {
+    "length": 5.071,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.071
+    },
+    "layers": {
+     "B.Cu": 5.071
+    }
+   },
+   "Net-(C17-Pad2)": {
+    "length": 17.257,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.5": 17.257
+    },
+    "layers": {
+     "B.Cu": 17.257
+    }
+   },
+   "Net-(C17-Pad1)": {
+    "length": 8.551,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 8.551
+    },
+    "layers": {
+     "B.Cu": 8.551
+    }
+   },
+   "Net-(C18-Pad1)": {
+    "length": 7.794,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 7.794
+    },
+    "layers": {
+     "B.Cu": 7.794
+    }
+   },
+   "Net-(IC3B-IN-)": {
+    "length": 48.456,
+    "vias": 0,
+    "segments": 18,
+    "widths": {
+     "0.5": 48.456
+    },
+    "layers": {
+     "B.Cu": 48.456
+    }
+   },
+   "Net-(C19-Pad1)": {
+    "length": 2.9,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.9
+    },
+    "layers": {
+     "B.Cu": 2.9
+    }
+   },
+   "Net-(C20-Pad2)": {
+    "length": 3.721,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 3.721
+    },
+    "layers": {
+     "B.Cu": 3.721
+    }
+   },
+   "Net-(C22-Pad1)": {
+    "length": 74.153,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.5": 74.153
+    },
+    "layers": {
+     "B.Cu": 74.153
+    }
+   },
+   "Net-(C23-Pad1)": {
+    "length": 4.627,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 4.627
+    },
+    "layers": {
+     "B.Cu": 4.627
+    }
+   },
+   "Net-(C23-Pad2)": {
+    "length": 14.812,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 14.812
+    },
+    "layers": {
+     "B.Cu": 14.812
+    }
+   },
+   "Net-(IC4A-OUT)": {
+    "length": 69.067,
+    "vias": 0,
+    "segments": 17,
+    "widths": {
+     "0.5": 69.067
+    },
+    "layers": {
+     "B.Cu": 69.067
+    }
+   },
+   "Net-(IC4A-IN-)": {
+    "length": 13.754,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.5": 13.754
+    },
+    "layers": {
+     "B.Cu": 13.754
+    }
+   },
+   "Net-(C25-Pad2)": {
+    "length": 5.071,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.071
+    },
+    "layers": {
+     "B.Cu": 5.071
+    }
+   },
+   "Net-(C25-Pad1)": {
+    "length": 16.653,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 16.653
+    },
+    "layers": {
+     "B.Cu": 16.653
+    }
+   },
+   "Net-(C26-Pad1)": {
+    "length": 8.551,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 8.551
+    },
+    "layers": {
+     "B.Cu": 8.551
+    }
+   },
+   "Net-(C26-Pad2)": {
+    "length": 17.257,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.5": 17.257
+    },
+    "layers": {
+     "B.Cu": 17.257
+    }
+   },
+   "Net-(C27-Pad1)": {
+    "length": 7.794,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 7.794
+    },
+    "layers": {
+     "B.Cu": 7.794
+    }
+   },
+   "Net-(IC4B-IN-)": {
+    "length": 48.456,
+    "vias": 0,
+    "segments": 18,
+    "widths": {
+     "0.5": 48.456
+    },
+    "layers": {
+     "B.Cu": 48.456
+    }
+   },
+   "Net-(C28-Pad1)": {
+    "length": 2.9,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.9
+    },
+    "layers": {
+     "B.Cu": 2.9
+    }
+   },
+   "Net-(C29-Pad2)": {
+    "length": 3.721,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 3.721
+    },
+    "layers": {
+     "B.Cu": 3.721
+    }
+   },
+   "Net-(C31-Pad1)": {
+    "length": 74.153,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.5": 74.153
+    },
+    "layers": {
+     "B.Cu": 74.153
+    }
+   },
+   "Net-(C32-Pad2)": {
+    "length": 14.812,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 14.812
+    },
+    "layers": {
+     "B.Cu": 14.812
+    }
+   },
+   "Net-(C32-Pad1)": {
+    "length": 4.627,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 4.627
+    },
+    "layers": {
+     "B.Cu": 4.627
+    }
+   },
+   "Net-(IC5A-OUT)": {
+    "length": 69.067,
+    "vias": 0,
+    "segments": 17,
+    "widths": {
+     "0.5": 69.067
+    },
+    "layers": {
+     "B.Cu": 69.067
+    }
+   },
+   "Net-(IC5A-IN-)": {
+    "length": 13.754,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.5": 13.754
+    },
+    "layers": {
+     "B.Cu": 13.754
+    }
+   },
+   "Net-(C34-Pad1)": {
+    "length": 16.653,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 16.653
+    },
+    "layers": {
+     "B.Cu": 16.653
+    }
+   },
+   "Net-(C34-Pad2)": {
+    "length": 5.071,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.071
+    },
+    "layers": {
+     "B.Cu": 5.071
+    }
+   },
+   "Net-(C35-Pad1)": {
+    "length": 8.551,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 8.551
+    },
+    "layers": {
+     "B.Cu": 8.551
+    }
+   },
+   "Net-(C35-Pad2)": {
+    "length": 17.257,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.5": 17.257
+    },
+    "layers": {
+     "B.Cu": 17.257
+    }
+   },
+   "Net-(C36-Pad1)": {
+    "length": 7.794,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 7.794
+    },
+    "layers": {
+     "B.Cu": 7.794
+    }
+   },
+   "Net-(IC5B-IN-)": {
+    "length": 48.456,
+    "vias": 0,
+    "segments": 18,
+    "widths": {
+     "0.5": 48.456
+    },
+    "layers": {
+     "B.Cu": 48.456
+    }
+   },
+   "Net-(C37-Pad1)": {
+    "length": 2.9,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.9
+    },
+    "layers": {
+     "B.Cu": 2.9
+    }
+   },
+   "Net-(C38-Pad2)": {
+    "length": 3.721,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 3.721
+    },
+    "layers": {
+     "B.Cu": 3.721
+    }
+   },
+   "Net-(C40-Pad1)": {
+    "length": 74.153,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.5": 74.153
+    },
+    "layers": {
+     "B.Cu": 74.153
+    }
+   },
+   "Net-(IC2B-OUT)": {
+    "length": 76.372,
+    "vias": 0,
+    "segments": 24,
+    "widths": {
+     "0.5": 76.372
+    },
+    "layers": {
+     "B.Cu": 76.372
+    }
+   },
+   "Net-(IC3B-OUT)": {
+    "length": 76.372,
+    "vias": 0,
+    "segments": 24,
+    "widths": {
+     "0.5": 76.372
+    },
+    "layers": {
+     "B.Cu": 76.372
+    }
+   },
+   "Net-(IC4B-OUT)": {
+    "length": 76.372,
+    "vias": 0,
+    "segments": 24,
+    "widths": {
+     "0.5": 76.372
+    },
+    "layers": {
+     "B.Cu": 76.372
+    }
+   },
+   "Net-(IC5B-OUT)": {
+    "length": 76.372,
+    "vias": 0,
+    "segments": 24,
+    "widths": {
+     "0.5": 76.372
+    },
+    "layers": {
+     "B.Cu": 76.372
+    }
+   },
+   "Net-(R8-Pad1)": {
+    "length": 14.095,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.5": 14.095
+    },
+    "layers": {
+     "B.Cu": 14.095
+    }
+   },
+   "Net-(R11-Pad1)": {
+    "length": 2.95,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.95
+    },
+    "layers": {
+     "B.Cu": 2.95
+    }
+   },
+   "Net-(R12-Pad2)": {
+    "length": 6.086,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 6.086
+    },
+    "layers": {
+     "B.Cu": 6.086
+    }
+   },
+   "Net-(R14-Pad1)": {
+    "length": 5.121,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.121
+    },
+    "layers": {
+     "B.Cu": 5.121
+    }
+   },
+   "Net-(R19-Pad1)": {
+    "length": 14.095,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.5": 14.095
+    },
+    "layers": {
+     "B.Cu": 14.095
+    }
+   },
+   "Net-(R22-Pad1)": {
+    "length": 2.95,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.95
+    },
+    "layers": {
+     "B.Cu": 2.95
+    }
+   },
+   "Net-(R23-Pad2)": {
+    "length": 6.086,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 6.086
+    },
+    "layers": {
+     "B.Cu": 6.086
+    }
+   },
+   "Net-(R25-Pad1)": {
+    "length": 5.121,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.121
+    },
+    "layers": {
+     "B.Cu": 5.121
+    }
+   },
+   "Net-(R30-Pad1)": {
+    "length": 14.095,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.5": 14.095
+    },
+    "layers": {
+     "B.Cu": 14.095
+    }
+   },
+   "Net-(R33-Pad1)": {
+    "length": 2.95,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.95
+    },
+    "layers": {
+     "B.Cu": 2.95
+    }
+   },
+   "Net-(R34-Pad2)": {
+    "length": 6.086,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 6.086
+    },
+    "layers": {
+     "B.Cu": 6.086
+    }
+   },
+   "Net-(R36-Pad1)": {
+    "length": 5.121,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.121
+    },
+    "layers": {
+     "B.Cu": 5.121
+    }
+   },
+   "Net-(R41-Pad1)": {
+    "length": 14.095,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.5": 14.095
+    },
+    "layers": {
+     "B.Cu": 14.095
+    }
+   },
+   "Net-(R44-Pad1)": {
+    "length": 2.95,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 2.95
+    },
+    "layers": {
+     "B.Cu": 2.95
+    }
+   },
+   "Net-(R45-Pad2)": {
+    "length": 6.086,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 6.086
+    },
+    "layers": {
+     "B.Cu": 6.086
+    }
+   },
+   "Net-(R47-Pad1)": {
+    "length": 5.121,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.121
+    },
+    "layers": {
+     "B.Cu": 5.121
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 12,
+   "warnings": 124,
+   "unconnected": 0,
+   "by_type": {
+    "error:clearance": 12,
+    "warning:connection_width": 4,
+    "warning:lib_footprint_issues": 114,
+    "warning:nonmirrored_text_on_back_layer": 1,
+    "warning:silk_edge_clearance": 1,
+    "warning:silk_over_copper": 4
+   }
+  },
+  "drc_error_list": [
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2250 mm)",
+    "items": [
+     "Pad 1 [Net-(C7-Pad1)] of C7 on B.Cu",
+     "Track [Net-(IC2B-IN-)] on B.Cu, length 4.4592 mm"
+    ],
+    "at": [
+     148.0,
+     117.9
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2296 mm)",
+    "items": [
+     "Pad 1 [GND] of C11 on B.Cu",
+     "Track [Net-(IC2B-IN-)] on B.Cu, length 3.1820 mm"
+    ],
+    "at": [
+     150.4,
+     114.3
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2000 mm)",
+    "items": [
+     "PTH pad 3 [Net-(C8-Pad1)] of RV2",
+     "Track [Net-(IC2B-IN-)] on B.Cu, length 4.0000 mm"
+    ],
+    "at": [
+     147.5,
+     97.4
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2000 mm)",
+    "items": [
+     "PTH pad 3 [Net-(C17-Pad1)] of RV6",
+     "Track [Net-(IC3B-IN-)] on B.Cu, length 4.0000 mm"
+    ],
+    "at": [
+     125.5,
+     97.4
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2296 mm)",
+    "items": [
+     "Track [Net-(IC3B-IN-)] on B.Cu, length 4.4592 mm",
+     "Pad 1 [GND] of C20 on B.Cu"
+    ],
+    "at": [
+     127.05,
+     115.040811
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2000 mm)",
+    "items": [
+     "PTH pad 3 [Net-(C16-Pad1)] of RV5",
+     "Track [Net-(IC3B-IN-)] on B.Cu, length 3.1820 mm"
+    ],
+    "at": [
+     125.5,
+     115.4
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2000 mm)",
+    "items": [
+     "PTH pad 3 [Net-(C25-Pad1)] of RV9",
+     "Track [Net-(IC4B-IN-)] on B.Cu, length 3.1820 mm"
+    ],
+    "at": [
+     169.5,
+     115.4
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2250 mm)",
+    "items": [
+     "Track [Net-(IC4B-IN-)] on B.Cu, length 4.4592 mm",
+     "Pad 1 [Net-(C25-Pad1)] of C25 on B.Cu"
+    ],
+    "at": [
+     171.05,
+     115.040811
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2000 mm)",
+    "items": [
+     "PTH pad 3 [Net-(C26-Pad1)] of RV10",
+     "Track [Net-(IC4B-IN-)] on B.Cu, length 4.0000 mm"
+    ],
+    "at": [
+     169.5,
+     97.4
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2000 mm)",
+    "items": [
+     "PTH pad 3 [Net-(C34-Pad1)] of RV13",
+     "Track [Net-(IC5B-IN-)] on B.Cu, length 3.1820 mm"
+    ],
+    "at": [
+     103.5,
+     115.4
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2296 mm)",
+    "items": [
+     "Track [Net-(IC5B-IN-)] on B.Cu, length 4.4592 mm",
+     "Pad 1 [GND] of C38 on B.Cu"
+    ],
+    "at": [
+     105.05,
+     115.040811
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (board minimum clearance 0.3000 mm; actual 0.2000 mm)",
+    "items": [
+     "Track [Net-(IC5B-IN-)] on B.Cu, length 4.0000 mm",
+     "PTH pad 3 [Net-(C35-Pad1)] of RV14"
+    ],
+    "at": [
+     104.85,
+     94.85
+    ]
+   }
+  ]
+ },
+ "unrouted": {
+  "connections": 173,
+  "by_net": {
+   "+12V": 11,
+   "Net-(C16-Pad2)": 2,
+   "Net-(C18-Pad1)": 1,
+   "Net-(C16-Pad1)": 2,
+   "Net-(IC1B-IN+)": 3,
+   "Net-(C32-Pad2)": 1,
+   "Net-(C4-Pad2)": 1,
+   "Net-(C34-Pad2)": 2,
+   "Net-(C36-Pad1)": 1,
+   "Net-(C34-Pad1)": 2,
+   "Net-(C35-Pad2)": 2,
+   "Net-(R44-Pad1)": 1,
+   "Net-(C35-Pad1)": 2,
+   "Net-(C26-Pad2)": 2,
+   "Net-(R33-Pad1)": 1,
+   "Net-(C26-Pad1)": 2,
+   "vbias": 11,
+   "Net-(C14-Pad2)": 1,
+   "Net-(R47-Pad1)": 2,
+   "Net-(IC5B-OUT)": 4,
+   "Net-(C23-Pad1)": 1,
+   "Net-(C23-Pad2)": 1,
+   "Net-(C40-Pad1)": 1,
+   "/CH1/OUT": 5,
+   "Net-(C13-Pad1)": 1,
+   "Net-(C22-Pad1)": 1,
+   "Net-(C5-Pad1)": 1,
+   "Net-(C5-Pad2)": 1,
+   "Net-(C7-Pad2)": 2,
+   "Net-(C9-Pad1)": 1,
+   "Net-(C7-Pad1)": 2,
+   "Net-(R8-Pad1)": 1,
+   "Net-(C10-Pad1)": 1,
+   "Net-(R12-Pad2)": 1,
+   "Net-(IC1A-OUT)": 2,
+   "Net-(C8-Pad2)": 2,
+   "Net-(R11-Pad1)": 1,
+   "Net-(C8-Pad1)": 2,
+   "Net-(C17-Pad2)": 2,
+   "Net-(R22-Pad1)": 1,
+   "Net-(C17-Pad1)": 2,
+   "Net-(R41-Pad1)": 1,
+   "Net-(C37-Pad1)": 1,
+   "Net-(R45-Pad2)": 1,
+   "Net-(C14-Pad1)": 1,
+   "Net-(C25-Pad2)": 2,
+   "Net-(C27-Pad1)": 1,
+   "Net-(C25-Pad1)": 2,
+   "Net-(R14-Pad1)": 2,
+   "Net-(IC2B-OUT)": 4,
+   "Net-(R30-Pad1)": 1,
+   "Net-(C28-Pad1)": 1,
+   "Net-(R34-Pad2)": 1,
+   "Net-(R25-Pad1)": 2,
+   "Net-(IC3B-OUT)": 4,
+   "Net-(R19-Pad1)": 1,
+   "Net-(C19-Pad1)": 1,
+   "Net-(R23-Pad2)": 1,
+   "Net-(R36-Pad1)": 2,
+   "Net-(IC4B-OUT)": 4,
+   "Net-(C31-Pad1)": 1,
+   "Net-(C32-Pad1)": 1,
+   "Net-(IC5A-OUT)": 5,
+   "Net-(IC3A-IN-)": 3,
+   "Net-(IC3A-OUT)": 5,
+   "Net-(C29-Pad2)": 1,
+   "Net-(IC4B-IN-)": 4,
+   "Net-(IC5B-IN-)": 4,
+   "Net-(IC5A-IN-)": 3,
+   "Net-(IC4A-OUT)": 5,
+   "Net-(IC4A-IN-)": 3,
+   "Net-(IC2B-IN-)": 4,
+   "Net-(C38-Pad2)": 1,
+   "Net-(IC2A-IN-)": 3,
+   "Net-(C20-Pad2)": 1,
+   "Net-(IC3B-IN-)": 4,
+   "Net-(C11-Pad2)": 1,
+   "Net-(IC2A-OUT)": 5
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 126,
+   "unconnected": 173,
+   "by_type": {
+    "warning:connection_width": 6,
+    "warning:lib_footprint_issues": 114,
+    "warning:nonmirrored_text_on_back_layer": 1,
+    "warning:silk_edge_clearance": 1,
+    "warning:silk_over_copper": 4
+   }
+  },
+  "drc_error_list": []
+ },
+ "stripped": {
+  "tracks_and_vias": 605,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

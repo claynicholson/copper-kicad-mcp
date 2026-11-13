@@ -1,0 +1,1609 @@
+{
+ "name": "cm5_minima",
+ "kind": "real",
+ "difficulty": 5,
+ "note": "6-layer, 0.4 mm pitch, diff pairs, 13 pours (stretch case)",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/cm5_minima/CM5_MINIMA_3.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "In3.Cu",
+   "In4.Cu",
+   "B.Cu"
+  ],
+  "footprints": 112,
+  "pads": 633,
+  "smd_pads": 593,
+  "tht_pads": 24,
+  "min_pad_pitch_mm": 0.4,
+  "nets": 95,
+  "size_mm": [
+   61.25,
+   64.25
+  ],
+  "origin_mm": [
+   75.025,
+   20.225
+  ],
+  "zones": 13,
+  "zone_nets": [
+   "+3V3_PI",
+   "+5V",
+   "/PCIe-M2/M2_LX",
+   "GND",
+   "M2_3V3"
+  ],
+  "rule_areas": 1,
+  "min_clearance": 0.0,
+  "min_track": 0.0,
+  "mst_mm": {
+   "HDMI_+5V": 4.346,
+   "GND": 373.658,
+   "+5V": 120.65,
+   "/CM5/PCIE_PI.PWR_EN": 44.627,
+   "/IO/SDA": 49.545,
+   "/IO/SCL": 48.155,
+   "+3V3_PI": 102.954,
+   "Net-(J1-VCC)": 2.464,
+   "/CM5/ETH_PI.TRD0_P": 29.694,
+   "/CM5/ETH_PI.TRD0_N": 29.684,
+   "/CM5/ETH_PI.TRD1_P": 29.613,
+   "/CM5/ETH_PI.TRD1_N": 29.989,
+   "/CM5/ETH_PI.TRD2_P": 34.13,
+   "/CM5/ETH_PI.TRD2_N": 34.129,
+   "/CM5/ETH_PI.TRD3_P": 34.042,
+   "/CM5/ETH_PI.TRD3_N": 34.49,
+   "Net-(J1-K_GREEN)": 2.475,
+   "Net-(J1-K_YELLOW)": 2.428,
+   "Net-(J1-MP1)": 21.219,
+   "/PCIe-M2/FB": 3.422,
+   "/PCIe-M2/M2_LX": 4.32,
+   "Net-(D606-K)": 1.555,
+   "/CM5/nLED_ACTIVITY": 7.005,
+   "M2_3V3": 83.651,
+   "/CM5/HDMI_PI.D0_P": 13.793,
+   "/CM5/HDMI_PI.D0_N": 13.163,
+   "/CM5/HDMI_PI.CK_P": 11.902,
+   "/CM5/HDMI_PI.CK_N": 11.278,
+   "/CM5/VBUS_EN": 19.551,
+   "Net-(U701-ILIM)": 3.608,
+   "VBUS_USB2.0": 16.476,
+   "/CM5/nLED_SPEED_100_1000": 33.518,
+   "/CM5/ETH_nLED_ACTIVITY": 28.454,
+   "Net-(D702-K)": 3.906,
+   "Net-(J701-SUSCLK)": 2.074,
+   "Net-(J701-DAS{slash}~{DSS}{slash}~{LED1})": 8.396,
+   "/CM5/PWM": 30.97,
+   "/CM5/TACHO": 27.976,
+   "/CM5/PI_nLED_PWR": 5.241,
+   "Net-(R605-Pad2)": 1.261,
+   "/CM5/DC_GPI25": 36.126,
+   "/CM5/RST_GPIO27": 32.942,
+   "/CM5/CS_GPIO18": 36.011,
+   "/CM5/BL_GPIO24": 36.027,
+   "/CM5/SCLK_GPIO21": 36.071,
+   "/CM5/MOSI_GPIO20": 36.021,
+   "/CM5/MISO_GPIO19": 32.934,
+   "/USB/CC2": 2.961,
+   "/CC1": 41.167,
+   "/USB_C.D_P": 13.856,
+   "/USB_C.D_N": 13.341,
+   "/CC2": 43.847,
+   "/CM5/PCIE_PI.RX_P": 32.396,
+   "/CM5/PCIE_PI.RX_N": 33.03,
+   "/CM5/PCIE_PI.TX_P": 34.298,
+   "/CM5/PCIE_PI.TX_N": 34.933,
+   "/CM5/PCIE_PI.nRST": 26.002,
+   "/CM5/PCIE_PI.nCLKREQ": 28.221,
+   "/CM5/PCIE_PI.CLK_N": 33.973,
+   "/CM5/PCIE_PI.nWAKE": 28.85,
+   "/CM5/PCIE_PI.CLK_P": 34.079,
+   "/CM5/HDMI_PI.D2_P": 17.6,
+   "/CM5/HDMI_PI.D2_N": 16.965,
+   "/CM5/HDMI_PI.D1_P": 15.694,
+   "/CM5/HDMI_PI.D1_N": 15.061,
+   "/CM5/HDMI_PI.CEC": 20.423,
+   "/CM5/HDMI_PI.SCL": 11.335,
+   "/CM5/HDMI_PI.SDA": 9.849,
+   "/CM5/HDMI_PI.HOTPLUG": 19.097,
+   "/USB/CC1": 4.646,
+   "/CM5/USB2P.D_P": 13.369,
+   "/CM5/USB2P.D_N": 12.377,
+   "/CM5/PWR_BUT": 3.475,
+   "Net-(D605-K)": 2.714,
+   "/CM5/DPHY0_P.D0_N": 31.694,
+   "/CM5/DPHY0_P.D0_P": 31.672,
+   "/CM5/DPHY0_P.D1_N": 31.627,
+   "/CM5/DPHY0_P.D1_P": 31.606,
+   "/CM5/DPHY0_P.C_N": 31.563,
+   "/CM5/DPHY0_P.C_P": 31.542,
+   "/CM5/DPHY0_P.D2_N": 31.502,
+   "/CM5/DPHY0_P.D2_P": 31.482,
+   "/CM5/DPHY0_P.D3_N": 31.443,
+   "/CM5/DPHY0_P.D3_P": 31.424,
+   "/CM5/CAM_GPIO0": 16.428,
+   "/CM5/CAM_GPIO1": 16.025,
+   "/CM5/SCL0": 11.025,
+   "/CM5/SDA0": 10.925,
+   "/CM5/EEPROM_nWP": 5.79,
+   "+BATT": 44.671,
+   "/CM5/GPIO_VREF": 4.247,
+   "+1V8": 1.71,
+   "/CM5/nRPIBOOT": 8.184,
+   "Net-(U1-SDO)": 0.995,
+   "Net-(U1-CS)": 3.552
+  },
+  "mst_total_mm": 2608.6
+ },
+ "reference": {
+  "tracks": 2084,
+  "vias": 444,
+  "arcs": 200,
+  "blind_or_micro_vias": 0,
+  "length_mm": 2785.8,
+  "unconnected": 0,
+  "nets": {
+   "GND": {
+    "length": 0.86,
+    "vias": 279,
+    "segments": 1,
+    "widths": {
+     "0.2": 0.86
+    },
+    "layers": {
+     "B.Cu": 0.86
+    }
+   },
+   "Net-(J1-VCC)": {
+    "length": 2.614,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.3": 2.614
+    },
+    "layers": {
+     "F.Cu": 2.614
+    }
+   },
+   "Net-(J1-K_GREEN)": {
+    "length": 3.055,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 3.055
+    },
+    "layers": {
+     "F.Cu": 3.055
+    }
+   },
+   "Net-(J1-K_YELLOW)": {
+    "length": 2.774,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 2.434,
+     "0.2": 0.339
+    },
+    "layers": {
+     "F.Cu": 2.774
+    }
+   },
+   "Net-(J1-MP1)": {
+    "length": 35.497,
+    "vias": 2,
+    "segments": 14,
+    "widths": {
+     "0.2": 34.421,
+     "0.3": 1.076
+    },
+    "layers": {
+     "F.Cu": 4.863,
+     "B.Cu": 0.8,
+     "In2.Cu": 29.834
+    }
+   },
+   "HDMI_+5V": {
+    "length": 4.365,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.25": 3.235,
+     "0.3": 1.13
+    },
+    "layers": {
+     "F.Cu": 4.365
+    }
+   },
+   "Net-(D605-K)": {
+    "length": 2.901,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.901
+    },
+    "layers": {
+     "F.Cu": 2.901
+    }
+   },
+   "Net-(D606-K)": {
+    "length": 1.67,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 1.67
+    },
+    "layers": {
+     "F.Cu": 1.67
+    }
+   },
+   "/CM5/ETH_PI.TRD3_P": {
+    "length": 42.48,
+    "vias": 1,
+    "segments": 34,
+    "widths": {
+     "0.13": 42.48
+    },
+    "layers": {
+     "F.Cu": 1.989,
+     "B.Cu": 40.491
+    }
+   },
+   "/CM5/ETH_PI.TRD0_P": {
+    "length": 42.233,
+    "vias": 1,
+    "segments": 90,
+    "widths": {
+     "0.13": 42.233
+    },
+    "layers": {
+     "F.Cu": 1.969,
+     "B.Cu": 40.264
+    }
+   },
+   "/CM5/ETH_PI.TRD1_P": {
+    "length": 42.316,
+    "vias": 1,
+    "segments": 99,
+    "widths": {
+     "0.13": 42.316
+    },
+    "layers": {
+     "F.Cu": 1.984,
+     "B.Cu": 40.332
+    }
+   },
+   "/CM5/ETH_PI.TRD2_P": {
+    "length": 42.721,
+    "vias": 1,
+    "segments": 45,
+    "widths": {
+     "0.13": 42.721
+    },
+    "layers": {
+     "F.Cu": 1.942,
+     "B.Cu": 40.779
+    }
+   },
+   "/CM5/nLED_ACTIVITY": {
+    "length": 10.235,
+    "vias": 1,
+    "segments": 6,
+    "widths": {
+     "0.2": 9.685,
+     "0.25": 0.55
+    },
+    "layers": {
+     "F.Cu": 0.564,
+     "B.Cu": 9.671
+    }
+   },
+   "/CM5/nRPIBOOT": {
+    "length": 16.359,
+    "vias": 2,
+    "segments": 13,
+    "widths": {
+     "0.25": 0.797,
+     "0.2": 3.112,
+     "0.3": 12.45
+    },
+    "layers": {
+     "B.Cu": 3.91,
+     "In2.Cu": 12.45
+    }
+   },
+   "/CM5/GPIO_VREF": {
+    "length": 5.59,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.2": 5.59
+    },
+    "layers": {
+     "B.Cu": 5.59
+    }
+   },
+   "/CM5/EEPROM_nWP": {
+    "length": 6.255,
+    "vias": 2,
+    "segments": 7,
+    "widths": {
+     "0.15": 0.127,
+     "0.25": 5.207,
+     "0.2": 0.92
+    },
+    "layers": {
+     "B.Cu": 2.508,
+     "In2.Cu": 3.747
+    }
+   },
+   "/CM5/PI_nLED_PWR": {
+    "length": 9.905,
+    "vias": 1,
+    "segments": 14,
+    "widths": {
+     "0.25": 2.23,
+     "0.2": 7.675
+    },
+    "layers": {
+     "F.Cu": 2.23,
+     "B.Cu": 7.675
+    }
+   },
+   "/CM5/nLED_SPEED_100_1000": {
+    "length": 60.532,
+    "vias": 2,
+    "segments": 12,
+    "widths": {
+     "0.25": 4.752,
+     "0.2": 0.99,
+     "0.3": 54.79
+    },
+    "layers": {
+     "F.Cu": 4.752,
+     "B.Cu": 0.99,
+     "In2.Cu": 54.79
+    }
+   },
+   "/IO/SCL": {
+    "length": 62.569,
+    "vias": 2,
+    "segments": 23,
+    "widths": {
+     "0.2": 60.071,
+     "0.25": 2.498
+    },
+    "layers": {
+     "F.Cu": 48.869,
+     "B.Cu": 13.7
+    }
+   },
+   "/IO/SDA": {
+    "length": 64.16,
+    "vias": 2,
+    "segments": 22,
+    "widths": {
+     "0.2": 60.815,
+     "0.25": 3.345
+    },
+    "layers": {
+     "F.Cu": 50.533,
+     "B.Cu": 13.627
+    }
+   },
+   "/PCIe-M2/FB": {
+    "length": 3.507,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.3": 2.002,
+     "0.25": 1.37,
+     "0.15": 0.134
+    },
+    "layers": {
+     "F.Cu": 3.507
+    }
+   },
+   "+3V3_PI": {
+    "length": 145.32,
+    "vias": 12,
+    "segments": 85,
+    "widths": {
+     "0.3": 33.35,
+     "0.5": 3.593,
+     "0.8": 2.503,
+     "0.6": 41.422,
+     "0.25": 6.058,
+     "0.4": 17.985,
+     "0.15": 3.458,
+     "1.0": 26.648,
+     "0.7": 10.303
+    },
+    "layers": {
+     "F.Cu": 48.885,
+     "B.Cu": 15.381,
+     "In2.Cu": 20.787,
+     "In3.Cu": 60.268
+    }
+   },
+   "Net-(D702-K)": {
+    "length": 5.496,
+    "vias": 2,
+    "segments": 8,
+    "widths": {
+     "0.25": 0.816,
+     "0.3": 4.68
+    },
+    "layers": {
+     "F.Cu": 1.486,
+     "B.Cu": 4.01
+    }
+   },
+   "Net-(R605-Pad2)": {
+    "length": 1.335,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.335
+    },
+    "layers": {
+     "F.Cu": 1.335
+    }
+   },
+   "/CM5/CAM_GPIO0": {
+    "length": 26.272,
+    "vias": 1,
+    "segments": 11,
+    "widths": {
+     "0.2": 26.272
+    },
+    "layers": {
+     "F.Cu": 20.856,
+     "B.Cu": 5.416
+    }
+   },
+   "/CM5/PWR_BUT": {
+    "length": 5.716,
+    "vias": 2,
+    "segments": 16,
+    "widths": {
+     "0.2": 3.879,
+     "0.25": 1.289,
+     "0.15": 0.512,
+     "0.13": 0.035
+    },
+    "layers": {
+     "F.Cu": 3.579,
+     "B.Cu": 2.137
+    }
+   },
+   "/CM5/VBUS_EN": {
+    "length": 43.095,
+    "vias": 2,
+    "segments": 18,
+    "widths": {
+     "0.2": 1.725,
+     "0.4": 0.863,
+     "0.25": 40.507
+    },
+    "layers": {
+     "F.Cu": 1.239,
+     "B.Cu": 1.349,
+     "In2.Cu": 40.507
+    }
+   },
+   "/CM5/PWM": {
+    "length": 33.19,
+    "vias": 2,
+    "segments": 15,
+    "widths": {
+     "0.25": 32.454,
+     "0.2": 0.737
+    },
+    "layers": {
+     "F.Cu": 15.631,
+     "B.Cu": 0.737,
+     "In2.Cu": 16.823
+    }
+   },
+   "/CM5/TACHO": {
+    "length": 30.35,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.2": 30.35
+    },
+    "layers": {
+     "F.Cu": 27.343,
+     "B.Cu": 3.007
+    }
+   },
+   "/CM5/CAM_GPIO1": {
+    "length": 20.162,
+    "vias": 1,
+    "segments": 8,
+    "widths": {
+     "0.2": 20.162
+    },
+    "layers": {
+     "F.Cu": 18.51,
+     "B.Cu": 1.651
+    }
+   },
+   "/USB_C.D_P": {
+    "length": 21.187,
+    "vias": 2,
+    "segments": 22,
+    "widths": {
+     "0.14": 21.187
+    },
+    "layers": {
+     "F.Cu": 17.201,
+     "B.Cu": 3.986
+    }
+   },
+   "/CC2": {
+    "length": 53.164,
+    "vias": 2,
+    "segments": 14,
+    "widths": {
+     "0.15": 0.937,
+     "0.2": 52.227
+    },
+    "layers": {
+     "F.Cu": 0.886,
+     "B.Cu": 1.012,
+     "In2.Cu": 51.266
+    }
+   },
+   "/USB_C.D_N": {
+    "length": 24.155,
+    "vias": 3,
+    "segments": 41,
+    "widths": {
+     "0.14": 23.305,
+     "0.2": 0.85
+    },
+    "layers": {
+     "F.Cu": 16.994,
+     "B.Cu": 7.161
+    }
+   },
+   "/CC1": {
+    "length": 47.6,
+    "vias": 2,
+    "segments": 11,
+    "widths": {
+     "0.15": 0.8,
+     "0.2": 46.8
+    },
+    "layers": {
+     "F.Cu": 0.8,
+     "B.Cu": 0.771,
+     "In2.Cu": 46.028
+    }
+   },
+   "+5V": {
+    "length": 29.993,
+    "vias": 31,
+    "segments": 52,
+    "widths": {
+     "0.4": 14.226,
+     "0.2": 1.898,
+     "0.6": 5.929,
+     "0.25": 1.298,
+     "0.3": 2.259,
+     "0.5": 1.858,
+     "0.8": 2.525
+    },
+    "layers": {
+     "F.Cu": 29.993
+    }
+   },
+   "VBUS_USB2.0": {
+    "length": 18.409,
+    "vias": 0,
+    "segments": 22,
+    "widths": {
+     "0.3": 6.294,
+     "0.5": 2.138,
+     "0.6": 7.773,
+     "0.7": 1.545,
+     "0.4": 0.659
+    },
+    "layers": {
+     "F.Cu": 18.409
+    }
+   },
+   "+1V8": {
+    "length": 1.718,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.15": 1.718
+    },
+    "layers": {
+     "B.Cu": 1.718
+    }
+   },
+   "/CM5/ETH_nLED_ACTIVITY": {
+    "length": 31.317,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.2": 5.531,
+     "0.25": 25.786
+    },
+    "layers": {
+     "F.Cu": 3.597,
+     "B.Cu": 1.934,
+     "In2.Cu": 25.786
+    }
+   },
+   "/CM5/ETH_PI.TRD0_N": {
+    "length": 42.001,
+    "vias": 1,
+    "segments": 84,
+    "widths": {
+     "0.13": 42.001
+    },
+    "layers": {
+     "F.Cu": 1.969,
+     "B.Cu": 40.032
+    }
+   },
+   "/CM5/ETH_PI.TRD2_N": {
+    "length": 42.489,
+    "vias": 1,
+    "segments": 42,
+    "widths": {
+     "0.13": 42.489
+    },
+    "layers": {
+     "F.Cu": 1.942,
+     "B.Cu": 40.547
+    }
+   },
+   "/CM5/ETH_PI.TRD1_N": {
+    "length": 42.449,
+    "vias": 1,
+    "segments": 85,
+    "widths": {
+     "0.13": 42.449
+    },
+    "layers": {
+     "F.Cu": 1.984,
+     "B.Cu": 40.465
+    }
+   },
+   "/CM5/ETH_PI.TRD3_N": {
+    "length": 42.612,
+    "vias": 1,
+    "segments": 20,
+    "widths": {
+     "0.13": 42.612
+    },
+    "layers": {
+     "F.Cu": 1.989,
+     "B.Cu": 40.624
+    }
+   },
+   "Net-(J701-SUSCLK)": {
+    "length": 2.211,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 2.211
+    },
+    "layers": {
+     "F.Cu": 2.211
+    }
+   },
+   "Net-(J701-DAS{slash}~{DSS}{slash}~{LED1})": {
+    "length": 9.954,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 9.954
+    },
+    "layers": {
+     "F.Cu": 9.954
+    }
+   },
+   "M2_3V3": {
+    "length": 97.33,
+    "vias": 16,
+    "segments": 73,
+    "widths": {
+     "0.4": 15.382,
+     "0.25": 13.158,
+     "1.4": 11.384,
+     "0.3": 18.069,
+     "0.8": 0.042,
+     "0.6": 3.408,
+     "1.0": 2.064,
+     "1.6": 1.114,
+     "3.0": 28.457,
+     "1.2": 4.25
+    },
+    "layers": {
+     "F.Cu": 60.592,
+     "B.Cu": 12.373,
+     "In3.Cu": 24.364
+    }
+   },
+   "Net-(U701-ILIM)": {
+    "length": 4.314,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.2": 4.314
+    },
+    "layers": {
+     "F.Cu": 4.314
+    }
+   },
+   "/USB/CC2": {
+    "length": 3.149,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 3.149
+    },
+    "layers": {
+     "F.Cu": 3.149
+    }
+   },
+   "/USB/CC1": {
+    "length": 8.229,
+    "vias": 2,
+    "segments": 8,
+    "widths": {
+     "0.2": 8.229
+    },
+    "layers": {
+     "F.Cu": 1.954,
+     "B.Cu": 6.275
+    }
+   },
+   "/CM5/USB2P.D_P": {
+    "length": 14.776,
+    "vias": 1,
+    "segments": 17,
+    "widths": {
+     "0.14": 14.776
+    },
+    "layers": {
+     "F.Cu": 4.72,
+     "B.Cu": 10.056
+    }
+   },
+   "/CM5/USB2P.D_N": {
+    "length": 19.523,
+    "vias": 2,
+    "segments": 21,
+    "widths": {
+     "0.14": 19.523
+    },
+    "layers": {
+     "F.Cu": 3.53,
+     "B.Cu": 15.993
+    }
+   },
+   "/CM5/SCL0": {
+    "length": 15.218,
+    "vias": 1,
+    "segments": 8,
+    "widths": {
+     "0.2": 15.218
+    },
+    "layers": {
+     "F.Cu": 14.193,
+     "B.Cu": 1.025
+    }
+   },
+   "/CM5/SDA0": {
+    "length": 15.001,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.2": 15.001
+    },
+    "layers": {
+     "F.Cu": 13.816,
+     "B.Cu": 1.185
+    }
+   },
+   "/CM5/PCIE_PI.TX_N": {
+    "length": 51.342,
+    "vias": 1,
+    "segments": 64,
+    "widths": {
+     "0.14": 51.342
+    },
+    "layers": {
+     "F.Cu": 48.941,
+     "B.Cu": 2.4
+    }
+   },
+   "/CM5/PCIE_PI.nWAKE": {
+    "length": 40.85,
+    "vias": 2,
+    "segments": 15,
+    "widths": {
+     "0.2": 40.85
+    },
+    "layers": {
+     "F.Cu": 1.614,
+     "B.Cu": 5.365,
+     "In2.Cu": 33.87
+    }
+   },
+   "/CM5/PCIE_PI.nCLKREQ": {
+    "length": 41.251,
+    "vias": 2,
+    "segments": 15,
+    "widths": {
+     "0.2": 41.251
+    },
+    "layers": {
+     "F.Cu": 2.895,
+     "B.Cu": 2.736,
+     "In2.Cu": 35.621
+    }
+   },
+   "/CM5/PCIE_PI.PWR_EN": {
+    "length": 47.89,
+    "vias": 4,
+    "segments": 29,
+    "widths": {
+     "0.25": 11.081,
+     "0.2": 1.667,
+     "0.3": 35.142
+    },
+    "layers": {
+     "F.Cu": 1.366,
+     "B.Cu": 30.35,
+     "In2.Cu": 16.174
+    }
+   },
+   "/CM5/PCIE_PI.RX_N": {
+    "length": 53.803,
+    "vias": 1,
+    "segments": 73,
+    "widths": {
+     "0.14": 53.803
+    },
+    "layers": {
+     "F.Cu": 51.398,
+     "B.Cu": 2.405
+    }
+   },
+   "/CM5/PCIE_PI.CLK_P": {
+    "length": 55.452,
+    "vias": 1,
+    "segments": 30,
+    "widths": {
+     "0.14": 55.452
+    },
+    "layers": {
+     "F.Cu": 2.986,
+     "B.Cu": 52.466
+    }
+   },
+   "/CM5/PCIE_PI.RX_P": {
+    "length": 53.803,
+    "vias": 1,
+    "segments": 82,
+    "widths": {
+     "0.14": 53.803
+    },
+    "layers": {
+     "F.Cu": 51.641,
+     "B.Cu": 2.162
+    }
+   },
+   "/CM5/PCIE_PI.TX_P": {
+    "length": 51.352,
+    "vias": 1,
+    "segments": 73,
+    "widths": {
+     "0.14": 51.352
+    },
+    "layers": {
+     "F.Cu": 49.195,
+     "B.Cu": 2.157
+    }
+   },
+   "/CM5/PCIE_PI.CLK_N": {
+    "length": 55.442,
+    "vias": 1,
+    "segments": 22,
+    "widths": {
+     "0.14": 55.442
+    },
+    "layers": {
+     "F.Cu": 3.474,
+     "B.Cu": 51.969
+    }
+   },
+   "/CM5/PCIE_PI.nRST": {
+    "length": 37.366,
+    "vias": 2,
+    "segments": 15,
+    "widths": {
+     "0.2": 37.366
+    },
+    "layers": {
+     "F.Cu": 1.239,
+     "B.Cu": 5.92,
+     "In2.Cu": 30.207
+    }
+   },
+   "/CM5/DPHY0_P.D0_P": {
+    "length": 33.994,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.994
+    },
+    "layers": {
+     "F.Cu": 23.088,
+     "B.Cu": 10.906
+    }
+   },
+   "/CM5/DPHY0_P.C_P": {
+    "length": 33.745,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.745
+    },
+    "layers": {
+     "F.Cu": 20.297,
+     "B.Cu": 13.448
+    }
+   },
+   "/CM5/DPHY0_P.D1_P": {
+    "length": 33.869,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.869
+    },
+    "layers": {
+     "F.Cu": 22.708,
+     "B.Cu": 11.161
+    }
+   },
+   "/CM5/DPHY0_P.D2_P": {
+    "length": 33.621,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.621
+    },
+    "layers": {
+     "F.Cu": 19.317,
+     "B.Cu": 14.304
+    }
+   },
+   "/CM5/DPHY0_P.D3_N": {
+    "length": 33.496,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.496
+    },
+    "layers": {
+     "F.Cu": 17.005,
+     "B.Cu": 16.491
+    }
+   },
+   "/CM5/DPHY0_P.D3_P": {
+    "length": 33.496,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.496
+    },
+    "layers": {
+     "F.Cu": 16.69,
+     "B.Cu": 16.806
+    }
+   },
+   "/CM5/DPHY0_P.D0_N": {
+    "length": 33.994,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.994
+    },
+    "layers": {
+     "F.Cu": 23.403,
+     "B.Cu": 10.591
+    }
+   },
+   "/CM5/DPHY0_P.D2_N": {
+    "length": 33.621,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.621
+    },
+    "layers": {
+     "F.Cu": 19.631,
+     "B.Cu": 13.989
+    }
+   },
+   "/CM5/DPHY0_P.C_N": {
+    "length": 33.745,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.745
+    },
+    "layers": {
+     "F.Cu": 20.611,
+     "B.Cu": 13.134
+    }
+   },
+   "/CM5/DPHY0_P.D1_N": {
+    "length": 33.869,
+    "vias": 1,
+    "segments": 12,
+    "widths": {
+     "0.13": 33.869
+    },
+    "layers": {
+     "F.Cu": 23.023,
+     "B.Cu": 10.846
+    }
+   },
+   "/CM5/HDMI_PI.CK_P": {
+    "length": 13.231,
+    "vias": 1,
+    "segments": 21,
+    "widths": {
+     "0.13": 13.231
+    },
+    "layers": {
+     "F.Cu": 12.3,
+     "B.Cu": 0.931
+    }
+   },
+   "/CM5/HDMI_PI.CK_N": {
+    "length": 13.231,
+    "vias": 1,
+    "segments": 31,
+    "widths": {
+     "0.13": 13.231
+    },
+    "layers": {
+     "F.Cu": 12.3,
+     "B.Cu": 0.931
+    }
+   },
+   "/CM5/HDMI_PI.D0_N": {
+    "length": 15.808,
+    "vias": 1,
+    "segments": 31,
+    "widths": {
+     "0.13": 15.808
+    },
+    "layers": {
+     "F.Cu": 13.798,
+     "B.Cu": 2.01
+    }
+   },
+   "/CM5/HDMI_PI.SCL": {
+    "length": 20.209,
+    "vias": 1,
+    "segments": 16,
+    "widths": {
+     "0.15": 19.157,
+     "0.13": 1.052
+    },
+    "layers": {
+     "F.Cu": 2.805,
+     "B.Cu": 17.404
+    }
+   },
+   "/CM5/HDMI_PI.D2_P": {
+    "length": 20.447,
+    "vias": 1,
+    "segments": 21,
+    "widths": {
+     "0.13": 20.447
+    },
+    "layers": {
+     "F.Cu": 18.491,
+     "B.Cu": 1.956
+    }
+   },
+   "/CM5/HDMI_PI.D0_P": {
+    "length": 15.808,
+    "vias": 1,
+    "segments": 21,
+    "widths": {
+     "0.13": 15.808
+    },
+    "layers": {
+     "F.Cu": 13.798,
+     "B.Cu": 2.01
+    }
+   },
+   "/CM5/HDMI_PI.D1_N": {
+    "length": 18.075,
+    "vias": 1,
+    "segments": 30,
+    "widths": {
+     "0.13": 18.075
+    },
+    "layers": {
+     "F.Cu": 16.953,
+     "B.Cu": 1.122
+    }
+   },
+   "/CM5/HDMI_PI.HOTPLUG": {
+    "length": 31.752,
+    "vias": 1,
+    "segments": 18,
+    "widths": {
+     "0.15": 31.752
+    },
+    "layers": {
+     "F.Cu": 3.09,
+     "B.Cu": 28.662
+    }
+   },
+   "/CM5/HDMI_PI.D1_P": {
+    "length": 18.075,
+    "vias": 1,
+    "segments": 21,
+    "widths": {
+     "0.13": 18.075
+    },
+    "layers": {
+     "F.Cu": 16.952,
+     "B.Cu": 1.122
+    }
+   },
+   "/CM5/HDMI_PI.D2_N": {
+    "length": 20.447,
+    "vias": 1,
+    "segments": 31,
+    "widths": {
+     "0.13": 20.447
+    },
+    "layers": {
+     "F.Cu": 18.491,
+     "B.Cu": 1.956
+    }
+   },
+   "/CM5/HDMI_PI.SDA": {
+    "length": 20.424,
+    "vias": 1,
+    "segments": 19,
+    "widths": {
+     "0.13": 17.002,
+     "0.15": 3.423
+    },
+    "layers": {
+     "F.Cu": 2.759,
+     "B.Cu": 17.665
+    }
+   },
+   "/CM5/HDMI_PI.CEC": {
+    "length": 35.561,
+    "vias": 1,
+    "segments": 16,
+    "widths": {
+     "0.15": 35.561
+    },
+    "layers": {
+     "F.Cu": 1.664,
+     "B.Cu": 33.897
+    }
+   },
+   "unconnected-(J701-NC-Pad8)": {
+    "length": 0.035,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.2": 0.035
+    },
+    "layers": {
+     "F.Cu": 0.035
+    }
+   },
+   "/CM5/MOSI_GPIO20": {
+    "length": 38.956,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.2": 38.956
+    },
+    "layers": {
+     "F.Cu": 14.83,
+     "B.Cu": 0.63,
+     "In2.Cu": 23.496
+    }
+   },
+   "/CM5/MISO_GPIO19": {
+    "length": 38.523,
+    "vias": 2,
+    "segments": 12,
+    "widths": {
+     "0.2": 38.523
+    },
+    "layers": {
+     "F.Cu": 16.087,
+     "B.Cu": 1.404,
+     "In2.Cu": 21.031
+    }
+   },
+   "/CM5/SCLK_GPIO21": {
+    "length": 41.298,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.2": 41.298
+    },
+    "layers": {
+     "F.Cu": 15.896,
+     "B.Cu": 0.985,
+     "In2.Cu": 24.417
+    }
+   },
+   "/CM5/BL_GPIO24": {
+    "length": 40.433,
+    "vias": 2,
+    "segments": 12,
+    "widths": {
+     "0.2": 40.433
+    },
+    "layers": {
+     "F.Cu": 15.145,
+     "B.Cu": 1.028,
+     "In2.Cu": 24.261
+    }
+   },
+   "/CM5/RST_GPIO27": {
+    "length": 38.899,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.25": 38.359,
+     "0.2": 0.54
+    },
+    "layers": {
+     "F.Cu": 3.732,
+     "B.Cu": 1.715,
+     "In2.Cu": 33.451
+    }
+   },
+   "/CM5/DC_GPI25": {
+    "length": 44.291,
+    "vias": 2,
+    "segments": 14,
+    "widths": {
+     "0.25": 4.902,
+     "0.3": 38.568,
+     "0.2": 0.821
+    },
+    "layers": {
+     "F.Cu": 4.902,
+     "B.Cu": 4.497,
+     "In2.Cu": 34.891
+    }
+   },
+   "/CM5/CS_GPIO18": {
+    "length": 41.69,
+    "vias": 2,
+    "segments": 12,
+    "widths": {
+     "0.25": 41.23,
+     "0.2": 0.46
+    },
+    "layers": {
+     "F.Cu": 0.967,
+     "B.Cu": 0.68,
+     "In2.Cu": 40.043
+    }
+   },
+   "Net-(U1-CS)": {
+    "length": 6.86,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.15": 6.86
+    },
+    "layers": {
+     "B.Cu": 6.86
+    }
+   },
+   "Net-(U1-SDO)": {
+    "length": 1.005,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.15": 1.005
+    },
+    "layers": {
+     "B.Cu": 1.005
+    }
+   },
+   "/PCIe-M2/M2_LX": {
+    "length": 5.949,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.7": 4.732,
+     "0.5": 0.436,
+     "0.3": 0.781
+    },
+    "layers": {
+     "F.Cu": 5.949
+    }
+   },
+   "+BATT": {
+    "length": 58.458,
+    "vias": 3,
+    "segments": 20,
+    "widths": {
+     "0.4": 57.757,
+     "0.2": 0.701
+    },
+    "layers": {
+     "B.Cu": 14.948,
+     "In3.Cu": 43.511
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 4,
+   "warnings": 284,
+   "unconnected": 0,
+   "by_type": {
+    "error:copper_edge_clearance": 2,
+    "error:courtyards_overlap": 2,
+    "warning:holes_co_located": 2,
+    "warning:isolated_copper": 1,
+    "warning:lib_footprint_issues": 112,
+    "warning:silk_edge_clearance": 17,
+    "warning:silk_over_copper": 11,
+    "warning:silk_overlap": 30,
+    "warning:solder_mask_bridge": 54,
+    "warning:text_height": 27,
+    "warning:text_thickness": 27,
+    "warning:via_dangling": 3
+   }
+  },
+  "drc_error_list": [
+   {
+    "type": "copper_edge_clearance",
+    "message": "Board edge clearance violation (board setup constraints edge clearance 0.3720 mm; actual 0.2164 mm)",
+    "items": [
+     "Segment on Edge.Cuts",
+     "Pad 15 [Net-(J1-MP1)] of J1 on F.Cu"
+    ],
+    "at": [
+     78.37,
+     44.033579
+    ]
+   },
+   {
+    "type": "copper_edge_clearance",
+    "message": "Board edge clearance violation (board setup constraints edge clearance 0.3720 mm; actual 0.1914 mm)",
+    "items": [
+     "Segment on Edge.Cuts",
+     "Pad 16 [Net-(J1-MP1)] of J1 on F.Cu"
+    ],
+    "at": [
+     89.283579,
+     28.241421
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J1",
+     "Footprint J601"
+    ],
+    "at": [
+     88.9,
+     36.15
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J1",
+     "Footprint H102"
+    ],
+    "at": [
+     88.9,
+     36.15
+    ]
+   }
+  ]
+ },
+ "unrouted": {
+  "connections": 208,
+  "by_net": {
+   "HDMI_+5V": 2,
+   "+5V": 22,
+   "/CM5/PCIE_PI.PWR_EN": 2,
+   "/IO/SDA": 4,
+   "/IO/SCL": 4,
+   "+3V3_PI": 14,
+   "Net-(J1-VCC)": 1,
+   "/CM5/ETH_PI.TRD0_P": 3,
+   "/CM5/ETH_PI.TRD0_N": 3,
+   "/CM5/ETH_PI.TRD1_P": 3,
+   "/CM5/ETH_PI.TRD1_N": 3,
+   "/CM5/ETH_PI.TRD2_P": 3,
+   "/CM5/ETH_PI.TRD2_N": 3,
+   "/CM5/ETH_PI.TRD3_P": 3,
+   "/CM5/ETH_PI.TRD3_N": 3,
+   "Net-(J1-K_GREEN)": 1,
+   "Net-(J1-K_YELLOW)": 1,
+   "Net-(J1-MP1)": 2,
+   "/PCIe-M2/FB": 3,
+   "/PCIe-M2/M2_LX": 1,
+   "Net-(D606-K)": 1,
+   "/CM5/nLED_ACTIVITY": 1,
+   "M2_3V3": 15,
+   "/CM5/HDMI_PI.D0_P": 3,
+   "/CM5/HDMI_PI.D0_N": 3,
+   "/CM5/HDMI_PI.CK_P": 3,
+   "/CM5/HDMI_PI.CK_N": 3,
+   "/CM5/VBUS_EN": 1,
+   "Net-(U701-ILIM)": 1,
+   "VBUS_USB2.0": 6,
+   "/CM5/nLED_SPEED_100_1000": 1,
+   "/CM5/ETH_nLED_ACTIVITY": 1,
+   "Net-(D702-K)": 1,
+   "Net-(J701-SUSCLK)": 1,
+   "Net-(J701-DAS{slash}~{DSS}{slash}~{LED1})": 1,
+   "/CM5/PWM": 1,
+   "/CM5/TACHO": 1,
+   "/CM5/PI_nLED_PWR": 1,
+   "Net-(R605-Pad2)": 1,
+   "/CM5/DC_GPI25": 1,
+   "/CM5/RST_GPIO27": 1,
+   "/CM5/CS_GPIO18": 1,
+   "/CM5/BL_GPIO24": 1,
+   "/CM5/SCLK_GPIO21": 1,
+   "/CM5/MOSI_GPIO20": 1,
+   "/CM5/MISO_GPIO19": 1,
+   "/USB/CC2": 1,
+   "/CC1": 1,
+   "/USB_C.D_P": 3,
+   "/USB_C.D_N": 3,
+   "/CC2": 1,
+   "/CM5/PCIE_PI.RX_P": 1,
+   "/CM5/PCIE_PI.RX_N": 1,
+   "/CM5/PCIE_PI.TX_P": 1,
+   "/CM5/PCIE_PI.TX_N": 1,
+   "/CM5/PCIE_PI.nRST": 1,
+   "/CM5/PCIE_PI.nCLKREQ": 1,
+   "/CM5/PCIE_PI.CLK_N": 1,
+   "/CM5/PCIE_PI.nWAKE": 1,
+   "/CM5/PCIE_PI.CLK_P": 1,
+   "/CM5/HDMI_PI.D2_P": 3,
+   "/CM5/HDMI_PI.D2_N": 3,
+   "/CM5/HDMI_PI.D1_P": 3,
+   "/CM5/HDMI_PI.D1_N": 3,
+   "/CM5/HDMI_PI.CEC": 3,
+   "/CM5/HDMI_PI.SCL": 3,
+   "/CM5/HDMI_PI.SDA": 3,
+   "/CM5/HDMI_PI.HOTPLUG": 3,
+   "/USB/CC1": 1,
+   "/CM5/USB2P.D_P": 3,
+   "/CM5/USB2P.D_N": 3,
+   "/CM5/PWR_BUT": 1,
+   "Net-(D605-K)": 1,
+   "/CM5/DPHY0_P.D0_N": 1,
+   "/CM5/DPHY0_P.D0_P": 1,
+   "/CM5/DPHY0_P.D1_N": 1,
+   "/CM5/DPHY0_P.D1_P": 1,
+   "/CM5/DPHY0_P.C_N": 1,
+   "/CM5/DPHY0_P.C_P": 1,
+   "/CM5/DPHY0_P.D2_N": 1,
+   "/CM5/DPHY0_P.D2_P": 1,
+   "/CM5/DPHY0_P.D3_N": 1,
+   "/CM5/DPHY0_P.D3_P": 1,
+   "/CM5/CAM_GPIO0": 1,
+   "/CM5/CAM_GPIO1": 1,
+   "/CM5/SCL0": 1,
+   "/CM5/SDA0": 1,
+   "/CM5/EEPROM_nWP": 1,
+   "+BATT": 1,
+   "/CM5/GPIO_VREF": 2,
+   "+1V8": 2,
+   "/CM5/nRPIBOOT": 1,
+   "Net-(U1-SDO)": 1,
+   "Net-(U1-CS)": 1
+  },
+  "drc": {
+   "errors": 4,
+   "warnings": 286,
+   "unconnected": 208,
+   "by_type": {
+    "error:copper_edge_clearance": 2,
+    "error:courtyards_overlap": 2,
+    "warning:holes_co_located": 2,
+    "warning:isolated_copper": 6,
+    "warning:lib_footprint_issues": 112,
+    "warning:silk_edge_clearance": 17,
+    "warning:silk_over_copper": 11,
+    "warning:silk_overlap": 30,
+    "warning:solder_mask_bridge": 54,
+    "warning:text_height": 27,
+    "warning:text_thickness": 27
+   }
+  },
+  "drc_error_list": [
+   {
+    "type": "copper_edge_clearance",
+    "message": "Board edge clearance violation (board setup constraints edge clearance 0.3720 mm; actual 0.2164 mm)",
+    "items": [
+     "Segment on Edge.Cuts",
+     "Pad 15 [Net-(J1-MP1)] of J1 on F.Cu"
+    ],
+    "at": [
+     78.37,
+     44.033579
+    ]
+   },
+   {
+    "type": "copper_edge_clearance",
+    "message": "Board edge clearance violation (board setup constraints edge clearance 0.3720 mm; actual 0.1914 mm)",
+    "items": [
+     "Segment on Edge.Cuts",
+     "Pad 16 [Net-(J1-MP1)] of J1 on F.Cu"
+    ],
+    "at": [
+     89.283579,
+     28.241421
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J1",
+     "Footprint J601"
+    ],
+    "at": [
+     88.9,
+     36.15
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J1",
+     "Footprint H102"
+    ],
+    "at": [
+     88.9,
+     36.15
+    ]
+   }
+  ]
+ },
+ "stripped": {
+  "tracks_and_vias": 2528,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

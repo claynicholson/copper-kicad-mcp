@@ -1,0 +1,518 @@
+{
+ "name": "pic_programmer",
+ "kind": "real",
+ "difficulty": 2,
+ "note": "2-layer THT, 34 nets, large board",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/pic_programmer/pic_programmer.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "top_layer",
+   "bottom_layer"
+  ],
+  "footprints": 63,
+  "pads": 247,
+  "smd_pads": 2,
+  "tht_pads": 238,
+  "min_pad_pitch_mm": 1.45,
+  "nets": 34,
+  "size_mm": [
+   160.12,
+   99.16
+  ],
+  "origin_mm": [
+   73.61,
+   40.59
+  ],
+  "zones": 1,
+  "zone_nets": [
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.0,
+  "min_track": 0.25,
+  "mst_mm": {
+   "VCC": 130.427,
+   "GND": 434.254,
+   "Net-(D1-K)": 28.781,
+   "/VPP{slash}MCLR": 152.754,
+   "/pic_sockets/VCC_PIC": 164.916,
+   "/CLOCK-RB6": 172.726,
+   "/DATA-RB7": 192.496,
+   "Net-(U4-Vc)": 10.16,
+   "Net-(U4-FB+)": 29.416,
+   "Net-(D10-A)": 11.586,
+   "Net-(D2-A)": 21.479,
+   "Net-(R8-Pad1)": 33.782,
+   "Net-(D4-A)": 31.757,
+   "Net-(R12-Pad1)": 7.432,
+   "Net-(R13-Pad1)": 9.525,
+   "Net-(D6-A)": 35.469,
+   "/PC-DATA-IN": 43.456,
+   "Net-(D11-K)": 15.783,
+   "Net-(D11-A)": 4.066,
+   "/VPP_ON": 8.587,
+   "/PC-DATA-OUT": 8.39,
+   "/PC-CLOCK-OUT": 13.479,
+   "Net-(Q3-B)": 24.024,
+   "Net-(Q2-C)": 28.817,
+   "Net-(Q2-B)": 19.97,
+   "VPP": 38.018,
+   "Net-(Q1-B)": 22.56,
+   "Net-(C5-Pad1)": 5.236,
+   "Net-(D8-A)": 4.445,
+   "Net-(D12-A)": 6.75,
+   "Net-(R16-Pad1)": 14.207,
+   "Net-(R15-Pad1)": 15.372,
+   "Net-(D9-A)": 4.445,
+   "Net-(D1-A)": 12.5
+  },
+  "mst_total_mm": 1757.1
+ },
+ "reference": {
+  "tracks": 370,
+  "vias": 6,
+  "arcs": 0,
+  "blind_or_micro_vias": 0,
+  "length_mm": 1745.7,
+  "unconnected": 0,
+  "nets": {
+   "VCC": {
+    "length": 162.396,
+    "vias": 0,
+    "segments": 40,
+    "widths": {
+     "0.8": 162.396
+    },
+    "layers": {
+     "top_layer": 34.318,
+     "bottom_layer": 128.078
+    }
+   },
+   "Net-(D1-K)": {
+    "length": 37.31,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.5": 37.31
+    },
+    "layers": {
+     "bottom_layer": 37.31
+    }
+   },
+   "/VPP{slash}MCLR": {
+    "length": 242.687,
+    "vias": 0,
+    "segments": 24,
+    "widths": {
+     "0.5": 242.687
+    },
+    "layers": {
+     "bottom_layer": 242.687
+    }
+   },
+   "/pic_sockets/VCC_PIC": {
+    "length": 292.522,
+    "vias": 0,
+    "segments": 60,
+    "widths": {
+     "0.5": 272.377,
+     "0.35": 10.245,
+     "0.4": 9.9
+    },
+    "layers": {
+     "top_layer": 43.488,
+     "bottom_layer": 249.034
+    }
+   },
+   "/CLOCK-RB6": {
+    "length": 200.014,
+    "vias": 3,
+    "segments": 31,
+    "widths": {
+     "0.5": 193.029,
+     "0.4318": 6.985
+    },
+    "layers": {
+     "top_layer": 75.065,
+     "bottom_layer": 124.949
+    }
+   },
+   "/DATA-RB7": {
+    "length": 214.228,
+    "vias": 3,
+    "segments": 34,
+    "widths": {
+     "0.5": 192.638,
+     "0.4": 10.795,
+     "0.4318": 10.795
+    },
+    "layers": {
+     "top_layer": 94.269,
+     "bottom_layer": 119.959
+    }
+   },
+   "Net-(U4-Vc)": {
+    "length": 11.956,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 11.956
+    },
+    "layers": {
+     "bottom_layer": 11.956
+    }
+   },
+   "Net-(U4-FB+)": {
+    "length": 32.584,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 32.584
+    },
+    "layers": {
+     "bottom_layer": 32.584
+    }
+   },
+   "Net-(D10-A)": {
+    "length": 11.956,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 11.956
+    },
+    "layers": {
+     "bottom_layer": 11.956
+    }
+   },
+   "Net-(D2-A)": {
+    "length": 39.762,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.5": 39.762
+    },
+    "layers": {
+     "bottom_layer": 39.762
+    }
+   },
+   "Net-(R8-Pad1)": {
+    "length": 55.057,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.5": 55.057
+    },
+    "layers": {
+     "top_layer": 55.057
+    }
+   },
+   "Net-(D4-A)": {
+    "length": 43.115,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.5": 43.115
+    },
+    "layers": {
+     "top_layer": 31.509,
+     "bottom_layer": 11.606
+    }
+   },
+   "Net-(R12-Pad1)": {
+    "length": 8.781,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 8.781
+    },
+    "layers": {
+     "bottom_layer": 8.781
+    }
+   },
+   "Net-(R13-Pad1)": {
+    "length": 15.32,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 15.32
+    },
+    "layers": {
+     "bottom_layer": 15.32
+    }
+   },
+   "Net-(D6-A)": {
+    "length": 46.794,
+    "vias": 0,
+    "segments": 14,
+    "widths": {
+     "0.5": 46.794
+    },
+    "layers": {
+     "bottom_layer": 46.794
+    }
+   },
+   "/PC-DATA-IN": {
+    "length": 45.823,
+    "vias": 0,
+    "segments": 16,
+    "widths": {
+     "0.5": 45.823
+    },
+    "layers": {
+     "bottom_layer": 45.823
+    }
+   },
+   "Net-(D11-K)": {
+    "length": 17.778,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 17.778
+    },
+    "layers": {
+     "bottom_layer": 17.778
+    }
+   },
+   "Net-(D11-A)": {
+    "length": 5.343,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 5.343
+    },
+    "layers": {
+     "bottom_layer": 5.343
+    }
+   },
+   "/VPP_ON": {
+    "length": 8.632,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 8.632
+    },
+    "layers": {
+     "bottom_layer": 8.632
+    }
+   },
+   "/PC-DATA-OUT": {
+    "length": 8.649,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 8.649
+    },
+    "layers": {
+     "bottom_layer": 8.649
+    }
+   },
+   "/PC-CLOCK-OUT": {
+    "length": 21.97,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.5": 21.97
+    },
+    "layers": {
+     "bottom_layer": 21.97
+    }
+   },
+   "Net-(Q3-B)": {
+    "length": 29.3,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.5": 29.3
+    },
+    "layers": {
+     "bottom_layer": 29.3
+    }
+   },
+   "Net-(Q2-C)": {
+    "length": 34.518,
+    "vias": 0,
+    "segments": 13,
+    "widths": {
+     "0.5": 34.518
+    },
+    "layers": {
+     "top_layer": 21.045,
+     "bottom_layer": 13.473
+    }
+   },
+   "Net-(Q2-B)": {
+    "length": 21.843,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.5": 21.843
+    },
+    "layers": {
+     "bottom_layer": 21.843
+    }
+   },
+   "VPP": {
+    "length": 42.315,
+    "vias": 0,
+    "segments": 13,
+    "widths": {
+     "0.5": 42.315
+    },
+    "layers": {
+     "bottom_layer": 42.315
+    }
+   },
+   "Net-(Q1-B)": {
+    "length": 27.307,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.5": 27.307
+    },
+    "layers": {
+     "bottom_layer": 27.307
+    }
+   },
+   "Net-(C5-Pad1)": {
+    "length": 5.606,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 5.606
+    },
+    "layers": {
+     "bottom_layer": 5.606
+    }
+   },
+   "Net-(D8-A)": {
+    "length": 4.445,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 4.445
+    },
+    "layers": {
+     "bottom_layer": 4.445
+    }
+   },
+   "Net-(D12-A)": {
+    "length": 6.921,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 6.921
+    },
+    "layers": {
+     "bottom_layer": 6.921
+    }
+   },
+   "Net-(R16-Pad1)": {
+    "length": 15.751,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 15.751
+    },
+    "layers": {
+     "bottom_layer": 15.751
+    }
+   },
+   "Net-(R15-Pad1)": {
+    "length": 17.126,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.5": 17.126
+    },
+    "layers": {
+     "bottom_layer": 17.126
+    }
+   },
+   "Net-(D9-A)": {
+    "length": 4.445,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 4.445
+    },
+    "layers": {
+     "bottom_layer": 4.445
+    }
+   },
+   "Net-(D1-A)": {
+    "length": 13.45,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.5": 13.45
+    },
+    "layers": {
+     "bottom_layer": 13.45
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 0,
+   "warnings": 63,
+   "unconnected": 0,
+   "by_type": {
+    "warning:lib_footprint_issues": 63
+   }
+  },
+  "drc_error_list": []
+ },
+ "unrouted": {
+  "connections": 86,
+  "by_net": {
+   "VCC": 11,
+   "Net-(D1-K)": 2,
+   "/VPP{slash}MCLR": 4,
+   "/pic_sockets/VCC_PIC": 10,
+   "/CLOCK-RB6": 5,
+   "/DATA-RB7": 6,
+   "Net-(U4-Vc)": 2,
+   "Net-(U4-FB+)": 1,
+   "Net-(D10-A)": 2,
+   "Net-(D2-A)": 3,
+   "Net-(R8-Pad1)": 1,
+   "Net-(D4-A)": 3,
+   "Net-(R12-Pad1)": 1,
+   "Net-(R13-Pad1)": 1,
+   "Net-(D6-A)": 3,
+   "/PC-DATA-IN": 1,
+   "Net-(D11-K)": 2,
+   "Net-(D11-A)": 1,
+   "/VPP_ON": 2,
+   "/PC-DATA-OUT": 2,
+   "/PC-CLOCK-OUT": 2,
+   "Net-(Q3-B)": 2,
+   "Net-(Q2-C)": 3,
+   "Net-(Q2-B)": 3,
+   "VPP": 5,
+   "Net-(Q1-B)": 1,
+   "Net-(C5-Pad1)": 1,
+   "Net-(D8-A)": 1,
+   "Net-(D12-A)": 1,
+   "Net-(R16-Pad1)": 1,
+   "Net-(R15-Pad1)": 1,
+   "Net-(D9-A)": 1,
+   "Net-(D1-A)": 1
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 63,
+   "unconnected": 86,
+   "by_type": {
+    "warning:lib_footprint_issues": 63
+   }
+  },
+  "drc_error_list": []
+ },
+ "stripped": {
+  "tracks_and_vias": 376,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

@@ -1,0 +1,743 @@
+{
+ "name": "complex_hierarchy",
+ "kind": "real",
+ "difficulty": 2,
+ "note": "2-layer THT, 50 nets, human used 0 vias",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/complex_hierarchy/complex_hierarchy.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "top_copper",
+   "bottom_copper"
+  ],
+  "footprints": 68,
+  "pads": 165,
+  "smd_pads": 0,
+  "tht_pads": 165,
+  "min_pad_pitch_mm": 1.796,
+  "nets": 50,
+  "size_mm": [
+   100.8982,
+   80.2292
+  ],
+  "origin_mm": [
+   87.7984,
+   51.6984
+  ],
+  "zones": 1,
+  "zone_nets": [
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.2,
+  "min_track": 0.2032,
+  "mst_mm": {
+   "+12V": 66.19,
+   "GND": 317.729,
+   "HT": 111.427,
+   "Net-(U102-CAP+)": 9.693,
+   "Net-(U102-CAP-)": 5.346,
+   "-VAA": 84.615,
+   "Net-(Q201-E)": 9.919,
+   "Net-(D202-K)": 15.316,
+   "Net-(D203-A)": 16.923,
+   "Net-(Q203-E)": 14.101,
+   "Net-(D204-K)": 19.275,
+   "Net-(Q301-E)": 6.839,
+   "Net-(D302-K)": 10.316,
+   "Net-(D303-A)": 17.976,
+   "Net-(Q302-E)": 20.965,
+   "Net-(Q303-E)": 15.664,
+   "Net-(D304-K)": 21.313,
+   "Net-(Q304-E)": 3.986,
+   "Net-(Q304-B)": 8.184,
+   "Net-(R213-Pad1)": 9.609,
+   "Net-(U201A--)": 14.028,
+   "/ampli_ht_vertical/S_OUT+": 62.258,
+   "Net-(R313-Pad1)": 9.246,
+   "Net-(U301A--)": 14.028,
+   "/ampli_ht_horizontal/S_OUT+": 63.742,
+   "VCC": 29.452,
+   "Net-(R312-Pad2)": 11.248,
+   "Net-(C201-Pad2)": 11.872,
+   "Net-(C202-Pad1)": 12.198,
+   "Net-(C301-Pad2)": 5.919,
+   "Net-(C302-Pad1)": 11.692,
+   "/ampli_ht_horizontal/PIEZO_OUT": 15.592,
+   "Net-(C204-Pad1)": 3.469,
+   "Net-(Q204-E)": 6.836,
+   "Net-(R212-Pad2)": 19.976,
+   "Net-(Q204-B)": 6.517,
+   "Net-(U201B-+)": 7.826,
+   "Net-(U301B-+)": 14.774,
+   "/ampli_ht_vertical/PIEZO_OUT": 14.101,
+   "Net-(Q202-E)": 21.794,
+   "/ampli_ht_horizontal/PIEZO_IN": 10.035,
+   "/ampli_ht_vertical/PIEZO_IN": 8.886,
+   "Net-(C304-Pad1)": 4.932,
+   "/ampli_ht_horizontal/Vpil_0_3,3V": 19.789,
+   "/ampli_ht_vertical/Vpil_0_3,3V": 19.61,
+   "/12Vext": 8.645,
+   "Net-(D301-K)": 3.429,
+   "Net-(D203-K)": 8.519,
+   "Net-(D201-K)": 8.207,
+   "Net-(D303-K)": 8.519
+  },
+  "mst_total_mm": 1242.5
+ },
+ "reference": {
+  "tracks": 364,
+  "vias": 0,
+  "arcs": 0,
+  "blind_or_micro_vias": 0,
+  "length_mm": 1265.69,
+  "unconnected": 0,
+  "nets": {
+   "-VAA": {
+    "length": 112.785,
+    "vias": 0,
+    "segments": 20,
+    "widths": {
+     "0.6096": 107.197,
+     "0.6": 5.588
+    },
+    "layers": {
+     "top_copper": 105.274,
+     "bottom_copper": 7.511
+    }
+   },
+   "/12Vext": {
+    "length": 9.023,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.6": 9.023
+    },
+    "layers": {
+     "bottom_copper": 9.023
+    }
+   },
+   "/ampli_ht_horizontal/PIEZO_IN": {
+    "length": 10.35,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.4318": 10.35
+    },
+    "layers": {
+     "bottom_copper": 10.35
+    }
+   },
+   "/ampli_ht_horizontal/PIEZO_OUT": {
+    "length": 17.473,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.4": 11.123,
+     "0.4318": 6.35
+    },
+    "layers": {
+     "bottom_copper": 17.473
+    }
+   },
+   "/ampli_ht_horizontal/S_OUT+": {
+    "length": 79.154,
+    "vias": 0,
+    "segments": 21,
+    "widths": {
+     "0.4318": 72.434,
+     "0.4": 6.72
+    },
+    "layers": {
+     "bottom_copper": 79.154
+    }
+   },
+   "/ampli_ht_horizontal/Vpil_0_3,3V": {
+    "length": 25.187,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.4318": 25.187
+    },
+    "layers": {
+     "bottom_copper": 25.187
+    }
+   },
+   "/ampli_ht_vertical/PIEZO_IN": {
+    "length": 11.395,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4318": 11.395
+    },
+    "layers": {
+     "bottom_copper": 11.395
+    }
+   },
+   "/ampli_ht_vertical/PIEZO_OUT": {
+    "length": 16.566,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.4318": 3.81,
+     "0.4": 12.756
+    },
+    "layers": {
+     "bottom_copper": 16.566
+    }
+   },
+   "/ampli_ht_vertical/S_OUT+": {
+    "length": 77.778,
+    "vias": 0,
+    "segments": 22,
+    "widths": {
+     "0.4318": 73.773,
+     "0.4": 4.005
+    },
+    "layers": {
+     "bottom_copper": 77.778
+    }
+   },
+   "/ampli_ht_vertical/Vpil_0_3,3V": {
+    "length": 29.348,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.4318": 25.454,
+     "0.4": 3.893
+    },
+    "layers": {
+     "bottom_copper": 29.348
+    }
+   },
+   "HT": {
+    "length": 193.193,
+    "vias": 0,
+    "segments": 36,
+    "widths": {
+     "0.6096": 159.658,
+     "0.6": 33.535
+    },
+    "layers": {
+     "top_copper": 41.309,
+     "bottom_copper": 151.884
+    }
+   },
+   "Net-(U102-CAP+)": {
+    "length": 17.453,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.4318": 17.453
+    },
+    "layers": {
+     "bottom_copper": 17.453
+    }
+   },
+   "Net-(U102-CAP-)": {
+    "length": 5.869,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.4318": 5.869
+    },
+    "layers": {
+     "bottom_copper": 5.869
+    }
+   },
+   "Net-(C201-Pad2)": {
+    "length": 12.751,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.4": 4.079,
+     "0.4318": 8.672
+    },
+    "layers": {
+     "bottom_copper": 12.751
+    }
+   },
+   "Net-(C202-Pad1)": {
+    "length": 13.166,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.4": 4.231,
+     "0.4318": 8.935
+    },
+    "layers": {
+     "bottom_copper": 13.166
+    }
+   },
+   "Net-(U201B-+)": {
+    "length": 8.146,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4318": 8.146
+    },
+    "layers": {
+     "bottom_copper": 8.146
+    }
+   },
+   "Net-(C204-Pad1)": {
+    "length": 3.754,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.4318": 3.754
+    },
+    "layers": {
+     "bottom_copper": 3.754
+    }
+   },
+   "Net-(C301-Pad2)": {
+    "length": 6.163,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4": 3.496,
+     "0.4318": 2.667
+    },
+    "layers": {
+     "bottom_copper": 6.163
+    }
+   },
+   "Net-(C302-Pad1)": {
+    "length": 12.584,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.4": 3.745,
+     "0.4318": 8.839
+    },
+    "layers": {
+     "bottom_copper": 12.584
+    }
+   },
+   "Net-(U301B-+)": {
+    "length": 16.424,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.4": 3.478,
+     "0.4318": 12.947
+    },
+    "layers": {
+     "bottom_copper": 16.424
+    }
+   },
+   "Net-(C304-Pad1)": {
+    "length": 5.221,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.4318": 5.221
+    },
+    "layers": {
+     "bottom_copper": 5.221
+    }
+   },
+   "Net-(D201-K)": {
+    "length": 8.883,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4": 8.883
+    },
+    "layers": {
+     "bottom_copper": 8.883
+    }
+   },
+   "Net-(D202-K)": {
+    "length": 15.141,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.4318": 12.046,
+     "0.4": 3.094
+    },
+    "layers": {
+     "bottom_copper": 15.141
+    }
+   },
+   "Net-(D203-K)": {
+    "length": 9.198,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4318": 9.198
+    },
+    "layers": {
+     "bottom_copper": 9.198
+    }
+   },
+   "Net-(D203-A)": {
+    "length": 21.421,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.4318": 15.022,
+     "0.4": 6.399
+    },
+    "layers": {
+     "bottom_copper": 21.421
+    }
+   },
+   "Net-(D204-K)": {
+    "length": 22.005,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.4": 11.691,
+     "0.4318": 10.314
+    },
+    "layers": {
+     "bottom_copper": 22.005
+    }
+   },
+   "Net-(D301-K)": {
+    "length": 3.429,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.4318": 3.429
+    },
+    "layers": {
+     "bottom_copper": 3.429
+    }
+   },
+   "Net-(D302-K)": {
+    "length": 22.332,
+    "vias": 0,
+    "segments": 12,
+    "widths": {
+     "0.4": 20.157,
+     "0.4318": 2.174
+    },
+    "layers": {
+     "bottom_copper": 22.332
+    }
+   },
+   "Net-(D303-A)": {
+    "length": 24.264,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.4": 11.66,
+     "0.4318": 12.605
+    },
+    "layers": {
+     "bottom_copper": 24.264
+    }
+   },
+   "Net-(D303-K)": {
+    "length": 9.198,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4318": 9.198
+    },
+    "layers": {
+     "bottom_copper": 9.198
+    }
+   },
+   "Net-(D304-K)": {
+    "length": 22.314,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.4": 14.168,
+     "0.4318": 8.146
+    },
+    "layers": {
+     "bottom_copper": 22.314
+    }
+   },
+   "VCC": {
+    "length": 31.749,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.6096": 14.695,
+     "0.6": 17.054
+    },
+    "layers": {
+     "bottom_copper": 31.749
+    }
+   },
+   "Net-(Q201-E)": {
+    "length": 13.324,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.4": 13.324
+    },
+    "layers": {
+     "top_copper": 13.324
+    }
+   },
+   "Net-(Q202-E)": {
+    "length": 33.856,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.4318": 28.556,
+     "0.4": 5.299
+    },
+    "layers": {
+     "bottom_copper": 33.856
+    }
+   },
+   "Net-(Q203-E)": {
+    "length": 18.137,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.4": 4.655,
+     "0.4318": 13.482
+    },
+    "layers": {
+     "bottom_copper": 18.137
+    }
+   },
+   "Net-(Q204-E)": {
+    "length": 8.483,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.4": 8.483
+    },
+    "layers": {
+     "top_copper": 8.483
+    }
+   },
+   "Net-(Q204-B)": {
+    "length": 8.273,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4": 8.273
+    },
+    "layers": {
+     "bottom_copper": 8.273
+    }
+   },
+   "Net-(Q301-E)": {
+    "length": 11.677,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.4": 10.661,
+     "0.4318": 1.016
+    },
+    "layers": {
+     "bottom_copper": 11.677
+    }
+   },
+   "+12V": {
+    "length": 113.95,
+    "vias": 0,
+    "segments": 22,
+    "widths": {
+     "0.6096": 113.95
+    },
+    "layers": {
+     "bottom_copper": 113.95
+    }
+   },
+   "Net-(Q302-E)": {
+    "length": 33.589,
+    "vias": 0,
+    "segments": 12,
+    "widths": {
+     "0.4318": 26.651,
+     "0.4": 6.938
+    },
+    "layers": {
+     "bottom_copper": 33.589
+    }
+   },
+   "Net-(Q303-E)": {
+    "length": 19.744,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.4318": 13.38,
+     "0.4": 6.364
+    },
+    "layers": {
+     "bottom_copper": 19.744
+    }
+   },
+   "Net-(Q304-B)": {
+    "length": 9.772,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.4318": 4.126,
+     "0.4": 5.646
+    },
+    "layers": {
+     "bottom_copper": 9.772
+    }
+   },
+   "Net-(Q304-E)": {
+    "length": 21.702,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.4318": 17.765,
+     "0.4": 3.937
+    },
+    "layers": {
+     "bottom_copper": 21.702
+    }
+   },
+   "Net-(R212-Pad2)": {
+    "length": 25.087,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.4318": 25.087
+    },
+    "layers": {
+     "bottom_copper": 25.087
+    }
+   },
+   "Net-(R213-Pad1)": {
+    "length": 11.103,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.4318": 11.103
+    },
+    "layers": {
+     "bottom_copper": 11.103
+    }
+   },
+   "Net-(R312-Pad2)": {
+    "length": 15.951,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.4318": 15.951
+    },
+    "layers": {
+     "bottom_copper": 15.951
+    }
+   },
+   "Net-(R313-Pad1)": {
+    "length": 9.942,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.4318": 9.942
+    },
+    "layers": {
+     "bottom_copper": 9.942
+    }
+   },
+   "Net-(U201A--)": {
+    "length": 16.769,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.4318": 16.769
+    },
+    "layers": {
+     "bottom_copper": 16.769
+    }
+   },
+   "Net-(U301A--)": {
+    "length": 20.61,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.4318": 20.61
+    },
+    "layers": {
+     "bottom_copper": 20.61
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 0,
+   "warnings": 68,
+   "unconnected": 0,
+   "by_type": {
+    "warning:lib_footprint_issues": 68
+   }
+  },
+  "drc_error_list": []
+ },
+ "unrouted": {
+  "connections": 87,
+  "by_net": {
+   "+12V": 4,
+   "HT": 7,
+   "Net-(U102-CAP+)": 1,
+   "Net-(U102-CAP-)": 1,
+   "-VAA": 3,
+   "Net-(Q201-E)": 1,
+   "Net-(D202-K)": 2,
+   "Net-(D203-A)": 2,
+   "Net-(Q203-E)": 2,
+   "Net-(D204-K)": 3,
+   "Net-(Q301-E)": 1,
+   "Net-(D302-K)": 2,
+   "Net-(D303-A)": 2,
+   "Net-(Q302-E)": 2,
+   "Net-(Q303-E)": 2,
+   "Net-(D304-K)": 3,
+   "Net-(Q304-E)": 1,
+   "Net-(Q304-B)": 1,
+   "Net-(R213-Pad1)": 1,
+   "Net-(U201A--)": 1,
+   "/ampli_ht_vertical/S_OUT+": 2,
+   "Net-(R313-Pad1)": 1,
+   "Net-(U301A--)": 1,
+   "/ampli_ht_horizontal/S_OUT+": 2,
+   "VCC": 2,
+   "Net-(R312-Pad2)": 1,
+   "Net-(C201-Pad2)": 2,
+   "Net-(C202-Pad1)": 2,
+   "Net-(C301-Pad2)": 2,
+   "Net-(C302-Pad1)": 2,
+   "/ampli_ht_horizontal/PIEZO_OUT": 2,
+   "Net-(C204-Pad1)": 1,
+   "Net-(Q204-E)": 1,
+   "Net-(R212-Pad2)": 1,
+   "Net-(Q204-B)": 1,
+   "Net-(U201B-+)": 2,
+   "Net-(U301B-+)": 2,
+   "/ampli_ht_vertical/PIEZO_OUT": 2,
+   "Net-(Q202-E)": 2,
+   "/ampli_ht_horizontal/PIEZO_IN": 1,
+   "/ampli_ht_vertical/PIEZO_IN": 1,
+   "Net-(C304-Pad1)": 1,
+   "/ampli_ht_horizontal/Vpil_0_3,3V": 3,
+   "/ampli_ht_vertical/Vpil_0_3,3V": 3,
+   "/12Vext": 1,
+   "Net-(D301-K)": 1,
+   "Net-(D203-K)": 1,
+   "Net-(D201-K)": 1,
+   "Net-(D303-K)": 1
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 68,
+   "unconnected": 87,
+   "by_type": {
+    "warning:lib_footprint_issues": 68
+   }
+  },
+  "drc_error_list": []
+ },
+ "stripped": {
+  "tracks_and_vias": 364,
+  "locked": 0,
+  "teardrops": 165
+ }
+}

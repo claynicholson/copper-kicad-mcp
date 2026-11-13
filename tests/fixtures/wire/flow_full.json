@@ -1,0 +1,2714 @@
+{
+"project_dir": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref",
+"calls": [
+{
+"tool": "copper_status",
+"args": {},
+"summary": "Copper 1.0.0 · KiCad 10.0.6 · project: none → project_create(name='my-board', template='jlc-2layer') or project_open(path='…/board.kicad_pro')",
+"payload": {
+"copper": "1.0.0",
+"kicad": {
+"installs": [
+{
+"version": "10.0.6",
+"root": "C:\\Program Files\\KiCad\\10.0",
+"kicad_cli": "C:\\Program Files\\KiCad\\10.0\\bin\\kicad-cli.exe",
+"python": "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe",
+"share": "C:\\Program Files\\KiCad\\10.0\\share\\kicad"
+}
+],
+"config_dir": "C:\\tmp\\copper budget 48kq6yul\\kcfg\\10.0",
+"active": {
+"version": "10.0.6",
+"root": "C:\\Program Files\\KiCad\\10.0",
+"kicad_cli": "C:\\Program Files\\KiCad\\10.0\\bin\\kicad-cli.exe",
+"python": "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe",
+"share": "C:\\Program Files\\KiCad\\10.0\\share\\kicad"
+}
+},
+"capabilities": {
+"kicad_cli": true,
+"pcbnew_worker": {
+"ok": true,
+"python": "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe",
+"version": "10.0.6"
+},
+"ipc": {
+"socket": null,
+"kicad_running_with_api": false,
+"kipy_installed": false
+},
+"routing": {
+"tools_dir": "C:\\tmp\\copper budget 48kq6yul\\home\\tools",
+"freerouting": "C:\\Users\\dev\\.copper\\tools\\freerouting-2.2.3.jar",
+"java": "C:\\Users\\dev\\.copper\\tools\\jre-25\\jdk-25.0.5+8-jre\\bin\\java.exe",
+"autorouting_available": true,
+"autorouting_ready": true,
+"autorouting": "ready"
+}
+},
+"active_project": null,
+"recent_projects": [],
+"tools_loaded": 30,
+"tool_load_errors": {},
+"next": "project_create(name='my-board', template='jlc-2layer') or project_open(path='…/board.kicad_pro')"
+},
+"captions": []
+},
+{
+"tool": "project_create",
+"args": {
+"name": "c3ref",
+"dir": "C:/tmp/copper budget 48kq6yul/proj dir",
+"template": "jlc-2layer",
+"board_size": [
+50,
+32
+]
+},
+"summary": "created c3ref (jlc-2layer) in C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref — KiCad loaded it: 0 ERC / 0 DRC violations",
+"payload": {
+"project": {
+"name": "c3ref",
+"dir": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref",
+"schematic": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\c3ref.kicad_sch",
+"pcb": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\c3ref.kicad_pcb"
+},
+"template": "jlc-2layer",
+"written": [
+"c3ref.kicad_pro",
+"c3ref.kicad_sch",
+"c3ref.kicad_pcb",
+"c3ref.kicad_dru"
+],
+"board_size_mm": [
+50,
+32
+],
+"kicad_check": {
+"ok": true,
+"erc_violations": 0,
+"drc_violations": 0,
+"drc_types": []
+},
+"checkpoint": "20261109-223122-created"
+},
+"captions": []
+},
+{
+"tool": "sch_apply",
+"args": {
+"ops": [
+{
+"op": "place",
+"lib_id": "Connector:USB_C_Receptacle_USB2.0_16P",
+"id": "usb",
+"group": "connector",
+"footprint": "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+"fields": {
+"LCSC": "C165948"
+}
+},
+{
+"op": "place",
+"spec": "5.1k 0402",
+"id": "rcc1",
+"near": "usb"
+},
+{
+"op": "place",
+"spec": "5.1k 0402",
+"id": "rcc2",
+"near": "usb"
+},
+{
+"op": "place",
+"lib_id": "Regulator_Linear:AMS1117-3.3",
+"id": "ldo",
+"group": "power",
+"fields": {
+"LCSC": "C6186"
+}
+},
+{
+"op": "place",
+"spec": "10uF 0603",
+"id": "cin",
+"near": "ldo"
+},
+{
+"op": "place",
+"spec": "22uF 0805",
+"id": "cout",
+"near": "ldo"
+},
+{
+"op": "place",
+"lib_id": "RF_Module:ESP32-C3-WROOM-02",
+"id": "mcu",
+"group": "mcu",
+"fields": {
+"LCSC": "C2934560"
+}
+},
+{
+"op": "place",
+"spec": "100nF 0402",
+"id": "c1",
+"near": "mcu"
+},
+{
+"op": "place",
+"spec": "10uF 0603",
+"id": "c2",
+"near": "mcu"
+},
+{
+"op": "place",
+"spec": "10k 0402",
+"id": "ren",
+"near": "mcu"
+},
+{
+"op": "place",
+"spec": "1uF 0402",
+"id": "cen",
+"near": "mcu"
+},
+{
+"op": "place",
+"id": "swrst",
+"lib_id": "Switch:SW_Push",
+"footprint": "Button_Switch_SMD:SW_SPST_TL3342",
+"fields": {
+"LCSC": "C318884"
+}
+},
+{
+"op": "place",
+"spec": "10k 0402",
+"id": "rboot",
+"near": "mcu"
+},
+{
+"op": "place",
+"id": "swboot",
+"lib_id": "Switch:SW_Push",
+"footprint": "Button_Switch_SMD:SW_SPST_TL3342",
+"fields": {
+"LCSC": "C318884"
+}
+},
+{
+"op": "place",
+"spec": "LED blue 0603",
+"id": "led"
+},
+{
+"op": "place",
+"spec": "1k 0402",
+"id": "rled",
+"near": "led"
+},
+{
+"op": "place",
+"lib_id": "Connector_Generic:Conn_01x10",
+"id": "hdr",
+"group": "connector",
+"footprint": "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical",
+"fields": {
+"LCSC": "C57369"
+}
+},
+{
+"op": "connect",
+"pins": [
+"usb.VBUS",
+"ldo.VI",
+"cin.1"
+],
+"net": "VBUS"
+},
+{
+"op": "connect",
+"pins": [
+"usb.GND",
+"usb.SHIELD",
+"rcc1.2",
+"rcc2.2",
+"ldo.GND",
+"cin.2",
+"cout.2",
+"mcu.GND",
+"c1.2",
+"c2.2",
+"cen.2",
+"swrst.2",
+"swboot.2",
+"hdr.2"
+],
+"net": "GND"
+},
+{
+"op": "connect",
+"pins": [
+"ldo.VO",
+"cout.1",
+"mcu.3V3",
+"c1.1",
+"c2.1",
+"ren.1",
+"rboot.1",
+"led.A",
+"hdr.1"
+],
+"net": "+3V3"
+},
+{
+"op": "connect",
+"pins": [
+"usb.CC1",
+"rcc1.1"
+],
+"net": "CC1"
+},
+{
+"op": "connect",
+"pins": [
+"usb.CC2",
+"rcc2.1"
+],
+"net": "CC2"
+},
+{
+"op": "connect",
+"pins": [
+"usb.D+",
+"mcu.IO19"
+],
+"net": "USB_DP"
+},
+{
+"op": "connect",
+"pins": [
+"usb.D-",
+"mcu.IO18"
+],
+"net": "USB_DN"
+},
+{
+"op": "connect",
+"pins": [
+"mcu.EN",
+"ren.2",
+"cen.1",
+"swrst.1"
+],
+"net": "EN"
+},
+{
+"op": "connect",
+"pins": [
+"mcu.IO9",
+"rboot.2",
+"swboot.1"
+],
+"net": "BOOT"
+},
+{
+"op": "connect",
+"pins": [
+"led.K",
+"rled.1"
+],
+"net": "LED_K"
+},
+{
+"op": "connect",
+"pins": [
+"rled.2",
+"mcu.IO8"
+],
+"net": "LED"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.3",
+"mcu.IO21/TXD"
+],
+"net": "TX"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.4",
+"mcu.IO20/RXD"
+],
+"net": "RX"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.5",
+"mcu.IO2"
+],
+"net": "IO2"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.6",
+"mcu.IO3"
+],
+"net": "IO3"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.7",
+"mcu.IO4"
+],
+"net": "IO4"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.8",
+"mcu.IO5"
+],
+"net": "IO5"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.9",
+"mcu.IO6"
+],
+"net": "IO6"
+},
+{
+"op": "connect",
+"pins": [
+"hdr.10",
+"mcu.IO7"
+],
+"net": "IO7"
+},
+{
+"op": "no_connect",
+"pins": [
+"usb.SBU1",
+"usb.SBU2",
+"mcu.IO0",
+"mcu.IO1",
+"mcu.IO10"
+]
+},
+{
+"op": "pwr_flag",
+"net": "VBUS"
+},
+{
+"op": "pwr_flag",
+"net": "GND"
+}
+]
+},
+"summary": "87 change(s) written to c3ref.kicad_sch; connectivity 70/70 ok; ERC 0 error(s), 0 warning(s)",
+"payload": {
+"changed": [
+"placed J1 Connector:USB_C_Receptacle_USB2.0_16P at (72.39, 43.18) LCSC C165948",
+"placed R1 Device:R 5.1k at (106.68, 31.75) LCSC C25905 (JLC Basic)",
+"placed R2 Device:R 5.1k at (106.68, 58.42) LCSC C25905 (JLC Basic)",
+"placed U1 Regulator_Linear:AMS1117-3.3 at (156.21, 34.29) LCSC C6186",
+"placed C1 Device:C 10uF at (124.46, 34.29) LCSC C96446 (JLC Basic)",
+"placed C2 Device:C 22uF at (181.61, 34.29) LCSC C45783 (JLC Basic)",
+"placed U2 RF_Module:ESP32-C3-WROOM-02 at (124.46, 116.84) LCSC C2934560",
+"placed C3 Device:C 100nF at (165.1, 97.79) LCSC C1525 (JLC Basic)",
+"placed C4 Device:C 10uF at (165.1, 127) LCSC C96446 (JLC Basic)",
+"placed R3 Device:R 10k at (88.9, 100.33) LCSC C25744 (JLC Basic)",
+"placed C5 Device:C 1uF at (88.9, 123.19) LCSC C52923 (JLC Basic)",
+"placed SW1 Switch:SW_Push at (83.82, 149.86) rot 270 LCSC C318884",
+"placed R4 Device:R 10k at (67.31, 119.38) LCSC C25744 (JLC Basic)",
+"placed SW2 Switch:SW_Push at (67.31, 133.35) rot 270 LCSC C318884",
+"placed D1 Device:LED LED blue at (168.91, 157.48) rot 90 LCSC C965807 (JLC Extended)",
+"placed R5 Device:R 1k at (168.91, 170.18) LCSC C11702 (JLC Basic)",
+"placed J2 Connector_Generic:Conn_01x10 at (220.98, 31.75) LCSC C57369",
+"J1.A4(VBUS) → VBUS (power symbol #PWR01)",
+"U1.3(VI) → VBUS (power symbol #PWR02)",
+"C1.1 → VBUS (power symbol #PWR03)",
+"J1.SH(SHIELD), J1.A1(GND) → GND (shared rail, power symbol #PWR04)",
+"R1.2 → GND (power symbol #PWR05)",
+"R2.2 → GND (power symbol #PWR06)",
+"U1.1(GND) → GND (power symbol #PWR07)",
+"C1.2 → GND (power symbol #PWR08)",
+"C2.2 → GND (power symbol #PWR09)",
+"U2.9(GND) → GND (power symbol #PWR10)",
+"C3.2 → GND (power symbol #PWR11)",
+"C4.2 → GND (power symbol #PWR12)",
+"C5.2 → GND (power symbol #PWR13)",
+"SW1.2 → GND (power symbol #PWR14)",
+"SW2.2 → GND (power symbol #PWR15)",
+"J2.2(Pin_2) → GND (power symbol #PWR16)",
+"U1.2(VO) → +3V3 (power symbol #PWR17)",
+"C2.1 → +3V3 (power symbol #PWR18)",
+"U2.1(3V3) → +3V3 (power symbol #PWR19)",
+"C3.1 → +3V3 (power symbol #PWR20)",
+"C4.1 → +3V3 (power symbol #PWR21)",
+"R3.1 → +3V3 (power symbol #PWR22)",
+"R4.1 → +3V3 (power symbol #PWR23)",
+"D1.2(A) → +3V3 (power symbol #PWR24)",
+"J2.1(Pin_1) → +3V3 (power symbol #PWR25)",
+"J1.A5(CC1) → CC1 (local label)",
+"R1.1 → CC1 (local label)",
+"J1.B5(CC2) → CC2 (local label)",
+"R2.1 → CC2 (local label)",
+"J1.A6(D+) → USB_DP (local label)",
+"J1.B6(D+) → USB_DP (local label)",
+"U2.14(IO19) → USB_DP (local label)",
+"J1.A7(D-) → USB_DN (local label)",
+"J1.B7(D-) → USB_DN (local label)",
+"U2.13(IO18) → USB_DN (local label)",
+"U2.2(EN) → EN (local label)",
+"R3.2 → EN (local label)",
+"C5.1 → EN (local label)",
+"SW1.1 → EN (local label)",
+"U2.8(IO9) → BOOT (local label)",
+"R4.2 — SW2.1 wired as BOOT",
+"R4.2 — SW2.1 already wired (BOOT)",
+"D1.1 — R5.1 wired as LED_K"
+],
+"refs": {
+"usb": "J1",
+"rcc1": "R1",
+"rcc2": "R2",
+"ldo": "U1",
+"cin": "C1",
+"cout": "C2",
+"mcu": "U2",
+"c1": "C3",
+"c2": "C4",
+"ren": "R3",
+"cen": "C5",
+"swrst": "SW1",
+"rboot": "R4",
+"swboot": "SW2",
+"led": "D1",
+"rled": "R5",
+"hdr": "J2"
+},
+"revision": "8fd39301f5fa481b",
+"changed_truncated": 27,
+"warnings": [
+"spec 'LED blue 0603': C965807 is JLC Extended (no Basic part matches 'LED blue 0603'; ≈$3 setup fee per order)"
+],
+"checkpoint": "20261109-223122-created",
+"connectivity": {
+"checked": 70,
+"ok": 70
+},
+"verify": {
+"erc": {
+"errors": 0,
+"warnings": 0,
+"new": 0,
+"fixed": 0,
+"report": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\.copper\\erc.json"
+}
+}
+},
+"captions": [
+"[image] full sheet of c3ref.kicad_sch — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\preview\\c3ref.png"
+]
+},
+{
+"tool": "sch_tidy",
+"args": {},
+"summary": "tidied 17 symbol(s); connectivity identical (KiCad netlist before/after; kept 2 PWR_FLAG(s)); ERC 0 error(s), 0 warning(s)",
+"payload": {
+"file": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\c3ref.kicad_sch",
+"moved": 17,
+"paper": "A4",
+"connectivity": "identical (KiCad netlist before/after; kept 2 PWR_FLAG(s))",
+"warnings": [],
+"dry_run": false,
+"checkpoint": "20261109-223136-sch_tidy",
+"canonicalized": true,
+"revision": "39a9bab74ae7b78f",
+"verify": {
+"erc": {
+"errors": 0,
+"warnings": 0,
+"new": 0,
+"fixed": 0,
+"report": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\.copper\\erc.json"
+}
+}
+},
+"captions": [
+"[image] full sheet of c3ref.kicad_sch — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\preview\\c3ref.png"
+]
+},
+{
+"tool": "verify",
+"args": {},
+"summary": "ERC 0 errors/0 warnings (no change); DRC 0 errors/17 warnings, 0 unrouted, 17 parity (first verify run — no earlier result to compare) → pcb_sync() — board is out of date with the schematic",
+"payload": {
+"project": "c3ref",
+"erc": {
+"errors": 0,
+"warnings": 0,
+"new": 0,
+"fixed": 0,
+"findings": [],
+"report": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\.copper\\erc.json"
+},
+"drc": {
+"errors": 0,
+"warnings": 17,
+"unconnected": 0,
+"parity": 17,
+"new": 17,
+"fixed": 0,
+"by_type": {
+"missing_footprint": 17
+},
+"findings": [
+{
+"severity": "warning",
+"type": "missing_footprint",
+"message": "17× missing_footprint, e.g. Missing footprint C1 (10uF)",
+"fix": "board and schematic disagree — pcb_sync() to push the schematic's footprints, nets and fields to the board  [same fix for each of the 17 refs]",
+"section": "schematic_parity",
+"count": 17,
+"refs": []
+}
+],
+"report": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\.copper\\drc.json"
+},
+"next": "pcb_sync() — board is out of date with the schematic"
+},
+"captions": []
+},
+{
+"tool": "render",
+"args": {
+"target": "schematic"
+},
+"summary": "rendered 1 schematic sheet(s)",
+"payload": {
+"target": "schematic",
+"images": [
+"C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\render\\c3ref.png"
+]
+},
+"captions": [
+"[image] schematic sheet c3ref — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\render\\c3ref.png"
+]
+},
+{
+"tool": "design_review",
+"args": {},
+"summary": "design review: 0 error(s), 1 warning(s), 2 note(s)",
+"payload": {
+"counts": {
+"error": 0,
+"warning": 1,
+"info": 2
+},
+"findings": [
+{
+"severity": "warning",
+"type": "usb_no_esd",
+"message": "USB data lines /USB_DN, /USB_DP on J1 have no ESD/TVS protection — cable discharges hit the USB PHY of U2",
+"fix": "add a low-capacitance USB ESD array (e.g. USBLC6-2SC6, LCSC C7519) next to the connector: parts_search(query='USBLC6-2SC6') → sch_apply place + connect its I/O pins to D+/D-, GND and VBUS",
+"refs": [
+"J1.A7",
+"J1.B7",
+"J1.A6",
+"J1.B6"
+]
+},
+{
+"severity": "info",
+"type": "extended_parts",
+"message": "4 unique JLC Extended part(s) → ≈ $12 feeder-loading fee per order: C165948, C2934560, C57369, C965807",
+"fix": "parts_alternatives(target='C…') to find Basic substitutes for passives/common ICs",
+"refs": [
+"C165948",
+"C2934560",
+"C57369",
+"C965807"
+]
+},
+{
+"severity": "info",
+"type": "floating_boot",
+"message": "U2.18 (IO0) is unconnected — fine only if the chip has an internal pull (boot strap default)",
+"fix": "recommended: 10k pull-up + 100nF to GND on reset, or a defined strap for boot pins; sch_apply(ops=[{\"op\":\"connect\",\"pin\":\"U2.18\",\"net\":\"BOOT\"}, …])",
+"refs": [
+"U2.18"
+]
+}
+],
+"stats": {
+"placed_parts": 17,
+"unique_lcsc": 13,
+"missing_lcsc": 0,
+"basic": 9,
+"preferred": 0,
+"extended": 4,
+"unknown_class": 0,
+"estimated_extended_fee_usd": 12.0,
+"lcsc_lock_pct": 100.0,
+"erc": {
+"errors": 0,
+"warnings": 0
+},
+"components": 17,
+"nets": 24,
+"named_nets": 19,
+"power_rails": [
+"+3V3",
+"VBUS"
+],
+"ground_nets": [
+"GND"
+]
+},
+"checks_run": [
+"decoupling",
+"i2c_pullups",
+"crystal_caps",
+"usb_c_cc",
+"usb_esd",
+"regulator_caps",
+"enable_pins",
+"led_resistors",
+"footprints",
+"single_pin_nets",
+"net_names",
+"regulator_setpoint",
+"power_path",
+"thermal_pad",
+"sourcing",
+"power_flags"
+]
+},
+"captions": []
+},
+{
+"tool": "pcb_sync",
+"args": {},
+"summary": "pcb_sync: +17 added, 0 updated, 0 replaced, 0 removed; parity 0, unrouted 55",
+"payload": {
+"changed": [
+"added C1 (Capacitor_SMD:C_0603_1608Metric)",
+"added C2 (Capacitor_SMD:C_0805_2012Metric)",
+"added C3 (Capacitor_SMD:C_0402_1005Metric)",
+"added C4 (Capacitor_SMD:C_0603_1608Metric)",
+"added C5 (Capacitor_SMD:C_0402_1005Metric)",
+"added D1 (LED_SMD:LED_0603_1608Metric)",
+"added J1 (Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12)",
+"added J2 (Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical)",
+"added R1 (Resistor_SMD:R_0402_1005Metric)",
+"added R2 (Resistor_SMD:R_0402_1005Metric)",
+"added R3 (Resistor_SMD:R_0402_1005Metric)",
+"added R4 (Resistor_SMD:R_0402_1005Metric)",
+"added R5 (Resistor_SMD:R_0402_1005Metric)",
+"added SW1 (Button_Switch_SMD:SW_SPST_TL3342)",
+"added SW2 (Button_Switch_SMD:SW_SPST_TL3342)",
+"added U1 (Package_TO_SOT_SMD:SOT-223-3_TabPin2)",
+"added U2 (RF_Module:ESP32-C3-WROOM-02)",
+"95 pad net assignments",
+"Power net-class patterns + */GND (match local-label nets)"
+],
+"added": 17,
+"updated": 0,
+"replaced": 0,
+"removed": [],
+"extra": [],
+"nets": 24,
+"unassigned_pads": [],
+"pins_without_pad": [],
+"errors": [],
+"revision": "93647fb00d8e7815",
+"verify": {
+"drc": {
+"errors": 12,
+"warnings": 0,
+"unconnected": 55,
+"parity": 0
+}
+},
+"findings": [
+{
+"severity": "info",
+"code": "UNROUTED",
+"message": "55 unrouted connections",
+"fix": "pcb_route(mode='auto') — or pcb_route(tracks=[...]) for specific connections"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.36,
+145.65
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.36,
+146.75
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.91,
+145.1
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.91,
+146.2
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.91,
+147.3
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+199.46,
+145.65
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+199.46,
+146.75
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+200.01,
+145.1
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "info",
+"code": "DRC_SUMMARY",
+"message": "error:drill_out_of_range×12"
+},
+{
+"severity": "info",
+"code": "NEW_PARTS_UNPLACED",
+"message": "17 new footprints were put beside the board",
+"fix": "pcb_setup(width=..., height=...) if there is no outline yet, then pcb_place(auto=true)"
+}
+]
+},
+"captions": [
+"[image] PCB layers B.Cu,F.Cu,F.SilkS,Edge.Cuts (painted in this order) — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\pcb-sync.png"
+]
+},
+{
+"tool": "pcb_setup",
+"args": {
+"width": 50,
+"height": 32,
+"radius": 1.5
+},
+"summary": "pcb_setup: outline 50.0×32.0 mm at [100.0, 100.0] (replaced 1 old edge shapes)",
+"payload": {
+"changed": [
+"outline 50.0×32.0 mm at [100.0, 100.0] (replaced 1 old edge shapes)"
+],
+"outline": {
+"bbox": [
+100.0,
+100.0,
+150.0,
+132.0
+],
+"width": 50.0,
+"height": 32.0,
+"closed": true,
+"polygon_points": 48
+},
+"copper_layers": 2,
+"rules": null,
+"revision": "0c6ff2df4931c600",
+"verify": {
+"drc": {
+"errors": 12,
+"warnings": 0,
+"unconnected": 55,
+"parity": 0
+}
+},
+"findings": [
+{
+"severity": "info",
+"code": "UNROUTED",
+"message": "55 unrouted connections",
+"fix": "pcb_route(mode='auto') — or pcb_route(tracks=[...]) for specific connections"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.36,
+145.65
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.36,
+146.75
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.91,
+145.1
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.91,
+146.2
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+198.91,
+147.3
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+199.46,
+145.65
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+199.46,
+146.75
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+200.01,
+145.1
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "info",
+"code": "DRC_SUMMARY",
+"message": "error:drill_out_of_range×12"
+},
+{
+"severity": "warning",
+"code": "OUTSIDE_OUTLINE",
+"message": "17 footprints outside the board outline: U2, J2, C1, R5, R2, C4, C5, R4, SW1, U1, C3, C2, J1, SW2, R3, D1, R1",
+"refs": [
+"U2",
+"J2",
+"C1",
+"R5",
+"R2",
+"C4",
+"C5",
+"R4",
+"SW1",
+"U1",
+"C3",
+"C2",
+"J1",
+"SW2",
+"R3",
+"D1",
+"R1"
+],
+"fix": "pcb_place(auto=true)"
+}
+]
+},
+"captions": [
+"[image] PCB layers B.Cu,F.Cu,F.SilkS,Edge.Cuts (painted in this order) — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\pcb-setup.png"
+]
+},
+{
+"tool": "pcb_place",
+"args": {
+"auto": true
+},
+"summary": "pcb_place: moved 16 footprints; ratsnest 933.5 → 555.2 mm; 0 courtyard overlaps; DRC errors 12",
+"payload": {
+"changed": [
+"U2 → (125.0, 113.0) rot 180 top",
+"J2 → (147.5, 104.5) rot 0 top",
+"C1 → (112.0, 104.5) rot 0 top",
+"R5 → (132.0, 105.0) rot 0 top",
+"R2 → (108.5, 122.5) rot 180 top",
+"C4 → (101.5, 108.0) rot 90 top",
+"C5 → (140.5, 117.5) rot 0 top",
+"R4 → (134.0, 104.5) rot 270 top",
+"SW1 → (106.0, 126.5) rot 0 top",
+"U1 → (106.5, 105.5) rot 90 top",
+"C3 → (140.5, 119.0) rot 0 top",
+"C2 → (112.5, 102.0) rot 0 top",
+"J1 → (105.0, 116.0) rot 270 top",
+"R3 → (141.0, 116.0) rot 180 top",
+"D1 → (127.5, 104.5) rot 0 top",
+"R1 → (106.0, 122.5) rot 180 top"
+],
+"skipped": [],
+"score": {
+"ratsnest_mm_before": 933.5,
+"ratsnest_mm_after": 555.2
+},
+"revision": "be35050f07d3a6db",
+"verify": {
+"drc": {
+"errors": 12,
+"warnings": 0,
+"unconnected": 55,
+"parity": 0
+},
+"courtyard_overlaps": 0
+},
+"findings": [
+{
+"severity": "error",
+"code": "DID_NOT_FIT",
+"message": "no legal spot for SW2 (left where they were)",
+"fix": "pcb_setup(width=..., height=...) for a bigger board, pcb_place(auto=true, spacing=0.3), or layers=4"
+},
+{
+"severity": "info",
+"code": "UNROUTED",
+"message": "55 unrouted connections",
+"fix": "pcb_route(mode='auto') — or pcb_route(tracks=[...]) for specific connections"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+125.14,
+113.35
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+125.14,
+112.25
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.59,
+113.9
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.59,
+112.8
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.59,
+111.7
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.04,
+113.35
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.04,
+112.25
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+123.49,
+113.9
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "info",
+"code": "DRC_SUMMARY",
+"message": "error:drill_out_of_range×12"
+},
+{
+"severity": "warning",
+"code": "OUTSIDE_OUTLINE",
+"message": "1 footprints outside the board outline: SW2",
+"refs": [
+"SW2"
+],
+"fix": "pcb_place(auto=true)"
+},
+{
+"severity": "info",
+"code": "SILK_CROWDED",
+"message": "no clean spot for the reference of R2 (shrunk to 0.8 mm)",
+"fix": "pcb_place(auto=true, spacing=1.0) for more room, or pcb_edit to hide/move those references"
+}
+],
+"auto": {
+"spacing": 0.3,
+"fill_ratio": 0.709,
+"roles": {
+"mcu": [
+"U2"
+],
+"connector": [
+"J2",
+"J1"
+],
+"decap": [
+"C1→U1.3",
+"C4→U1.2",
+"C5→U2.2",
+"C3→U2.1",
+"C2→U1.2"
+],
+"attached": [
+"R5→U2.7",
+"R4→U2.8",
+"R3→U2.2"
+],
+"other": [
+"R2",
+"D1",
+"R1"
+],
+"switch": [
+"SW1",
+"SW2"
+],
+"regulator": [
+"U1"
+]
+}
+}
+},
+"captions": [
+"[image] PCB layers B.Cu,F.Cu,F.SilkS,Edge.Cuts (painted in this order) — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\pcb-place.png"
+]
+},
+{
+"tool": "pcb_route_guided",
+"args": {},
+"summary": "guided route: 33/35 connections (94.3 %), DRC 12 errors (0 new), 19 vias, 428.0 mm, 8.5 s",
+"payload": {
+"routed": 33,
+"total": 35,
+"percent": 94.3,
+"unrouted_before": 55,
+"unrouted_after": 22,
+"failed": [
+{
+"net": "/BOOT",
+"from": "SW2.1",
+"to": "U2.8",
+"reason": "pad SW2.1 at (165.85, 128.6) is outside the board outline — place the part on the board first (pcb_place)",
+"where": [
+165.85,
+128.6
+]
+},
+{
+"net": "/BOOT",
+"from": "SW2.1",
+"to": "SW2.1",
+"reason": "pad SW2.1 at (172.15, 128.6) is outside the board outline — place the part on the board first (pcb_place)",
+"where": [
+172.15,
+128.6
+]
+}
+],
+"skipped": [
+{
+"net": "GND",
+"connections": 20,
+"reason": "ground net with 35 pads and no pour: left for pcb_pour(net='GND') (plan.nets['GND'].skip=false routes it as tracks)"
+}
+],
+"nets": {
+"+3V3": [
+84.85,
+5
+],
+"/BOOT": [
+4.43,
+0
+],
+"/CC1": [
+10.02,
+2
+],
+"/CC2": [
+6.15,
+0
+],
+"/EN": [
+43.86,
+2
+],
+"/IO2": [
+34.41,
+1
+],
+"/IO3": [
+38.72,
+1
+],
+"/IO4": [
+15.9,
+0
+],
+"/IO5": [
+20.48,
+0
+],
+"/IO6": [
+18.65,
+1
+],
+"/IO7": [
+21.83,
+1
+],
+"/LED": [
+5.61,
+0
+],
+"/LED_K": [
+5.26,
+0
+],
+"/RX": [
+36.98,
+0
+],
+"/TX": [
+31.43,
+1
+],
+"/USB_DN": [
+11.56,
+2
+],
+"/USB_DP": [
+19.34,
+0
+],
+"VBUS": [
+18.46,
+3
+]
+},
+"added": {
+"tracks": 165,
+"vias": 19,
+"length_mm": 428.0
+},
+"ripped_up": 0,
+"totals": {
+"tracks": 165,
+"vias": 19,
+"track_length_mm": 427.95
+},
+"drc": {
+"errors": 12,
+"new_errors": 0,
+"warnings": 0,
+"unconnected": 22,
+"parity": 0
+},
+"passes": [
+{
+"pass": "signals",
+"connections": 35,
+"routed": 33,
+"seconds": 1.6,
+"ripups": 0
+}
+],
+"plan_used": {
+"global": {
+"grid": 0.1,
+"via_cost": 5,
+"bend_cost": 0.3,
+"ripup_rounds": 3
+},
+"diff_pairs": [
+{
+"p": "/USB_DP",
+"n": "/USB_DN",
+"gap": 0.25,
+"width": 0.2
+}
+],
+"nets": {
+"GND": {
+"skip": true
+}
+}
+},
+"seconds": 8.5,
+"written": true,
+"checkpoint": "20261109-223159-before-guided-route",
+"revision": "cb635cacbb2fc0d5",
+"diff_pairs": [
+{
+"p": "/USB_DP",
+"n": "/USB_DN",
+"coupling": "sequential: N routed right after P along P's path, spacing = clearance (not gap-controlled)",
+"len_p": 19.34,
+"len_n": 11.56,
+"skew_mm": 7.78
+}
+],
+"notes": [
+"+3V3: necked to 0.2 mm (no room at 0.5 mm)",
+"VBUS: necked to 0.2 mm (no room at 0.5 mm)"
+],
+"findings": [
+{
+"severity": "warning",
+"code": "PARTS_OFF_BOARD",
+"message": "2 of the unrouted connections end on a part that is not on the board",
+"fix": "pcb_place(auto=true) or pcb_place(moves=[...]) to put every part inside the outline, then pcb_route_guided() again"
+},
+{
+"severity": "info",
+"code": "LEFT_FOR_POUR",
+"message": "GND: 20 connections left for a pour",
+"fix": "pcb_pour(net='GND') then pcb_route_guided() again to connect the pads the pour does not reach — or plan.nets['GND'].skip=false to route it as tracks"
+},
+{
+"severity": "warning",
+"code": "DRC_ERRORS",
+"message": "12 DRC error(s) on the board that were there before routing (all errors by type: drill_out_of_range×12)",
+"fix": "verify() lists them with fixes (placement / footprint / outline issues are not routing problems)"
+},
+{
+"severity": "info",
+"code": "PAIR_SKEW",
+"message": "/USB_DP / /USB_DN: length mismatch 7.78 mm (19.34 vs 11.56)",
+"fix": "fine for USB 2.0 full/high speed on a short run; for tighter pairs route them by hand in KiCad's differential-pair router"
+},
+{
+"severity": "info",
+"code": "NOTE",
+"message": "1 part(s) with connected pads lie outside the board outline (SW2): their connections cannot be routed — place them on the board first (pcb_place)"
+}
+]
+},
+"captions": [
+"[image] routes as KiCad has them now (pours hidden; yellow X = unrouted) — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\pcb-route-guided.png"
+]
+},
+{
+"tool": "pcb_pour",
+"args": {
+"net": "GND",
+"stitch": true
+},
+"summary": "pcb_pour: GND zone on F.Cu, B.Cu; 1 stitching vias (0 skipped: no copper on both sides); 1 vias joining isolated GND fragments at U2.9 [133.7755, 107.0755]; filled 2 of 2 copper zones; unrouted 5, DRC errors 13",
+"payload": {
+"changed": [
+"GND zone on F.Cu, B.Cu",
+"1 stitching vias (0 skipped: no copper on both sides)",
+"1 vias joining isolated GND fragments at U2.9 [133.7755, 107.0755]",
+"filled 2 of 2 copper zones"
+],
+"revision": "8c3f28fcea101071",
+"unrouted": 5,
+"verify": {
+"drc": {
+"errors": 13,
+"warnings": 0,
+"unconnected": 5,
+"parity": 0
+}
+},
+"findings": [
+{
+"severity": "warning",
+"code": "POUR_ISLAND",
+"message": "1 GND pour fragments hold pads but no via fits inside: C5.2/C3.2 on F.Cu near [137.9643, 117.8742]",
+"fix": "move the blocking track(s) or route the pad to GND explicitly: pcb_route(tracks=[{from:'C5.2', to:'<another GND pad>'}])"
+},
+{
+"severity": "info",
+"code": "UNROUTED",
+"message": "5 unrouted connections",
+"fix": "pcb_route(mode='auto') — or pcb_route(tracks=[...]) for specific connections"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+125.14,
+113.35
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+125.14,
+112.25
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.59,
+113.9
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.59,
+112.8
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.59,
+111.7
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.04,
+113.35
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+124.04,
+112.25
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "error",
+"code": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm)",
+"items": [
+"PTH pad 19 [GND] of U2"
+],
+"at": [
+123.49,
+113.9
+],
+"fix": "inspect with pcb_read() and render()"
+},
+{
+"severity": "info",
+"code": "DRC_SUMMARY",
+"message": "error:drill_out_of_range×12, error:starved_thermal×1"
+}
+]
+},
+"captions": [
+"[image] PCB layers F.Cu,F.SilkS,Edge.Cuts (painted in this order) — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\pcb-pour.png"
+]
+},
+{
+"tool": "verify",
+"args": {},
+"summary": "ERC 0 errors/0 warnings (no change); DRC 13 errors/0 warnings, 5 unrouted, 0 parity (+18 new, -17 fixed) → pcb_route() — 5 unrouted connection(s) on /BOOT, GND",
+"payload": {
+"project": "c3ref",
+"erc": {
+"errors": 0,
+"warnings": 0,
+"new": 0,
+"fixed": 0,
+"findings": [],
+"report": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\.copper\\erc.json"
+},
+"drc": {
+"errors": 13,
+"warnings": 0,
+"unconnected": 5,
+"parity": 0,
+"new": 18,
+"fixed": 17,
+"by_type": {
+"drill_out_of_range": 12,
+"starved_thermal": 1,
+"unconnected_items": 5
+},
+"unrouted_nets": [
+"/BOOT",
+"GND"
+],
+"findings": [
+{
+"severity": "error",
+"type": "drill_out_of_range",
+"message": "Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm) ×12",
+"at": [
+125.14,
+113.35
+],
+"fix": "use JLC-capable holes: via ≥ 0.6/0.3 mm, PTH ring ≥ 0.15 mm, holes ≥ 0.5 mm apart — pcb_setup(rules='jlc') then fix the offending vias/pads  [same fix for each of the 12 refs]",
+"section": "violations",
+"refs": [
+"U2.19"
+],
+"count": 12
+},
+{
+"severity": "error",
+"type": "starved_thermal",
+"message": "Thermal relief connection to zone incomplete (layer F.Cu; zone min spoke count 2; actual 1) — J1.SH",
+"at": [
+148.6179,
+100.0023
+],
+"fix": "adjust the copper pour: pcb_pour(net=…, clearance=…, thermal_spoke=…) or pcb_pour(fill_only=true) to refill",
+"section": "violations",
+"refs": [
+"J1.SH"
+]
+},
+{
+"severity": "error",
+"type": "unconnected_items",
+"message": "5× unconnected_items, e.g. Missing connection between items",
+"at": [
+148.6179,
+100.0023
+],
+"fix": "pcb_route() to autoroute every unrouted connection — or pcb_pour(net='GND') for the ground net",
+"section": "unconnected_items",
+"count": 5,
+"refs": [
+"SW2.1",
+"SW2.2"
+],
+"fixes": [
+"route it: pcb_route(tracks=[{\"from\":\"SW2.1\",\"to\":\"SW2.1\"}]) — or pcb_route() to autoroute every unrouted connection",
+"pcb_route() to autoroute every unrouted connection"
+]
+}
+],
+"fixed_findings": [
+"Missing footprint C1 (10uF)",
+"Missing footprint SW2 (SW_Push)",
+"Missing footprint U2 (ESP32-C3-WROOM-02)",
+"Missing footprint R4 (10k)",
+"Missing footprint J1 (USB_C_Receptacle_USB2.0_16P)",
+"Missing footprint C3 (100nF)",
+"Missing footprint R3 (10k)",
+"Missing footprint C2 (22uF)",
+"Missing footprint C5 (1uF)",
+"Missing footprint D1 (LED blue)",
+"Missing footprint J2 (Conn_01x10)",
+"Missing footprint R5 (1k)",
+"Missing footprint R1 (5.1k)",
+"Missing footprint SW1 (SW_Push)",
+"Missing footprint U1 (AMS1117-3.3)"
+],
+"report": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\.copper\\drc.json"
+},
+"next": "pcb_route() — 5 unrouted connection(s) on /BOOT, GND"
+},
+"captions": []
+},
+{
+"tool": "render",
+"args": {
+"target": "pcb"
+},
+"summary": "rendered PCB top",
+"payload": {
+"target": "pcb",
+"view": "top",
+"image": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\render\\pcb-top.png"
+},
+"captions": [
+"[image] PCB layers B.Cu,B.SilkS,F.Cu,F.Mask,F.SilkS,Edge.Cuts (painted in this order) — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\render\\pcb-top.png"
+]
+},
+{
+"tool": "render",
+"args": {
+"target": "pcb3d"
+},
+"summary": "rendered 3D iso",
+"payload": {
+"target": "pcb3d",
+"view": "iso",
+"image": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\render\\pcb-3d-iso.png"
+},
+"captions": [
+"[image] PCB 3D iso — saved at C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\render\\pcb-3d-iso.png"
+]
+},
+{
+"tool": "pcb_read",
+"args": {},
+"summary": "c3ref.kicad_pcb: 17 footprints, 50.0×32.0 mm, 2 layers, 165 tracks, 21 vias, 5 unrouted",
+"payload": {
+"file_version": 20260206,
+"copper_layers": 2,
+"outline": {
+"bbox": [
+100.0,
+100.0,
+150.0,
+132.0
+],
+"width": 50.0,
+"height": 32.0,
+"closed": true,
+"polygon_points": 48
+},
+"tracks": 165,
+"arcs": 0,
+"vias": 21,
+"track_length_mm": 427.95,
+"unconnected": 5,
+"footprint_count": 17,
+"footprints": [
+{
+"ref": "U2",
+"value": "ESP32-C3-WROOM-02",
+"footprint": "RF_Module:ESP32-C3-WROOM-02",
+"x": 125.0,
+"y": 113.0,
+"rot": 180.0,
+"side": "top",
+"bbox": [
+110.7,
+105.81,
+139.29,
+131.4
+],
+"lcsc": "C2934560"
+},
+{
+"ref": "J2",
+"value": "Conn_01x10",
+"footprint": "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical",
+"x": 147.5,
+"y": 104.5,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+145.69,
+102.69,
+149.31,
+129.18
+],
+"lcsc": "C57369"
+},
+{
+"ref": "C1",
+"value": "10uF",
+"footprint": "Capacitor_SMD:C_0603_1608Metric",
+"x": 112.0,
+"y": 104.5,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+110.47,
+103.72,
+113.53,
+105.28
+],
+"lcsc": "C96446",
+"mpn": "CL10A106MA8NRNC",
+"fields": {
+"Manufacturer": "Samsung Electro Mechanics",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "R5",
+"value": "1k",
+"footprint": "Resistor_SMD:R_0402_1005Metric",
+"x": 132.0,
+"y": 105.0,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+131.03,
+104.48,
+132.97,
+105.52
+],
+"lcsc": "C11702",
+"mpn": "0402WGF1001TCE",
+"fields": {
+"Manufacturer": "UNI ROYAL Uniroyal Elec",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "R2",
+"value": "5.1k",
+"footprint": "Resistor_SMD:R_0402_1005Metric",
+"x": 108.5,
+"y": 122.5,
+"rot": 180.0,
+"side": "top",
+"bbox": [
+107.53,
+121.98,
+109.47,
+123.02
+],
+"lcsc": "C25905",
+"mpn": "0402WGF5101TCE",
+"fields": {
+"Manufacturer": "UNI ROYAL Uniroyal Elec",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "C4",
+"value": "10uF",
+"footprint": "Capacitor_SMD:C_0603_1608Metric",
+"x": 101.5,
+"y": 108.0,
+"rot": 90.0,
+"side": "top",
+"bbox": [
+100.72,
+106.47,
+102.28,
+109.53
+],
+"lcsc": "C96446",
+"mpn": "CL10A106MA8NRNC",
+"fields": {
+"Manufacturer": "Samsung Electro Mechanics",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "C5",
+"value": "1uF",
+"footprint": "Capacitor_SMD:C_0402_1005Metric",
+"x": 140.5,
+"y": 117.5,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+139.54,
+117.0,
+141.46,
+118.0
+],
+"lcsc": "C52923",
+"mpn": "CL05A105KA5NQNC",
+"fields": {
+"Manufacturer": "Samsung Electro Mechanics",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "R4",
+"value": "10k",
+"footprint": "Resistor_SMD:R_0402_1005Metric",
+"x": 134.0,
+"y": 104.5,
+"rot": -90.0,
+"side": "top",
+"bbox": [
+133.49,
+103.53,
+134.51,
+105.47
+],
+"lcsc": "C25744",
+"mpn": "0402WGF1002TCE",
+"fields": {
+"Manufacturer": "UNI ROYAL Uniroyal Elec",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "SW1",
+"value": "SW_Push",
+"footprint": "Button_Switch_SMD:SW_SPST_TL3342",
+"x": 106.0,
+"y": 126.5,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+101.7,
+123.45,
+110.3,
+129.54
+],
+"lcsc": "C318884"
+},
+{
+"ref": "U1",
+"value": "AMS1117-3.3",
+"footprint": "Package_TO_SOT_SMD:SOT-223-3_TabPin2",
+"x": 106.5,
+"y": 105.5,
+"rot": 90.0,
+"side": "top",
+"bbox": [
+102.86,
+101.06,
+110.14,
+109.94
+],
+"lcsc": "C6186"
+},
+{
+"ref": "C3",
+"value": "100nF",
+"footprint": "Capacitor_SMD:C_0402_1005Metric",
+"x": 140.5,
+"y": 119.0,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+139.54,
+118.5,
+141.46,
+119.5
+],
+"lcsc": "C1525",
+"mpn": "CL05B104KO5NNNC",
+"fields": {
+"Manufacturer": "Samsung Electro Mechanics",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "C2",
+"value": "22uF",
+"footprint": "Capacitor_SMD:C_0805_2012Metric",
+"x": 112.5,
+"y": 102.0,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+110.75,
+100.97,
+114.25,
+103.03
+],
+"lcsc": "C45783",
+"mpn": "CL21A226MAQNNNE",
+"fields": {
+"Manufacturer": "Samsung Electro Mechanics",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "J1",
+"value": "USB_C_Receptacle_USB2.0_16P",
+"footprint": "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+"x": 105.0,
+"y": 116.0,
+"rot": -90.0,
+"side": "top",
+"bbox": [
+100.81,
+110.64,
+110.31,
+121.36
+],
+"lcsc": "C165948"
+},
+{
+"ref": "SW2",
+"value": "SW_Push",
+"footprint": "Button_Switch_SMD:SW_SPST_TL3342",
+"x": 169.0,
+"y": 130.5,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+164.71,
+127.45,
+173.29,
+133.54
+],
+"lcsc": "C318884"
+},
+{
+"ref": "R3",
+"value": "10k",
+"footprint": "Resistor_SMD:R_0402_1005Metric",
+"x": 141.0,
+"y": 116.0,
+"rot": 180.0,
+"side": "top",
+"bbox": [
+140.03,
+115.48,
+141.97,
+116.52
+],
+"lcsc": "C25744",
+"mpn": "0402WGF1002TCE",
+"fields": {
+"Manufacturer": "UNI ROYAL Uniroyal Elec",
+"JLC Class": "Basic"
+}
+},
+{
+"ref": "D1",
+"value": "LED blue",
+"footprint": "LED_SMD:LED_0603_1608Metric",
+"x": 127.5,
+"y": 104.5,
+"rot": 0.0,
+"side": "top",
+"bbox": [
+125.97,
+103.72,
+129.03,
+105.28
+],
+"lcsc": "C965807",
+"mpn": "XL-1608UBC-04",
+"fields": {
+"Sim.Pins": "1=K 2=A",
+"Manufacturer": "XINGLIGHT",
+"JLC Class": "Extended"
+}
+},
+{
+"ref": "R1",
+"value": "5.1k",
+"footprint": "Resistor_SMD:R_0402_1005Metric",
+"x": 106.0,
+"y": 122.5,
+"rot": 180.0,
+"side": "top",
+"bbox": [
+105.03,
+121.98,
+106.97,
+123.02
+],
+"lcsc": "C25905",
+"mpn": "0402WGF5101TCE",
+"fields": {
+"Manufacturer": "UNI ROYAL Uniroyal Elec",
+"JLC Class": "Basic"
+}
+}
+],
+"nets": [
+{
+"name": "+3V3",
+"pads": 10,
+"class": "Power",
+"nodes": [
+"U2.1",
+"J2.1",
+"C4.1",
+"R4.1",
+"U1.2",
+"U1.2",
+"C3.1",
+"C2.1",
+"R3.1",
+"D1.2"
+]
+},
+{
+"name": "/BOOT",
+"pads": 4,
+"class": "Default",
+"nodes": [
+"U2.8",
+"R4.2",
+"SW2.1",
+"SW2.1"
+]
+},
+{
+"name": "/CC1",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"J1.A5",
+"R1.1"
+]
+},
+{
+"name": "/CC2",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"R2.1",
+"J1.B5"
+]
+},
+{
+"name": "/EN",
+"pads": 5,
+"class": "Default",
+"nodes": [
+"U2.2",
+"C5.1",
+"SW1.1",
+"SW1.1",
+"R3.2"
+]
+},
+{
+"name": "/IO2",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.16",
+"J2.5"
+]
+},
+{
+"name": "/IO3",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.15",
+"J2.6"
+]
+},
+{
+"name": "/IO4",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.3",
+"J2.7"
+]
+},
+{
+"name": "/IO5",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.4",
+"J2.8"
+]
+},
+{
+"name": "/IO6",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.5",
+"J2.9"
+]
+},
+{
+"name": "/IO7",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.6",
+"J2.10"
+]
+},
+{
+"name": "/LED",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.7",
+"R5.2"
+]
+},
+{
+"name": "/LED_K",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"R5.1",
+"D1.1"
+]
+},
+{
+"name": "/RX",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.11",
+"J2.4"
+]
+},
+{
+"name": "/TX",
+"pads": 2,
+"class": "Default",
+"nodes": [
+"U2.12",
+"J2.3"
+]
+},
+{
+"name": "/USB_DN",
+"pads": 3,
+"class": "Default",
+"nodes": [
+"U2.13",
+"J1.A7",
+"J1.B7"
+]
+},
+{
+"name": "/USB_DP",
+"pads": 3,
+"class": "Default",
+"nodes": [
+"U2.14",
+"J1.A6",
+"J1.B6"
+]
+},
+{
+"name": "GND",
+"pads": 35,
+"class": "Power",
+"nodes": [
+"U2.9",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"U2.19",
+"…"
+]
+},
+{
+"name": "VBUS",
+"pads": 6,
+"class": "Power",
+"nodes": [
+"C1.1",
+"U1.3",
+"J1.A4",
+"J1.A9",
+"J1.B4",
+"J1.B9"
+]
+},
+{
+"name": "unconnected-(J1-SBU1-PadA8)",
+"pads": 1,
+"class": "Default",
+"nodes": [
+"J1.A8"
+]
+},
+{
+"name": "unconnected-(J1-SBU2-PadB8)",
+"pads": 1,
+"class": "Default",
+"nodes": [
+"J1.B8"
+]
+},
+{
+"name": "unconnected-(U2-IO0-Pad18)",
+"pads": 1,
+"class": "Default",
+"nodes": [
+"U2.18"
+]
+},
+{
+"name": "unconnected-(U2-IO1-Pad17)",
+"pads": 1,
+"class": "Default",
+"nodes": [
+"U2.17"
+]
+},
+{
+"name": "unconnected-(U2-IO10-Pad10)",
+"pads": 1,
+"class": "Default",
+"nodes": [
+"U2.10"
+]
+}
+],
+"zones": [
+{
+"uuid": "e2e789fa-0c34-4240-b08e-b2066027420a",
+"net": "GND",
+"name": "GND_FCu",
+"layers": [
+"F.Cu"
+],
+"filled": true,
+"priority": 0,
+"rule_area": false
+},
+{
+"uuid": "b8fe61b9-6ddf-46a8-a3c7-14f6b211b55f",
+"net": "",
+"name": "copper-antenna-U2",
+"layers": [
+"F.Cu",
+"B.Cu"
+],
+"filled": false,
+"priority": 0,
+"rule_area": true
+},
+{
+"uuid": "49430f72-067c-4390-bd1f-d21ca278bf0a",
+"net": "GND",
+"name": "GND_BCu",
+"layers": [
+"B.Cu"
+],
+"filled": true,
+"priority": 0,
+"rule_area": false
+}
+],
+"revision": "8c3f28fcea101071"
+},
+"captions": []
+},
+{
+"tool": "fab_export",
+"args": {
+"waive": [
+"all"
+]
+},
+"summary": "JLC pack for c3ref ready: C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\fab\\c3ref-JLCPCB.zip — 2 layers, 50.0×32.0 mm, 17 placements / 13 BOM lines (WAIVED: drc, unrouted)",
+"payload": {
+"project": "c3ref",
+"zip": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\fab\\c3ref-JLCPCB.zip",
+"zip_files": [
+"c3ref-B_Cu.gbl",
+"c3ref-B_Mask.gbs",
+"c3ref-B_Paste.gbp",
+"c3ref-B_Silkscreen.gbo",
+"c3ref-Edge_Cuts.gm1",
+"c3ref-F_Cu.gtl",
+"c3ref-F_Mask.gts",
+"c3ref-F_Paste.gtp",
+"c3ref-F_Silkscreen.gto",
+"c3ref-NPTH.drl",
+"c3ref-PTH.drl"
+],
+"gerber_dir": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\fab\\gerbers",
+"layers": [
+"F.Cu",
+"B.Cu",
+"F.Paste",
+"B.Paste",
+"F.SilkS",
+"B.SilkS",
+"F.Mask",
+"B.Mask",
+"Edge.Cuts"
+],
+"copper_layers": 2,
+"bom": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\fab\\c3ref-BOM-JLCPCB.csv",
+"cpl": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\copper-out\\fab\\c3ref-CPL-JLCPCB.csv",
+"bom_lines": 13,
+"placements": 17,
+"bom_preview": [
+{
+"Comment": "10uF",
+"Designator": "C1,C4",
+"Footprint": "C_0603_1608Metric",
+"LCSC Part #": "C96446"
+},
+{
+"Comment": "22uF",
+"Designator": "C2",
+"Footprint": "C_0805_2012Metric",
+"LCSC Part #": "C45783"
+},
+{
+"Comment": "100nF",
+"Designator": "C3",
+"Footprint": "C_0402_1005Metric",
+"LCSC Part #": "C1525"
+},
+{
+"Comment": "1uF",
+"Designator": "C5",
+"Footprint": "C_0402_1005Metric",
+"LCSC Part #": "C52923"
+},
+{
+"Comment": "LED blue",
+"Designator": "D1",
+"Footprint": "LED_0603_1608Metric",
+"LCSC Part #": "C965807"
+},
+{
+"Comment": "USB_C_Receptacle_USB2.0_16P",
+"Designator": "J1",
+"Footprint": "USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+"LCSC Part #": "C165948"
+},
+{
+"Comment": "Conn_01x10",
+"Designator": "J2",
+"Footprint": "PinHeader_1x10_P2.54mm_Vertical",
+"LCSC Part #": "C57369"
+},
+{
+"Comment": "5.1k",
+"Designator": "R1,R2",
+"Footprint": "R_0402_1005Metric",
+"LCSC Part #": "C25905"
+}
+],
+"cpl_preview": [
+{
+"Designator": "C1",
+"x": 112.0,
+"y": -104.5,
+"layer": "Top",
+"rotation": 0.0
+},
+{
+"Designator": "C2",
+"x": 112.5,
+"y": -102.0,
+"layer": "Top",
+"rotation": 0.0
+},
+{
+"Designator": "C3",
+"x": 140.5,
+"y": -119.0,
+"layer": "Top",
+"rotation": 0.0
+},
+{
+"Designator": "C4",
+"x": 101.5,
+"y": -108.0,
+"layer": "Top",
+"rotation": 90.0
+},
+{
+"Designator": "C5",
+"x": 140.5,
+"y": -117.5,
+"layer": "Top",
+"rotation": 0.0
+},
+{
+"Designator": "D1",
+"x": 127.5,
+"y": -104.5,
+"layer": "Top",
+"rotation": 0.0
+}
+],
+"rotation_corrections": [
+{
+"ref": "J1",
+"correction": 180.0,
+"by": "rule ^USB_C_Receptacle_HRO_TYPE-C-31-M-12*"
+},
+{
+"ref": "U1",
+"correction": 180.0,
+"by": "rule ^SOT-223"
+}
+],
+"native_orientation": [],
+"not_placed": [],
+"bom_without_cpl": [],
+"placement_source": "kicad_pcb",
+"summary": {
+"board_mm": [
+50.0,
+32.0
+],
+"copper_layers": 2,
+"thickness_mm": 1.6,
+"min_track_width_mm": 0.2,
+"min_clearance_mm": 0.2243,
+"min_drill_mm": 0.2,
+"vias": {
+"through": 21,
+"blind": 0,
+"buried": 0,
+"micro": 0
+},
+"slots": 4,
+"assembled_parts": 17,
+"unique_lcsc": 13,
+"tht_parts": 1,
+"bottom_side_parts": 0,
+"extended_parts": 4,
+"class_unknown": 0,
+"estimated_extended_fee_usd": 12.0,
+"order_notes": [
+"≤100×100 mm: qualifies for JLC's cheapest prototype price tier",
+"min drill 0.2 mm < 0.3 mm adds JLC's small-via surcharge (≥0.15 mm on 4+ layers)",
+"1 through-hole part(s): JLC hand-solders THT at extra cost",
+"Order: upload the zip at jlcpcb.com/quote → enable PCB Assembly → upload BOM + CPL → check every part's orientation in JLC's placement preview before paying"
+]
+},
+"checks": {
+"erc": {
+"errors": 0,
+"warnings": 0
+},
+"drc": {
+"errors": 13,
+"warnings": 0,
+"unconnected": 5,
+"parity": 0
+}
+},
+"waived": [
+{
+"code": "drc",
+"message": "DRC has 13 error(s)",
+"fix": "verify(what=['drc']) and fix the findings",
+"top": [
+"Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm) — U2.19",
+"Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm) — U2.19",
+"Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm) — U2.19",
+"Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm) — U2.19",
+"Hole size out of range (rule 'JLC: maximum drill 6.3 mm' min hole 0.3000 mm; actual 0.2000 mm) — U2.19"
+]
+},
+{
+"code": "unrouted",
+"message": "5 unrouted connection(s) on nets ['/BOOT', 'GND']",
+"fix": "pcb_route() to autoroute the rest (pcb_pour(net='GND') for ground planes), then verify"
+}
+]
+},
+"captions": []
+},
+{
+"tool": "copper_status",
+"args": {},
+"summary": "Copper 1.0.0 · KiCad 10.0.6 · project: c3ref → pcb_route() to finish routing, then verify()",
+"payload": {
+"copper": "1.0.0",
+"kicad": {
+"installs": [
+{
+"version": "10.0.6",
+"root": "C:\\Program Files\\KiCad\\10.0",
+"kicad_cli": "C:\\Program Files\\KiCad\\10.0\\bin\\kicad-cli.exe",
+"python": "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe",
+"share": "C:\\Program Files\\KiCad\\10.0\\share\\kicad"
+}
+],
+"config_dir": "C:\\tmp\\copper budget 48kq6yul\\kcfg\\10.0",
+"active": {
+"version": "10.0.6",
+"root": "C:\\Program Files\\KiCad\\10.0",
+"kicad_cli": "C:\\Program Files\\KiCad\\10.0\\bin\\kicad-cli.exe",
+"python": "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe",
+"share": "C:\\Program Files\\KiCad\\10.0\\share\\kicad"
+}
+},
+"capabilities": {
+"kicad_cli": true,
+"pcbnew_worker": {
+"ok": true,
+"python": "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe",
+"version": "10.0.6"
+},
+"ipc": {
+"socket": null,
+"kicad_running_with_api": false,
+"kipy_installed": false
+},
+"routing": {
+"tools_dir": "C:\\tmp\\copper budget 48kq6yul\\home\\tools",
+"freerouting": "C:\\Users\\dev\\.copper\\tools\\freerouting-2.2.3.jar",
+"java": "C:\\Users\\dev\\.copper\\tools\\jre-25\\jdk-25.0.5+8-jre\\bin\\java.exe",
+"autorouting_available": true,
+"autorouting_ready": true,
+"autorouting": "ready"
+}
+},
+"active_project": {
+"name": "c3ref",
+"dir": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref",
+"schematic": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\c3ref.kicad_sch",
+"pcb": "C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\c3ref.kicad_pcb",
+"open_in_kicad": {
+"schematic": false,
+"pcb": false
+},
+"last_verify": {
+"erc": {
+"ts": "2026-11-09T22:32:15",
+"errors": 0,
+"warnings": 0,
+"revision": "39a9bab74ae7b78f",
+"stale": false
+},
+"drc": {
+"ts": "2026-11-09T22:32:16",
+"errors": 13,
+"warnings": 0,
+"unconnected": 5,
+"parity": 0,
+"revision": "8c3f28fcea101071",
+"stale": false
+}
+}
+},
+"recent_projects": [
+"C:\\Users\\dev\\Documents\\Copper\\proj dir\\c3ref\\c3ref.kicad_pro"
+],
+"tools_loaded": 30,
+"tool_load_errors": {},
+"next": "pcb_route() to finish routing, then verify()"
+},
+"captions": []
+}
+]
+}

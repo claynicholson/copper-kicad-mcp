@@ -1,0 +1,89 @@
+# KiCad compatibility matrix for Copper.
+#
+# NEVER RUN YET: written on a machine with KiCad 10.0.6 only. It is the first real check of everything
+# docs/COMPATIBILITY.md marks "modelled" or "unverified" (KiCad 10.0.8, 9.0.9, Linux discovery).
+#
+# The fast no-KiCad checks are in ci.yml.
+name: kicad-matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"   # weekly: KiCad point releases land without a Copper commit
+
+permissions:
+  contents: read
+
+jobs:
+  pure:
+    # No KiCad: version parsing, install selection, update check, ERC scale, capability gating against
+    # tests/data/fake_kicad_cli.py. Tests that need a real KiCad report SKIP.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install pillow
+      - run: python tests/test_compat.py
+      - run: python tests/test_protocol.py
+
+  kicad:
+    # The official KiCad images (Debian based; pcbnew is importable from the system python3).
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - tag: "10.0"        # newest 10.0.x: the supported target
+            required: true
+          - tag: "10.0.6"      # the release with the ERC x100 report bug and the old zone filler
+            required: true
+          - tag: "9.0"         # view/verify only: `copper doctor` must say so and every edit must be refused
+            required: false
+    continue-on-error: ${{ !matrix.required }}
+    container:
+      image: kicad/kicad:${{ matrix.tag }}
+      options: --user root
+    env:
+      KICAD_CONFIG_HOME: /tmp/kicad-config
+      COPPER_HOME: /tmp/copper-home
+      COPPER_NO_UPDATE_CHECK: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - run: kicad-cli version
+      - run: python3 -m pip install --break-system-packages pillow || apt-get update && apt-get install -y python3-pil
+      - name: Compatibility suite
+        run: python3 tests/test_compat.py
+      - name: Compatibility table
+        run: PYTHONPATH=src python3 -m copper_kicad doctor --json --fast --offline || true
+      - name: Full suites (KiCad 10 only)
+        if: matrix.tag != '9.0'
+        run: |
+          for t in protocol schematic verify pcb guided_route focus parts distribution; do
+            echo "::group::test_$t"
+            python3 tests/test_$t.py || echo "test_$t failed" >> /tmp/failed
+            echo "::endgroup::"
+          done
+          if [ -f /tmp/failed ]; then cat /tmp/failed; exit 1; fi
+      - name: Record the kicad-cli command tree
+        if: always()
+        run: |
+          PYTHONPATH=src python3 - <<'PY'
+          import json
+          from copper_kicad.kicad import compat, env
+          k = env.kicad(); c = compat.caps(k); c.count()
+          new = {cmd: v["flags"] for cmd, v in sorted(c.d["help"].items())}
+          old = {cmd: v["flags"] for cmd, v in json.load(open("tests/data/cli-10.0.json"))["help"].items()}
+          for cmd in sorted(set(new) | set(old)):
+              a, b = set(old.get(cmd, [])), set(new.get(cmd, []))
+              if a != b:
+                  print(cmd or "(root)", "removed:", sorted(a - b), "added:", sorted(b - a))
+          print("KiCad", k.full_version, "learned formats", compat.learned_stamps(k))
+          PY

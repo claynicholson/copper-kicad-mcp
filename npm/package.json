@@ -1,0 +1,45 @@
+{
+  "name": "copper-kicad",
+  "version": "1.1.0",
+  "description": "Copper for KiCad: the MCP server that lets any AI app design real, orderable KiCad boards.",
+  "mcpName": "io.github.claynicholson/copper",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "kicad",
+    "pcb",
+    "eda",
+    "schematic",
+    "jlcpcb",
+    "lcsc",
+    "electronics"
+  ],
+  "homepage": "https://coppereda.com",
+  "bugs": {
+    "url": "https://github.com/claynicholson/copper-kicad-mcp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claynicholson/copper-kicad-mcp.git",
+    "directory": "npm"
+  },
+  "license": "MIT",
+  "author": "Clay Nicholson (https://github.com/claynicholson)",
+  "bin": {
+    "copper-kicad": "bin/copper-kicad.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "py/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "prepack": "node scripts/vendor.js",
+    "test": "node --test test/"
+  }
+}

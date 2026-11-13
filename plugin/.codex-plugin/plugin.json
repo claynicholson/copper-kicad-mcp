@@ -1,0 +1,27 @@
+{
+  "name": "copper",
+  "version": "1.1.0",
+  "description": "Design real, orderable KiCad boards: schematics, parts sourcing (LCSC/JLCPCB by default, any vendor by config), PCB layout, KiCad-verified ERC/DRC, renders and fab files for any PCB fab.",
+  "keywords": [
+    "kicad",
+    "pcb",
+    "electronics",
+    "eda",
+    "lcsc",
+    "jlcpcb"
+  ],
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Copper for KiCad",
+    "category": "Development",
+    "websiteURL": "https://coppereda.com",
+    "privacyPolicyURL": "https://github.com/claynicholson/copper-kicad-mcp#privacy",
+    "logo": "./assets/logo.png",
+    "defaultPrompt": [
+      "Use Copper to design a USB-C powered ESP32-C3 board with a status LED, ready to order.",
+      "Run a Copper design review on this KiCad project and fix what would block a fab order.",
+      "Make the BOM of this KiCad project 100% sourced from the configured parts providers."
+    ]
+  }
+}

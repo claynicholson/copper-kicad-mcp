@@ -1,0 +1,14 @@
+{
+  "name": "copper",
+  "displayName": "Copper for KiCad",
+  "version": "1.1.0",
+  "description": "Design real, orderable KiCad boards: schematics, parts sourcing (LCSC/JLCPCB by default, any vendor by config), PCB layout, KiCad-verified ERC/DRC, renders and fab files for any PCB fab.",
+  "author": {
+    "name": "Clay Nicholson",
+    "url": "https://github.com/claynicholson"
+  },
+  "homepage": "https://coppereda.com",
+  "repository": "https://github.com/claynicholson/copper-kicad-mcp",
+  "license": "MIT",
+  "keywords": ["kicad", "pcb", "schematic", "electronics", "eda", "lcsc", "jlcpcb", "mcp"]
+}

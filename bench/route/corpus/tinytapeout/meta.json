@@ -1,0 +1,2028 @@
+{
+ "name": "tinytapeout",
+ "kind": "real",
+ "difficulty": 4,
+ "note": "4-layer, 108 nets, 757 pads",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/tiny_tapeout/tinytapeout-demo.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "B.Cu"
+  ],
+  "footprints": 309,
+  "pads": 757,
+  "smd_pads": 470,
+  "tht_pads": 287,
+  "min_pad_pitch_mm": 0.4,
+  "nets": 108,
+  "size_mm": [
+   104.6,
+   81.1
+  ],
+  "origin_mm": [
+   56.45,
+   53.45
+  ],
+  "zones": 2,
+  "zone_nets": [
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.0,
+  "min_track": 0.16,
+  "mst_mm": {
+   "out6": 163.623,
+   "Net-(JP7-B)": 1.985,
+   "GND": 1080.385,
+   "+1V8": 132.135,
+   "+5V": 157.307,
+   "Net-(D1-A)": 1.3,
+   "/RP2040/DVDD": 15.25,
+   "+3V3": 434.388,
+   "out0": 122.576,
+   "Net-(JP1-B)": 1.986,
+   "/CC2": 1.883,
+   "/RP2040/QSPI_SD3": 9.194,
+   "VBUS": 13.618,
+   "/CC1": 2.731,
+   "usb_d+": 50.615,
+   "usb_d-": 50.616,
+   "Net-(C3-Pad1)": 22.572,
+   "in0": 116.67,
+   "in2": 121.837,
+   "out3": 158.0,
+   "in1": 110.514,
+   "in4": 94.235,
+   "in6": 86.241,
+   "out7": 166.894,
+   "in5": 95.576,
+   "Net-(R5-Pad2)": 2.19,
+   "Net-(C1-Pad2)": 7.46,
+   "Net-(R1-Pad2)": 2.19,
+   "Net-(U6-XIN)": 7.843,
+   "in3": 103.124,
+   "HK_CSB": 96.963,
+   "MUX_SEL": 0.903,
+   "Net-(C30-Pad1)": 3.005,
+   "Net-(D3-A)": 1.3,
+   "Net-(R11-Pad2)": 2.19,
+   "Caravel_CSB": 48.627,
+   "Net-(JP3-B)": 1.985,
+   "Net-(U1-C)": 9.794,
+   "Net-(U1-A)": 4.644,
+   "out2": 121.18,
+   "Net-(R3-Pad2)": 2.19,
+   "Net-(JP8-B)": 1.985,
+   "uio0": 114.33,
+   "uio1": 122.699,
+   "uio2": 124.123,
+   "~{project_rst}": 74.041,
+   "out4": 177.491,
+   "out5": 135.679,
+   "RP_proj_clk": 18.572,
+   "project_clk": 38.944,
+   "/~{CRVRST}": 44.033,
+   "Net-(R13-Pad1)": 4.916,
+   "in7": 52.576,
+   "/RP2040/SWDIO": 36.034,
+   "/RP2040/SWCLK": 34.474,
+   "uio3": 143.465,
+   "uio4": 141.47,
+   "uio5": 148.632,
+   "uio6": 140.496,
+   "uio7": 96.987,
+   "Net-(R2-Pad2)": 2.19,
+   "Net-(R10-Pad2)": 2.19,
+   "Net-(R6-Pad2)": 2.19,
+   "Net-(R4-Pad2)": 2.19,
+   "Net-(D4-A)": 2.028,
+   "out1": 127.846,
+   "Net-(JP2-B)": 1.986,
+   "Caravel_D1": 62.579,
+   "Net-(U7-IO2)": 3.321,
+   "Caravel_D0": 47.682,
+   "Caravel_SCK": 53.101,
+   "Net-(U7-IO3)": 2.804,
+   "Net-(U1-G)": 13.974,
+   "Net-(U1-E)": 8.789,
+   "Net-(U1-D)": 9.164,
+   "Net-(U1-DP)": 3.683,
+   "Net-(U1-B)": 1.903,
+   "Net-(U1-F)": 11.057,
+   "boot_mode": 34.219,
+   "/RP2040/QSPI_SD1": 13.599,
+   "/RP2040/QSPI_SD2": 12.875,
+   "/RP2040/QSPI_SD0": 12.087,
+   "/RP2040/QSPI_CLK": 11.522,
+   "/RP2040/RUN": 26.682,
+   "HK_SCK": 82.774,
+   "SDI{slash}out0": 7.709,
+   "SDO{slash}out1": 8.688,
+   "ctrl_ena": 69.858,
+   "~{crst}{slash}out2": 9.061,
+   "cinc{slash}out3": 7.888,
+   "Net-(U6-XOUT)": 2.055,
+   "RPIO29": 58.899,
+   "Net-(JP6-B)": 1.985,
+   "usrclk2": 59.048,
+   "HK_SDI": 86.193,
+   "HK_SDO": 81.02,
+   "mprj_io0": 39.799,
+   "~{ctrl_sel_rst}": 85.945,
+   "mio37": 26.076,
+   "ctrl_sel_inc": 77.529,
+   "mio35": 15.953,
+   "mio33": 10.924,
+   "xclk": 46.265,
+   "Net-(R14-Pad1)": 3.446,
+   "Net-(D2-A)": 1.25,
+   "Net-(JP5-B)": 1.985,
+   "Net-(JP4-B)": 1.985,
+   "gpio": 46.778
+  },
+  "mst_total_mm": 6581.4
+ },
+ "reference": {
+  "tracks": 2143,
+  "vias": 405,
+  "arcs": 0,
+  "blind_or_micro_vias": 0,
+  "length_mm": 7743.92,
+  "unconnected": 1,
+  "nets": {
+   "GND": {
+    "length": 142.355,
+    "vias": 67,
+    "segments": 167,
+    "widths": {
+     "0.4": 7.798,
+     "0.25": 69.287,
+     "0.2": 58.228,
+     "0.18": 0.591,
+     "0.3": 4.993,
+     "0.16": 1.457
+    },
+    "layers": {
+     "F.Cu": 135.412,
+     "B.Cu": 6.944
+    }
+   },
+   "+5V": {
+    "length": 181.971,
+    "vias": 6,
+    "segments": 27,
+    "widths": {
+     "0.3": 181.971
+    },
+    "layers": {
+     "F.Cu": 93.346,
+     "B.Cu": 88.625
+    }
+   },
+   "Net-(C1-Pad2)": {
+    "length": 10.03,
+    "vias": 3,
+    "segments": 12,
+    "widths": {
+     "0.2": 10.03
+    },
+    "layers": {
+     "F.Cu": 4.678,
+     "B.Cu": 5.352
+    }
+   },
+   "gpio": {
+    "length": 59.3,
+    "vias": 2,
+    "segments": 7,
+    "widths": {
+     "0.2": 59.3
+    },
+    "layers": {
+     "F.Cu": 46.1,
+     "B.Cu": 13.2
+    }
+   },
+   "Caravel_SCK": {
+    "length": 60.403,
+    "vias": 2,
+    "segments": 12,
+    "widths": {
+     "0.2": 60.403
+    },
+    "layers": {
+     "F.Cu": 54.403,
+     "B.Cu": 6.0
+    }
+   },
+   "Caravel_D1": {
+    "length": 64.206,
+    "vias": 3,
+    "segments": 16,
+    "widths": {
+     "0.2": 64.206
+    },
+    "layers": {
+     "F.Cu": 53.415,
+     "B.Cu": 10.791
+    }
+   },
+   "Caravel_D0": {
+    "length": 53.895,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.2": 53.895
+    },
+    "layers": {
+     "F.Cu": 48.795,
+     "B.Cu": 5.1
+    }
+   },
+   "Caravel_CSB": {
+    "length": 51.536,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.2": 51.536
+    },
+    "layers": {
+     "F.Cu": 51.536
+    }
+   },
+   "xclk": {
+    "length": 53.484,
+    "vias": 2,
+    "segments": 14,
+    "widths": {
+     "0.245": 53.484
+    },
+    "layers": {
+     "F.Cu": 45.047,
+     "B.Cu": 8.437
+    }
+   },
+   "+3V3": {
+    "length": 641.185,
+    "vias": 55,
+    "segments": 340,
+    "widths": {
+     "0.25": 200.006,
+     "0.3": 402.483,
+     "0.16": 25.538,
+     "0.18": 2.305,
+     "0.245": 2.413,
+     "0.2": 2.14,
+     "0.4": 6.3
+    },
+    "layers": {
+     "F.Cu": 376.17,
+     "B.Cu": 263.317,
+     "In1.Cu": 0.849,
+     "In2.Cu": 0.849
+    }
+   },
+   "~{project_rst}": {
+    "length": 131.891,
+    "vias": 6,
+    "segments": 34,
+    "widths": {
+     "0.2": 125.114,
+     "0.16": 2.311,
+     "0.18": 4.467
+    },
+    "layers": {
+     "F.Cu": 75.632,
+     "B.Cu": 56.26
+    }
+   },
+   "+1V8": {
+    "length": 190.677,
+    "vias": 13,
+    "segments": 59,
+    "widths": {
+     "0.3": 72.792,
+     "0.25": 117.885
+    },
+    "layers": {
+     "F.Cu": 125.145,
+     "B.Cu": 65.532
+    }
+   },
+   "Net-(D1-A)": {
+    "length": 1.309,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.309
+    },
+    "layers": {
+     "F.Cu": 1.309
+    }
+   },
+   "VBUS": {
+    "length": 24.063,
+    "vias": 4,
+    "segments": 11,
+    "widths": {
+     "0.3": 24.063
+    },
+    "layers": {
+     "F.Cu": 13.784,
+     "B.Cu": 10.279
+    }
+   },
+   "Net-(C3-Pad1)": {
+    "length": 12.307,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.3": 12.307
+    },
+    "layers": {
+     "F.Cu": 12.307
+    }
+   },
+   "Net-(D2-A)": {
+    "length": 1.259,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.259
+    },
+    "layers": {
+     "F.Cu": 1.259
+    }
+   },
+   "Net-(D3-A)": {
+    "length": 1.278,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.2": 1.278
+    },
+    "layers": {
+     "F.Cu": 1.278
+    }
+   },
+   "Net-(D4-A)": {
+    "length": 2.174,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 2.174
+    },
+    "layers": {
+     "F.Cu": 2.174
+    }
+   },
+   "Net-(U6-XIN)": {
+    "length": 8.449,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.2": 6.835,
+     "0.18": 1.614
+    },
+    "layers": {
+     "F.Cu": 8.449
+    }
+   },
+   "Net-(C30-Pad1)": {
+    "length": 3.085,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.2": 3.085
+    },
+    "layers": {
+     "F.Cu": 3.085
+    }
+   },
+   "/RP2040/DVDD": {
+    "length": 16.919,
+    "vias": 2,
+    "segments": 21,
+    "widths": {
+     "0.16": 3.592,
+     "0.2": 13.326
+    },
+    "layers": {
+     "F.Cu": 11.971,
+     "B.Cu": 4.947
+    }
+   },
+   "project_clk": {
+    "length": 70.303,
+    "vias": 3,
+    "segments": 15,
+    "widths": {
+     "0.2": 55.658,
+     "0.245": 14.646
+    },
+    "layers": {
+     "F.Cu": 35.304,
+     "B.Cu": 34.999
+    }
+   },
+   "usrclk2": {
+    "length": 84.057,
+    "vias": 3,
+    "segments": 15,
+    "widths": {
+     "0.2": 84.057
+    },
+    "layers": {
+     "F.Cu": 43.188,
+     "B.Cu": 40.869
+    }
+   },
+   "mprj_io0": {
+    "length": 54.889,
+    "vias": 1,
+    "segments": 5,
+    "widths": {
+     "0.2": 54.889
+    },
+    "layers": {
+     "F.Cu": 21.809,
+     "B.Cu": 33.08
+    }
+   },
+   "HK_SCK": {
+    "length": 127.174,
+    "vias": 5,
+    "segments": 22,
+    "widths": {
+     "0.2": 116.709,
+     "0.245": 10.465
+    },
+    "layers": {
+     "F.Cu": 71.668,
+     "B.Cu": 55.506
+    }
+   },
+   "HK_CSB": {
+    "length": 147.9,
+    "vias": 6,
+    "segments": 43,
+    "widths": {
+     "0.2": 136.715,
+     "0.245": 11.185
+    },
+    "layers": {
+     "F.Cu": 85.423,
+     "B.Cu": 62.477
+    }
+   },
+   "HK_SDI": {
+    "length": 126.126,
+    "vias": 3,
+    "segments": 20,
+    "widths": {
+     "0.2": 126.126
+    },
+    "layers": {
+     "F.Cu": 64.478,
+     "B.Cu": 61.648
+    }
+   },
+   "HK_SDO": {
+    "length": 121.458,
+    "vias": 5,
+    "segments": 27,
+    "widths": {
+     "0.2": 90.103,
+     "0.245": 31.356
+    },
+    "layers": {
+     "F.Cu": 69.408,
+     "B.Cu": 52.05
+    }
+   },
+   "uio1": {
+    "length": 202.502,
+    "vias": 8,
+    "segments": 42,
+    "widths": {
+     "0.245": 199.768,
+     "0.18": 2.733
+    },
+    "layers": {
+     "F.Cu": 108.902,
+     "B.Cu": 93.6
+    }
+   },
+   "uio0": {
+    "length": 214.345,
+    "vias": 9,
+    "segments": 45,
+    "widths": {
+     "0.2": 1.508,
+     "0.18": 1.42,
+     "0.245": 211.418
+    },
+    "layers": {
+     "F.Cu": 118.517,
+     "B.Cu": 95.828
+    }
+   },
+   "uio3": {
+    "length": 163.748,
+    "vias": 2,
+    "segments": 26,
+    "widths": {
+     "0.2": 2.441,
+     "0.245": 161.307
+    },
+    "layers": {
+     "F.Cu": 107.975,
+     "B.Cu": 55.773
+    }
+   },
+   "uio2": {
+    "length": 205.374,
+    "vias": 5,
+    "segments": 32,
+    "widths": {
+     "0.245": 202.022,
+     "0.2": 3.352
+    },
+    "layers": {
+     "F.Cu": 136.021,
+     "B.Cu": 69.352
+    }
+   },
+   "uio5": {
+    "length": 176.771,
+    "vias": 5,
+    "segments": 20,
+    "widths": {
+     "0.245": 174.442,
+     "0.2": 2.329
+    },
+    "layers": {
+     "F.Cu": 102.516,
+     "B.Cu": 74.255
+    }
+   },
+   "uio4": {
+    "length": 167.484,
+    "vias": 4,
+    "segments": 27,
+    "widths": {
+     "0.245": 165.099,
+     "0.2": 2.385
+    },
+    "layers": {
+     "F.Cu": 100.474,
+     "B.Cu": 67.01
+    }
+   },
+   "uio7": {
+    "length": 139.597,
+    "vias": 3,
+    "segments": 23,
+    "widths": {
+     "0.245": 137.452,
+     "0.2": 2.146
+    },
+    "layers": {
+     "F.Cu": 53.878,
+     "B.Cu": 85.719
+    }
+   },
+   "uio6": {
+    "length": 159.166,
+    "vias": 3,
+    "segments": 20,
+    "widths": {
+     "0.245": 156.893,
+     "0.2": 2.272
+    },
+    "layers": {
+     "F.Cu": 95.217,
+     "B.Cu": 63.949
+    }
+   },
+   "in0": {
+    "length": 162.419,
+    "vias": 6,
+    "segments": 43,
+    "widths": {
+     "0.2": 1.911,
+     "0.245": 160.508
+    },
+    "layers": {
+     "F.Cu": 62.664,
+     "B.Cu": 99.755
+    }
+   },
+   "mio33": {
+    "length": 14.997,
+    "vias": 1,
+    "segments": 5,
+    "widths": {
+     "0.2": 14.997
+    },
+    "layers": {
+     "F.Cu": 5.192,
+     "B.Cu": 9.804
+    }
+   },
+   "in2": {
+    "length": 181.834,
+    "vias": 8,
+    "segments": 51,
+    "widths": {
+     "0.245": 121.16,
+     "0.2": 16.974,
+     "0.3": 42.54,
+     "0.18": 1.16
+    },
+    "layers": {
+     "F.Cu": 90.411,
+     "B.Cu": 91.423
+    }
+   },
+   "in1": {
+    "length": 175.284,
+    "vias": 9,
+    "segments": 54,
+    "widths": {
+     "0.245": 162.431,
+     "0.18": 1.452,
+     "0.3": 11.401
+    },
+    "layers": {
+     "F.Cu": 95.586,
+     "B.Cu": 79.698
+    }
+   },
+   "in4": {
+    "length": 116.176,
+    "vias": 7,
+    "segments": 34,
+    "widths": {
+     "0.245": 115.229,
+     "0.16": 0.947
+    },
+    "layers": {
+     "F.Cu": 49.944,
+     "B.Cu": 66.232
+    }
+   },
+   "in3": {
+    "length": 192.751,
+    "vias": 7,
+    "segments": 33,
+    "widths": {
+     "0.18": 0.816,
+     "0.245": 117.926,
+     "0.3": 74.009
+    },
+    "layers": {
+     "F.Cu": 123.564,
+     "B.Cu": 69.187
+    }
+   },
+   "in6": {
+    "length": 134.687,
+    "vias": 8,
+    "segments": 32,
+    "widths": {
+     "0.245": 133.367,
+     "0.2": 1.32
+    },
+    "layers": {
+     "F.Cu": 90.151,
+     "B.Cu": 44.535
+    }
+   },
+   "in5": {
+    "length": 112.704,
+    "vias": 5,
+    "segments": 29,
+    "widths": {
+     "0.245": 90.035,
+     "0.2": 22.668
+    },
+    "layers": {
+     "F.Cu": 42.458,
+     "B.Cu": 70.245
+    }
+   },
+   "out0": {
+    "length": 160.172,
+    "vias": 4,
+    "segments": 32,
+    "widths": {
+     "0.245": 160.172
+    },
+    "layers": {
+     "F.Cu": 110.569,
+     "B.Cu": 49.602
+    }
+   },
+   "in7": {
+    "length": 73.998,
+    "vias": 5,
+    "segments": 26,
+    "widths": {
+     "0.245": 72.403,
+     "0.2": 1.595
+    },
+    "layers": {
+     "F.Cu": 34.274,
+     "B.Cu": 39.724
+    }
+   },
+   "out2": {
+    "length": 175.915,
+    "vias": 5,
+    "segments": 23,
+    "widths": {
+     "0.245": 175.915
+    },
+    "layers": {
+     "F.Cu": 100.37,
+     "B.Cu": 75.545
+    }
+   },
+   "out1": {
+    "length": 163.494,
+    "vias": 5,
+    "segments": 30,
+    "widths": {
+     "0.245": 163.494
+    },
+    "layers": {
+     "F.Cu": 92.328,
+     "B.Cu": 71.166
+    }
+   },
+   "out4": {
+    "length": 243.958,
+    "vias": 6,
+    "segments": 34,
+    "widths": {
+     "0.245": 243.084,
+     "0.18": 0.875
+    },
+    "layers": {
+     "F.Cu": 123.606,
+     "B.Cu": 120.353
+    }
+   },
+   "out3": {
+    "length": 212.374,
+    "vias": 5,
+    "segments": 33,
+    "widths": {
+     "0.245": 212.374
+    },
+    "layers": {
+     "F.Cu": 116.242,
+     "B.Cu": 96.132
+    }
+   },
+   "out6": {
+    "length": 214.563,
+    "vias": 6,
+    "segments": 39,
+    "widths": {
+     "0.245": 187.965,
+     "0.18": 26.598
+    },
+    "layers": {
+     "F.Cu": 127.605,
+     "B.Cu": 86.957
+    }
+   },
+   "out5": {
+    "length": 208.152,
+    "vias": 8,
+    "segments": 41,
+    "widths": {
+     "0.245": 206.683,
+     "0.18": 1.47
+    },
+    "layers": {
+     "F.Cu": 113.623,
+     "B.Cu": 94.529
+    }
+   },
+   "ctrl_ena": {
+    "length": 107.435,
+    "vias": 6,
+    "segments": 29,
+    "widths": {
+     "0.245": 24.707,
+     "0.2": 82.728
+    },
+    "layers": {
+     "F.Cu": 45.148,
+     "B.Cu": 62.287
+    }
+   },
+   "out7": {
+    "length": 222.341,
+    "vias": 7,
+    "segments": 40,
+    "widths": {
+     "0.245": 221.144,
+     "0.2": 1.198
+    },
+    "layers": {
+     "F.Cu": 115.142,
+     "B.Cu": 107.199
+    }
+   },
+   "Net-(JP1-B)": {
+    "length": 1.152,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.152
+    },
+    "layers": {
+     "F.Cu": 1.152
+    }
+   },
+   "Net-(JP2-B)": {
+    "length": 1.149,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.149
+    },
+    "layers": {
+     "F.Cu": 1.149
+    }
+   },
+   "Net-(JP3-B)": {
+    "length": 1.147,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.147
+    },
+    "layers": {
+     "F.Cu": 1.147
+    }
+   },
+   "Net-(JP4-B)": {
+    "length": 1.144,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.144
+    },
+    "layers": {
+     "F.Cu": 1.144
+    }
+   },
+   "Net-(JP5-B)": {
+    "length": 1.142,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.142
+    },
+    "layers": {
+     "F.Cu": 1.142
+    }
+   },
+   "Net-(JP6-B)": {
+    "length": 1.14,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.14
+    },
+    "layers": {
+     "F.Cu": 1.14
+    }
+   },
+   "Net-(JP7-B)": {
+    "length": 1.137,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.137
+    },
+    "layers": {
+     "F.Cu": 1.137
+    }
+   },
+   "Net-(JP8-B)": {
+    "length": 1.135,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.2": 1.135
+    },
+    "layers": {
+     "F.Cu": 1.135
+    }
+   },
+   "mio35": {
+    "length": 22.417,
+    "vias": 1,
+    "segments": 4,
+    "widths": {
+     "0.2": 22.417
+    },
+    "layers": {
+     "F.Cu": 10.617,
+     "B.Cu": 11.8
+    }
+   },
+   "ctrl_sel_inc": {
+    "length": 101.459,
+    "vias": 5,
+    "segments": 29,
+    "widths": {
+     "0.245": 87.925,
+     "0.2": 13.534
+    },
+    "layers": {
+     "F.Cu": 48.469,
+     "B.Cu": 52.99
+    }
+   },
+   "mio37": {
+    "length": 34.755,
+    "vias": 1,
+    "segments": 6,
+    "widths": {
+     "0.2": 34.755
+    },
+    "layers": {
+     "F.Cu": 23.393,
+     "B.Cu": 11.362
+    }
+   },
+   "~{ctrl_sel_rst}": {
+    "length": 116.348,
+    "vias": 3,
+    "segments": 16,
+    "widths": {
+     "0.2": 116.348
+    },
+    "layers": {
+     "F.Cu": 56.681,
+     "B.Cu": 59.667
+    }
+   },
+   "/RP2040/SWDIO": {
+    "length": 41.643,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.16": 5.683,
+     "0.2": 35.961
+    },
+    "layers": {
+     "F.Cu": 36.511,
+     "B.Cu": 5.132
+    }
+   },
+   "/RP2040/SWCLK": {
+    "length": 42.798,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.2": 34.264,
+     "0.16": 8.534
+    },
+    "layers": {
+     "F.Cu": 35.415,
+     "B.Cu": 7.383
+    }
+   },
+   "Net-(R1-Pad2)": {
+    "length": 2.18,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.2": 2.18
+    },
+    "layers": {
+     "F.Cu": 2.18
+    }
+   },
+   "Net-(R2-Pad2)": {
+    "length": 2.183,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.2": 2.183
+    },
+    "layers": {
+     "F.Cu": 2.183
+    }
+   },
+   "Net-(R3-Pad2)": {
+    "length": 2.192,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.192
+    },
+    "layers": {
+     "F.Cu": 2.192
+    }
+   },
+   "Net-(R4-Pad2)": {
+    "length": 2.191,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.191
+    },
+    "layers": {
+     "F.Cu": 2.191
+    }
+   },
+   "Net-(R5-Pad2)": {
+    "length": 2.191,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.191
+    },
+    "layers": {
+     "F.Cu": 2.191
+    }
+   },
+   "Net-(R6-Pad2)": {
+    "length": 2.192,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.192
+    },
+    "layers": {
+     "F.Cu": 2.192
+    }
+   },
+   "RPIO29": {
+    "length": 73.093,
+    "vias": 3,
+    "segments": 16,
+    "widths": {
+     "0.18": 1.767,
+     "0.245": 71.327
+    },
+    "layers": {
+     "F.Cu": 17.789,
+     "B.Cu": 55.304
+    }
+   },
+   "/RP2040/RUN": {
+    "length": 57.752,
+    "vias": 4,
+    "segments": 20,
+    "widths": {
+     "0.16": 1.371,
+     "0.2": 56.381
+    },
+    "layers": {
+     "F.Cu": 24.981,
+     "B.Cu": 32.771
+    }
+   },
+   "boot_mode": {
+    "length": 43.433,
+    "vias": 4,
+    "segments": 19,
+    "widths": {
+     "0.2": 43.433
+    },
+    "layers": {
+     "F.Cu": 19.778,
+     "B.Cu": 23.656
+    }
+   },
+   "/RP2040/QSPI_CLK": {
+    "length": 13.852,
+    "vias": 3,
+    "segments": 18,
+    "widths": {
+     "0.2": 13.852
+    },
+    "layers": {
+     "F.Cu": 8.669,
+     "B.Cu": 5.183
+    }
+   },
+   "/RP2040/QSPI_SD0": {
+    "length": 12.389,
+    "vias": 1,
+    "segments": 11,
+    "widths": {
+     "0.2": 12.389
+    },
+    "layers": {
+     "F.Cu": 12.389
+    }
+   },
+   "/RP2040/QSPI_SD1": {
+    "length": 20.551,
+    "vias": 3,
+    "segments": 18,
+    "widths": {
+     "0.2": 20.551
+    },
+    "layers": {
+     "F.Cu": 15.014,
+     "B.Cu": 5.537
+    }
+   },
+   "RP_proj_clk": {
+    "length": 35.717,
+    "vias": 4,
+    "segments": 13,
+    "widths": {
+     "0.245": 34.04,
+     "0.18": 1.678
+    },
+    "layers": {
+     "F.Cu": 17.141,
+     "B.Cu": 18.577
+    }
+   },
+   "usb_d+": {
+    "length": 53.682,
+    "vias": 3,
+    "segments": 15,
+    "widths": {
+     "0.23": 53.682
+    },
+    "layers": {
+     "F.Cu": 4.784,
+     "B.Cu": 47.415,
+     "In2.Cu": 1.483
+    }
+   },
+   "usb_d-": {
+    "length": 53.302,
+    "vias": 2,
+    "segments": 16,
+    "widths": {
+     "0.23": 53.302
+    },
+    "layers": {
+     "F.Cu": 6.475,
+     "B.Cu": 46.827
+    }
+   },
+   "MUX_SEL": {
+    "length": 1.233,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 1.233
+    },
+    "layers": {
+     "F.Cu": 1.233
+    }
+   },
+   "Net-(R10-Pad2)": {
+    "length": 2.193,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.193
+    },
+    "layers": {
+     "F.Cu": 2.193
+    }
+   },
+   "Net-(R11-Pad2)": {
+    "length": 2.194,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.194
+    },
+    "layers": {
+     "F.Cu": 2.194
+    }
+   },
+   "Net-(R14-Pad1)": {
+    "length": 3.632,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 3.632
+    },
+    "layers": {
+     "F.Cu": 3.632
+    }
+   },
+   "Net-(U1-A)": {
+    "length": 5.429,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 5.429
+    },
+    "layers": {
+     "F.Cu": 5.429
+    }
+   },
+   "Net-(U1-B)": {
+    "length": 2.816,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 2.816
+    },
+    "layers": {
+     "F.Cu": 2.816
+    }
+   },
+   "Net-(U1-C)": {
+    "length": 11.646,
+    "vias": 2,
+    "segments": 5,
+    "widths": {
+     "0.2": 11.646
+    },
+    "layers": {
+     "F.Cu": 5.546,
+     "B.Cu": 6.1
+    }
+   },
+   "Net-(U1-D)": {
+    "length": 12.338,
+    "vias": 2,
+    "segments": 6,
+    "widths": {
+     "0.2": 12.338
+    },
+    "layers": {
+     "F.Cu": 7.789,
+     "B.Cu": 4.55
+    }
+   },
+   "Net-(U1-E)": {
+    "length": 15.104,
+    "vias": 2,
+    "segments": 6,
+    "widths": {
+     "0.2": 15.104
+    },
+    "layers": {
+     "F.Cu": 9.404,
+     "B.Cu": 5.7
+    }
+   },
+   "Net-(U1-F)": {
+    "length": 15.945,
+    "vias": 2,
+    "segments": 7,
+    "widths": {
+     "0.2": 15.945
+    },
+    "layers": {
+     "F.Cu": 10.303,
+     "B.Cu": 5.641
+    }
+   },
+   "Net-(U1-G)": {
+    "length": 22.14,
+    "vias": 4,
+    "segments": 9,
+    "widths": {
+     "0.2": 22.14
+    },
+    "layers": {
+     "F.Cu": 9.799,
+     "B.Cu": 12.341
+    }
+   },
+   "Net-(U1-DP)": {
+    "length": 4.472,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 4.472
+    },
+    "layers": {
+     "F.Cu": 4.472
+    }
+   },
+   "/RP2040/QSPI_SD2": {
+    "length": 16.786,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.2": 16.786
+    },
+    "layers": {
+     "F.Cu": 16.786
+    }
+   },
+   "Net-(U6-XOUT)": {
+    "length": 2.102,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.16": 2.102
+    },
+    "layers": {
+     "F.Cu": 2.102
+    }
+   },
+   "/RP2040/QSPI_SD3": {
+    "length": 13.194,
+    "vias": 2,
+    "segments": 11,
+    "widths": {
+     "0.2": 13.194
+    },
+    "layers": {
+     "F.Cu": 6.478,
+     "B.Cu": 6.715
+    }
+   },
+   "~{crst}{slash}out2": {
+    "length": 11.185,
+    "vias": 0,
+    "segments": 10,
+    "widths": {
+     "0.18": 2.837,
+     "0.245": 8.348
+    },
+    "layers": {
+     "F.Cu": 11.185
+    }
+   },
+   "SDI{slash}out0": {
+    "length": 12.156,
+    "vias": 2,
+    "segments": 11,
+    "widths": {
+     "0.245": 10.113,
+     "0.2": 2.042
+    },
+    "layers": {
+     "F.Cu": 9.046,
+     "B.Cu": 3.109
+    }
+   },
+   "SDO{slash}out1": {
+    "length": 14.004,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.245": 11.751,
+     "0.2": 2.252
+    },
+    "layers": {
+     "F.Cu": 10.06,
+     "B.Cu": 3.944
+    }
+   },
+   "Net-(R13-Pad1)": {
+    "length": 6.92,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.2": 6.92
+    },
+    "layers": {
+     "F.Cu": 2.837,
+     "B.Cu": 4.083
+    }
+   },
+   "/CC1": {
+    "length": 3.03,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.16": 3.03
+    },
+    "layers": {
+     "F.Cu": 3.03
+    }
+   },
+   "/CC2": {
+    "length": 2.106,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.106
+    },
+    "layers": {
+     "F.Cu": 2.106
+    }
+   },
+   "Net-(U7-IO2)": {
+    "length": 3.59,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 3.59
+    },
+    "layers": {
+     "F.Cu": 3.59
+    }
+   },
+   "Net-(U7-IO3)": {
+    "length": 2.864,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.864
+    },
+    "layers": {
+     "F.Cu": 2.864
+    }
+   },
+   "cinc{slash}out3": {
+    "length": 11.716,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.245": 10.171,
+     "0.18": 1.545
+    },
+    "layers": {
+     "F.Cu": 6.683,
+     "B.Cu": 5.033
+    }
+   },
+   "/~{CRVRST}": {
+    "length": 53.738,
+    "vias": 2,
+    "segments": 11,
+    "widths": {
+     "0.2": 53.738
+    },
+    "layers": {
+     "F.Cu": 42.231,
+     "B.Cu": 11.507
+    }
+   }
+  },
+  "unconnected_by_net": {
+   "Net-(C3-Pad1)": 1
+  },
+  "drc": {
+   "errors": 20,
+   "warnings": 642,
+   "unconnected": 1,
+   "by_type": {
+    "error:clearance": 8,
+    "error:courtyards_overlap": 8,
+    "error:footprint_type_mismatch": 1,
+    "error:shorting_items": 3,
+    "warning:lib_footprint_issues": 199,
+    "warning:silk_edge_clearance": 169,
+    "warning:silk_over_copper": 59,
+    "warning:silk_overlap": 199,
+    "warning:text_height": 12,
+    "warning:track_dangling": 1,
+    "warning:via_dangling": 3
+   }
+  },
+  "drc_error_list": [
+   {
+    "type": "shorting_items",
+    "message": "Items shorting two nets (nets GND and unconnected-(J18-Pad1))",
+    "items": [
+     "Track [GND] on F.Cu, length 0.5657 mm",
+     "Pad 1 [unconnected-(J18-Pad1)] of J18 on F.Cu"
+    ],
+    "at": [
+     136.02,
+     86.2
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1824 mm)",
+    "items": [
+     "Pad B8 [unconnected-(J15-SBU2-PadB8)] of J15 on F.Cu",
+     "Track [/CC1] on F.Cu, length 0.3889 mm"
+    ],
+    "at": [
+     86.5,
+     60.95
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'usbdiff' clearance 0.2000 mm; actual 0.1889 mm)",
+    "items": [
+     "Pad A5 [/CC1] of J15 on F.Cu",
+     "Track [usb_d-] on F.Cu, length 0.5374 mm"
+    ],
+    "at": [
+     86.0,
+     60.95
+    ]
+   },
+   {
+    "type": "shorting_items",
+    "message": "Items shorting two nets (nets unconnected-(J16-Pad1) and out7)",
+    "items": [
+     "Pad 1 [unconnected-(J16-Pad1)] of J16 on F.Cu",
+     "Track [out7] on F.Cu, length 0.3450 mm"
+    ],
+    "at": [
+     100.42,
+     86.6
+    ]
+   },
+   {
+    "type": "shorting_items",
+    "message": "Items shorting two nets (nets unconnected-(J16-Pad1) and out7)",
+    "items": [
+     "Pad 1 [unconnected-(J16-Pad1)] of J16 on F.Cu",
+     "Track [out7] on F.Cu, length 0.4950 mm"
+    ],
+    "at": [
+     100.42,
+     86.6
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'ioout' clearance 0.2000 mm; actual 0.1450 mm)",
+    "items": [
+     "Pad 1 [unconnected-(J16-Pad1)] of J16 on F.Cu",
+     "Track [out7] on F.Cu, length 0.0035 mm"
+    ],
+    "at": [
+     100.42,
+     86.6
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'ioout' clearance 0.2000 mm; actual 0.1250 mm)",
+    "items": [
+     "Pad 1 [unconnected-(J16-Pad1)] of J16 on F.Cu",
+     "Track [out7] on F.Cu, length 14.0681 mm"
+    ],
+    "at": [
+     100.42,
+     86.6
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad A4_B9 [VBUS] of J15 on F.Cu",
+     "Pad A1_B12 [GND] of J15 on F.Cu"
+    ],
+    "at": [
+     87.15,
+     60.95
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad B4_A9 [VBUS] of J15 on F.Cu",
+     "Pad B1_A12 [GND] of J15 on F.Cu"
+    ],
+    "at": [
+     82.35,
+     60.95
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad B4_A9 [VBUS] of J15 on F.Cu",
+     "Pad B5 [/CC2] of J15 on F.Cu"
+    ],
+    "at": [
+     82.35,
+     60.95
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad B8 [unconnected-(J15-SBU2-PadB8)] of J15 on F.Cu",
+     "Pad A4_B9 [VBUS] of J15 on F.Cu"
+    ],
+    "at": [
+     86.5,
+     60.95
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J2",
+     "Footprint J3"
+    ],
+    "at": [
+     75.31,
+     131.5
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J8",
+     "Footprint J5"
+    ],
+    "at": [
+     121.045,
+     131.5
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J8",
+     "Footprint J6"
+    ],
+    "at": [
+     121.045,
+     131.5
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint C42",
+     "Footprint TP1"
+    ],
+    "at": [
+     143.6,
+     63.3
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J3",
+     "Footprint J17"
+    ],
+    "at": [
+     77.845,
+     128.955
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J5",
+     "Footprint J17"
+    ],
+    "at": [
+     100.705,
+     128.955
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J4",
+     "Footprint TP1"
+    ],
+    "at": [
+     118.42,
+     86.6
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J1",
+     "Footprint J6"
+    ],
+    "at": [
+     151.5,
+     131.5
+    ]
+   },
+   {
+    "type": "footprint_type_mismatch",
+    "message": "Footprint component type doesn't match footprint pads (expected 'Through hole'; actual 'SMD')",
+    "items": [
+     "Footprint J15"
+    ],
+    "at": [
+     84.75,
+     55.5
+    ]
+   }
+  ]
+ },
+ "unrouted": {
+  "connections": 352,
+  "by_net": {
+   "out6": 4,
+   "Net-(JP7-B)": 1,
+   "GND": 3,
+   "+1V8": 14,
+   "+5V": 5,
+   "Net-(D1-A)": 1,
+   "/RP2040/DVDD": 5,
+   "+3V3": 99,
+   "out0": 4,
+   "Net-(JP1-B)": 1,
+   "/CC2": 1,
+   "/RP2040/QSPI_SD3": 2,
+   "VBUS": 2,
+   "/CC1": 1,
+   "usb_d+": 2,
+   "usb_d-": 2,
+   "Net-(C3-Pad1)": 5,
+   "in0": 5,
+   "in2": 6,
+   "out3": 6,
+   "in1": 5,
+   "in4": 4,
+   "in6": 4,
+   "out7": 5,
+   "in5": 5,
+   "Net-(R5-Pad2)": 1,
+   "Net-(C1-Pad2)": 3,
+   "Net-(R1-Pad2)": 1,
+   "Net-(U6-XIN)": 2,
+   "in3": 5,
+   "HK_CSB": 4,
+   "MUX_SEL": 1,
+   "Net-(C30-Pad1)": 2,
+   "Net-(D3-A)": 1,
+   "Net-(R11-Pad2)": 1,
+   "Caravel_CSB": 2,
+   "Net-(JP3-B)": 1,
+   "Net-(U1-C)": 1,
+   "Net-(U1-A)": 1,
+   "out2": 4,
+   "Net-(R3-Pad2)": 1,
+   "Net-(JP8-B)": 1,
+   "uio0": 4,
+   "uio1": 4,
+   "uio2": 4,
+   "~{project_rst}": 4,
+   "out4": 5,
+   "out5": 4,
+   "RP_proj_clk": 1,
+   "project_clk": 3,
+   "/~{CRVRST}": 3,
+   "Net-(R13-Pad1)": 2,
+   "in7": 3,
+   "/RP2040/SWDIO": 1,
+   "/RP2040/SWCLK": 1,
+   "uio3": 4,
+   "uio4": 3,
+   "uio5": 3,
+   "uio6": 3,
+   "uio7": 2,
+   "Net-(R2-Pad2)": 1,
+   "Net-(R10-Pad2)": 1,
+   "Net-(R6-Pad2)": 1,
+   "Net-(R4-Pad2)": 1,
+   "Net-(D4-A)": 1,
+   "out1": 4,
+   "Net-(JP2-B)": 1,
+   "Caravel_D1": 2,
+   "Net-(U7-IO2)": 1,
+   "Caravel_D0": 2,
+   "Caravel_SCK": 2,
+   "Net-(U7-IO3)": 1,
+   "Net-(U1-G)": 1,
+   "Net-(U1-E)": 1,
+   "Net-(U1-D)": 1,
+   "Net-(U1-DP)": 1,
+   "Net-(U1-B)": 1,
+   "Net-(U1-F)": 1,
+   "boot_mode": 4,
+   "/RP2040/QSPI_SD1": 3,
+   "/RP2040/QSPI_SD2": 2,
+   "/RP2040/QSPI_SD0": 3,
+   "/RP2040/QSPI_CLK": 3,
+   "/RP2040/RUN": 2,
+   "HK_SCK": 2,
+   "SDI{slash}out0": 1,
+   "SDO{slash}out1": 1,
+   "ctrl_ena": 3,
+   "~{crst}{slash}out2": 1,
+   "cinc{slash}out3": 1,
+   "Net-(U6-XOUT)": 1,
+   "RPIO29": 1,
+   "Net-(JP6-B)": 1,
+   "usrclk2": 1,
+   "HK_SDI": 2,
+   "HK_SDO": 2,
+   "mprj_io0": 1,
+   "~{ctrl_sel_rst}": 3,
+   "mio37": 1,
+   "ctrl_sel_inc": 3,
+   "mio35": 1,
+   "mio33": 1,
+   "xclk": 1,
+   "Net-(R14-Pad1)": 1,
+   "Net-(D2-A)": 1,
+   "Net-(JP5-B)": 1,
+   "Net-(JP4-B)": 1,
+   "gpio": 1
+  },
+  "drc": {
+   "errors": 13,
+   "warnings": 638,
+   "unconnected": 352,
+   "by_type": {
+    "error:clearance": 4,
+    "error:courtyards_overlap": 8,
+    "error:footprint_type_mismatch": 1,
+    "warning:lib_footprint_issues": 199,
+    "warning:silk_edge_clearance": 169,
+    "warning:silk_over_copper": 59,
+    "warning:silk_overlap": 199,
+    "warning:text_height": 12
+   }
+  },
+  "drc_error_list": [
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad A4_B9 [VBUS] of J15 on F.Cu",
+     "Pad A1_B12 [GND] of J15 on F.Cu"
+    ],
+    "at": [
+     87.15,
+     60.95
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad A4_B9 [VBUS] of J15 on F.Cu",
+     "Pad B8 [unconnected-(J15-SBU2-PadB8)] of J15 on F.Cu"
+    ],
+    "at": [
+     87.15,
+     60.95
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad B1_A12 [GND] of J15 on F.Cu",
+     "Pad B4_A9 [VBUS] of J15 on F.Cu"
+    ],
+    "at": [
+     81.55,
+     60.95
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation (netclass 'pwrhi' clearance 0.2500 mm; actual 0.2000 mm)",
+    "items": [
+     "Pad B5 [/CC2] of J15 on F.Cu",
+     "Pad B4_A9 [VBUS] of J15 on F.Cu"
+    ],
+    "at": [
+     83.0,
+     60.95
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J2",
+     "Footprint J3"
+    ],
+    "at": [
+     75.31,
+     131.5
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J8",
+     "Footprint J5"
+    ],
+    "at": [
+     121.045,
+     131.5
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J8",
+     "Footprint J6"
+    ],
+    "at": [
+     121.045,
+     131.5
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint C42",
+     "Footprint TP1"
+    ],
+    "at": [
+     143.6,
+     63.3
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J3",
+     "Footprint J17"
+    ],
+    "at": [
+     77.845,
+     128.955
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J5",
+     "Footprint J17"
+    ],
+    "at": [
+     100.705,
+     128.955
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J4",
+     "Footprint TP1"
+    ],
+    "at": [
+     118.42,
+     86.6
+    ]
+   },
+   {
+    "type": "courtyards_overlap",
+    "message": "Courtyards overlap",
+    "items": [
+     "Footprint J1",
+     "Footprint J6"
+    ],
+    "at": [
+     151.5,
+     131.5
+    ]
+   },
+   {
+    "type": "footprint_type_mismatch",
+    "message": "Footprint component type doesn't match footprint pads (expected 'Through hole'; actual 'SMD')",
+    "items": [
+     "Footprint J15"
+    ],
+    "at": [
+     84.75,
+     55.5
+    ]
+   }
+  ]
+ },
+ "stripped": {
+  "tracks_and_vias": 2548,
+  "locked": 12,
+  "teardrops": 0
+ }
+}

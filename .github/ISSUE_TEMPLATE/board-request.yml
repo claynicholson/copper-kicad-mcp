@@ -1,0 +1,26 @@
+name: Board request
+description: A board or circuit you want Copper to handle well.
+labels: [board-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe a real board you would order. Requests with clear specs become test cases for Copper's design loop.
+  - type: textarea
+    id: board
+    attributes:
+      label: The board
+      description: What it does, the main chip(s), connectors, power, size and layer count.
+      placeholder: e.g. RP2040 macropad, 12 keys, USB-C, 2 layers, 80 x 60 mm
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What happened when you tried it
+      description: Where Copper got stuck or what it got wrong (parts, schematic, routing, DRC, fab files).
+  - type: input
+    id: fab
+    attributes:
+      label: Fab and assembly
+      placeholder: e.g. JLCPCB with assembly, PCBWay, OSH Park

@@ -1,0 +1,142 @@
+{
+ "name": "cons_mixed",
+ "kind": "synthetic",
+ "suite": "cons",
+ "difficulty": 3,
+ "note": "constraints: QFP-32 with a QSPI group (0.3 mm), a USB pair, a crystal (max 8 mm), 12 plain nets, 4 layers",
+ "source": "prepare.py",
+ "reference_kind": null,
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "B.Cu"
+  ],
+  "footprints": 6,
+  "pads": 60,
+  "smd_pads": 48,
+  "tht_pads": 12,
+  "min_pad_pitch_mm": 0.8,
+  "nets": 24,
+  "size_mm": [
+   50.1,
+   40.1
+  ],
+  "origin_mm": [
+   99.95,
+   99.95
+  ],
+  "zones": 1,
+  "zone_nets": [
+   "GND"
+  ],
+  "rule_areas": 0,
+  "min_clearance": 0.0,
+  "min_track": 0.2,
+  "mst_mm": {
+   "/Q_IO0": 8.845,
+   "/Q_CLK": 8.905,
+   "/Q_IO3": 8.989,
+   "+3V3": 20.113,
+   "/Q_CS": 14.386,
+   "/Q_IO1": 14.318,
+   "/Q_IO2": 14.265,
+   "GND": 41.506,
+   "/USB_D_P": 11.625,
+   "/USB_D_N": 11.597,
+   "/XI": 5.009,
+   "/XO": 5.281,
+   "/P0": 26.334,
+   "/P1": 24.017,
+   "/P2": 21.779,
+   "/P3": 17.984,
+   "/P4": 16.543,
+   "/P5": 15.691,
+   "/P6": 15.526,
+   "/P7": 16.069,
+   "/P8": 17.254,
+   "/P9": 18.96,
+   "/P10": 21.062,
+   "/P11": 29.361
+  },
+  "mst_total_mm": 405.4
+ },
+ "reference": null,
+ "constraints": {
+  "groups": [
+   {
+    "nets": [
+     "/Q_CLK",
+     "/Q_IO0",
+     "/Q_IO1",
+     "/Q_IO2",
+     "/Q_IO3"
+    ],
+    "tol": 0.3,
+    "natural_spread": 5.473
+   }
+  ],
+  "pairs": [
+   {
+    "p": "/USB_D_P",
+    "n": "/USB_D_N",
+    "skew": 0.15,
+    "gap": 0.15,
+    "width": 0.2,
+    "coupled_pct": 50
+   }
+  ],
+  "short": [
+   {
+    "net": "/XI",
+    "max": 8.0
+   },
+   {
+    "net": "/XO",
+    "max": 8.0
+   }
+  ]
+ },
+ "unrouted": {
+  "connections": 30,
+  "by_net": {
+   "/Q_IO0": 1,
+   "/Q_CLK": 1,
+   "/Q_IO3": 1,
+   "+3V3": 3,
+   "/Q_CS": 1,
+   "/Q_IO1": 1,
+   "/Q_IO2": 1,
+   "GND": 5,
+   "/USB_D_P": 1,
+   "/USB_D_N": 1,
+   "/XI": 1,
+   "/XO": 1,
+   "/P0": 1,
+   "/P1": 1,
+   "/P2": 1,
+   "/P3": 1,
+   "/P4": 1,
+   "/P5": 1,
+   "/P6": 1,
+   "/P7": 1,
+   "/P8": 1,
+   "/P9": 1,
+   "/P10": 1,
+   "/P11": 1
+  },
+  "drc": {
+   "errors": 0,
+   "warnings": 14,
+   "unconnected": 30,
+   "by_type": {
+    "warning:isolated_copper": 1,
+    "warning:lib_footprint_issues": 6,
+    "warning:silk_edge_clearance": 1,
+    "warning:silk_over_copper": 6
+   }
+  },
+  "drc_error_list": []
+ }
+}

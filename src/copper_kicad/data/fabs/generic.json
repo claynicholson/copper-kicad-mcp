@@ -1,0 +1,42 @@
+{
+  "name": "generic",
+  "label": "Generic (any fab)",
+  "short": "generic",
+  "url": "",
+  "notes": "Vendor-neutral outputs: Gerber X2 with KiCad's own file extensions (.gbr) and the .gbrjob job file, Excellon drill in mm with PTH and NPTH in separate files, KiCad's standard component position file (CSV, mm, both sides, DNP excluded) and a plain BOM carrying MPN, Manufacturer and whatever supplier part-number field the project uses. UNVERIFIED by definition: the design rules are a conservative common denominator (0.15 mm track/space, 0.6/0.3 mm vias, 0.3 mm from the edge) that almost every fab can make, not any particular fab's capabilities. Copy this file to $COPPER_HOME/fabs/<your-fab>.json and put your fab's numbers in it. Parts without a part number never block this export.",
+  "rules": {
+    "standard": {
+      "label": "generic conservative (0.15 mm / 0.3 mm drill)",
+      "min_track": 0.15, "min_clearance": 0.15, "min_via_diameter": 0.6, "min_via_drill": 0.3,
+      "min_annular": 0.15, "min_hole": 0.3, "hole_to_hole": 0.5, "edge_clearance": 0.3,
+      "hole_clearance": 0.25, "silk_clearance": 0.0, "min_text_height": 1.0, "min_text_thickness": 0.15,
+      "via": [0.6, 0.3], "power_via": [0.8, 0.4], "pth_annular": 0.15
+    }
+  },
+  "gerber": {
+    "x2": true, "netlist_attributes": true, "protel_extensions": false, "subtract_soldermask": false, "precision": 6,
+    "job_file": true,
+    "layers": ["copper", "F.Paste", "B.Paste", "F.SilkS", "B.SilkS", "F.Mask", "B.Mask", "Edge.Cuts"]
+  },
+  "drill": {"units": "mm", "zeros": "decimal", "oval": "alternate", "origin": "absolute", "separate_th": true},
+  "naming": {
+    "gerber_dir": "gerbers",
+    "zip": "{name}-fab.zip",
+    "bom": "{name}-BOM.csv",
+    "placement": "{name}-pos.csv"
+  },
+  "zip": {"folder": "", "include_assembly": false},
+  "assembly": {"offered": true},
+  "bom": {
+    "part_field": null,
+    "part_label": "part number",
+    "columns": [["Refs", "{refs}"], ["Qty", "{qty}"], ["Value", "{value}"], ["Footprint", "{footprint}"],
+                ["MPN", "{mpn}"], ["Manufacturer", "{manufacturer}"], ["Supplier Part #", "{supplier}"]]
+  },
+  "placement": {"format": "kicad", "side": "both", "units": "mm"},
+  "blocks": ["erc", "drc", "unrouted", "parity", "outline", "empty"],
+  "limits": {},
+  "order_notes": [
+    "Generic pack: check your fab's own file requirements (layer naming, drill format, BOM columns) before uploading; a custom profile in $COPPER_HOME/fabs/ makes them repeatable"
+  ]
+}

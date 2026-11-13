@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="referrer" content="no-referrer">
+<title>Copper setup</title>
+<style nonce="__NONCE__">/*__CSS__*/</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <span class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path d="M16 4 28 10.5 16 17 4 10.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M4 16 16 22.5 28 16" fill="none" stroke="#C8783C" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M4 21.5 16 28 28 21.5" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>Copper setup</span>
+    <span class="where" id="where" aria-hidden="true"></span>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+</header>
+
+<div class="layout">
+  <nav class="steps" aria-label="Setup steps"><ol id="stepnav"></ol></nav>
+
+  <main id="main">
+    <div id="banner" class="banner" role="alert" hidden></div>
+    <p id="announce" class="sr-only" aria-live="polite"></p>
+
+    <section id="s-kicad" class="step" aria-labelledby="h-kicad" hidden>
+      <h2 id="h-kicad" tabindex="-1">Find KiCad</h2>
+      <p class="lede">Copper works through the KiCad on this computer. Nothing in KiCad changes on this step.</p>
+      <div id="kicad-body" class="body"><p class="muted"><span class="spin" aria-hidden="true"></span>Looking for KiCad…</p></div>
+      <div id="kicad-nav" class="nav"></div>
+    </section>
+
+    <section id="s-import" class="step" aria-labelledby="h-import" hidden>
+      <h2 id="h-import" tabindex="-1">Bring your KiCad setup along</h2>
+      <p class="lede" id="import-lede">Your libraries, theme and shortcuts, ready in the KiCad Copper uses. Every file is backed up first, and one click puts it all back.</p>
+      <div id="import-body" class="body"></div>
+      <div id="import-nav" class="nav"></div>
+    </section>
+
+    <section id="s-apps" class="step" aria-labelledby="h-apps" hidden>
+      <h2 id="h-apps" tabindex="-1">Connect your AI apps</h2>
+      <p class="lede">Copper adds one entry to each app's settings file (after backing it up), then starts itself the way the app will, to check that it works. Your logins in those apps are not touched.</p>
+      <div id="apps-body" class="body"></div>
+      <div id="apps-nav" class="nav"></div>
+    </section>
+
+    <section id="s-github" class="step" aria-labelledby="h-github" hidden>
+      <h2 id="h-github" tabindex="-1">Link GitHub</h2>
+      <p class="lede">Only needed if you want your AI to publish designs to GitHub. You can skip this and run <code>copper link github</code> later.</p>
+      <div id="github-body" class="body"></div>
+      <div id="github-nav" class="nav"></div>
+    </section>
+
+    <section id="s-router" class="step" aria-labelledby="h-router" hidden>
+      <h2 id="h-router" tabindex="-1">Get the autorouter</h2>
+      <p class="lede">Freerouting draws the traces on a board. It's a one-time download, the router and a Java runtime, into Copper's own folder.</p>
+      <div id="router-body" class="body"></div>
+      <div id="router-nav" class="nav"></div>
+    </section>
+
+    <section id="s-test" class="step" aria-labelledby="h-test" hidden>
+      <h2 id="h-test" tabindex="-1">Try a real call</h2>
+      <p class="lede">Copper starts exactly the way your AI app will start it, and answers one real request.</p>
+      <div id="test-body" class="body"></div>
+      <div id="test-nav" class="nav"></div>
+    </section>
+
+    <section id="s-done" class="step" aria-labelledby="h-done" hidden>
+      <svg class="done-art" viewBox="0 0 300 64" aria-hidden="true" focusable="false">
+        <path class="done-ghost" d="M8 44 H96 L120 20 H200 L224 44 H280"/>
+        <path class="done-trace" pathLength="1" d="M8 44 H96 L120 20 H200 L224 44 H280"/>
+        <circle class="done-pad" cx="8" cy="44" r="5"/>
+        <circle class="done-pad end" cx="280" cy="44" r="10"/><circle class="done-hole" cx="280" cy="44" r="3.5"/>
+      </svg>
+      <h2 id="h-done" tabindex="-1">Copper is ready</h2>
+      <p class="lede" id="done-lede">Open your AI app and ask it for a board.</p>
+      <div id="done-body" class="body"></div>
+      <div id="done-nav" class="nav"></div>
+    </section>
+
+    <footer class="foot"><span id="foot-text">Copper __VERSION__. Open this page again any time with <code>copper setup</code>.</span></footer>
+  </main>
+</div>
+<script nonce="__NONCE__">/*__JS__*/</script>
+</body>
+</html>

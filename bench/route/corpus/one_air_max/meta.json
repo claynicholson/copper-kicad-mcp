@@ -1,0 +1,4584 @@
+{
+ "name": "one_air_max",
+ "kind": "real",
+ "difficulty": 4,
+ "note": "4-layer, 120 nets, 0.39 mm pitch, 34 pours",
+ "source": "C:/Program Files/KiCad/10.0/share/kicad/demos/openair-max/One-Air-Max.kicad_pcb",
+ "reference_kind": "human",
+ "facts": {
+  "layers": [
+   "F.Cu",
+   "PWR",
+   "GND",
+   "B.Cu"
+  ],
+  "footprints": 210,
+  "pads": 655,
+  "smd_pads": 620,
+  "tht_pads": 35,
+  "min_pad_pitch_mm": 0.39,
+  "nets": 120,
+  "size_mm": [
+   99.55,
+   72.1
+  ],
+  "origin_mm": [
+   96.31,
+   50.77
+  ],
+  "zones": 34,
+  "zone_nets": [
+   "+3V3",
+   "+5VBAT",
+   "+5VUSB",
+   "/Battery_holder/BAT1",
+   "/Battery_holder/BAT2",
+   "/Battery_holder/VBAT+",
+   "/Solar_module/SW1",
+   "/Solar_module/SW2",
+   "/Solar_module/VBAT",
+   "/VOUT1",
+   "/VOUT2",
+   "/VOUT3",
+   "/VOUT4",
+   "/VOUT5",
+   "/VOUT6",
+   "BAT-",
+   "GND",
+   "Net-(C24-Pad2)",
+   "Net-(F2-Pad2)",
+   "Net-(Q1-D)",
+   "Net-(U2-SW)",
+   "Net-(U6-SW)",
+   "PGND"
+  ],
+  "rule_areas": 3,
+  "min_clearance": 0.0,
+  "min_track": 0.0,
+  "mst_mm": {
+   "/Solar_module/Solar+": 75.062,
+   "PGND": 177.043,
+   "+3V3": 232.769,
+   "GND": 448.654,
+   "/SCL": 182.67,
+   "/SDA": 183.347,
+   "BAT-": 116.11,
+   "/Battery_holder/BAT1": 42.5,
+   "/Battery_holder/BAT2": 91.089,
+   "/Battery_holder/VBAT+": 33.714,
+   "/BOOT": 49.097,
+   "Net-(C1-Pad2)": 20.28,
+   "+5VUSB": 18.985,
+   "Net-(USB1-CC1)": 6.471,
+   "/USB_D+": 37.151,
+   "/USB_D-": 37.211,
+   "Net-(USB1-CC2)": 3.217,
+   "/Battery_holder/BAT_TH": 93.545,
+   "Net-(LED2-A)": 6.44,
+   "Net-(F2-Pad2)": 46.486,
+   "/Battery_holder/LD": 5.626,
+   "+5V": 107.412,
+   "Net-(U4-VC1)": 11.133,
+   "/EN": 30.132,
+   "Net-(U5-PMID)": 12.155,
+   "Net-(U4-CCFG)": 6.362,
+   "Net-(R16-Pad1)": 2.343,
+   "/Solar_module/PROG": 7.334,
+   "+5VBAT": 68.818,
+   "Net-(U6-SW)": 3.971,
+   "/VOUT6": 52.611,
+   "Net-(U4-VDD)": 2.701,
+   "/Battery_holder/AVDD": 11.98,
+   "Net-(U4-VC3)": 7.983,
+   "Net-(U4-VC2)": 8.964,
+   "/Battery_holder/SRP": 10.288,
+   "/Battery_holder/SRN": 8.779,
+   "/Battery_holder/DSG": 8.68,
+   "/Battery_holder/CHG": 10.889,
+   "Net-(U4-VTB)": 2.315,
+   "/Battery_holder/CTRC": 17.387,
+   "/Battery_holder/CTRD": 2.897,
+   "/EN_NO2": 44.874,
+   "/EN_CO2": 44.395,
+   "/RX_CO2": 13.034,
+   "/TX_CO2": 14.772,
+   "Net-(U1-IO8)": 2.074,
+   "/LED": 42.409,
+   "/USB-": 6.081,
+   "/USB+": 5.482,
+   "/IO18": 51.443,
+   "/IO19": 54.037,
+   "/IO20": 49.903,
+   "/IO21": 24.37,
+   "/IO22": 2.001,
+   "/IO23": 28.499,
+   "/EN_CE": 47.154,
+   "/RX_CE": 48.433,
+   "/TX_CE": 50.014,
+   "/EN_PM": 40.186,
+   "/WD_RST": 24.937,
+   "Net-(D2-K)": 8.579,
+   "/Solar_module/SYS": 30.292,
+   "/VOUT1": 50.518,
+   "/PM2_TXD": 5.34,
+   "/PM2_RXD": 5.436,
+   "/VOUT5": 46.512,
+   "/PM1_TXD": 12.523,
+   "/PM1_RXD": 12.917,
+   "Net-(D6-K)": 8.382,
+   "/VOUT2": 57.199,
+   "Net-(U6-PG)": 5.534,
+   "Net-(U6-EN)": 11.053,
+   "Net-(U6-MODE{slash}S-CONF)": 2.001,
+   "Net-(U6-SS{slash}TR)": 2.475,
+   "/Solar_module/FB{slash}VSET": 9.015,
+   "/VOUT4": 17.291,
+   "/VOUT3": 18.926,
+   "/SCL_TXD": 25.094,
+   "/SDA_RXD": 28.02,
+   "/Solar_module/ILIM_HIZ": 12.194,
+   "/I2C_~{RST}": 4.12,
+   "Net-(U14-R1{slash}C1)": 1.55,
+   "Net-(C24-Pad2)": 17.303,
+   "Net-(D1-Pad2)": 5.774,
+   "Net-(U5-CE)": 2.452,
+   "Net-(Q1-G)": 13.346,
+   "Net-(Q1-D)": 10.24,
+   "Net-(U17-R1{slash}C1)": 4.201,
+   "Net-(U2-SW)": 3.681,
+   "/Solar_module/SW2": 11.475,
+   "/Solar_module/BTST2": 2.279,
+   "Net-(U5-TS)": 11.916,
+   "Net-(U8-OSCO)": 12.983,
+   "Net-(U8-OSCI)": 13.696,
+   "Net-(U2-MODE{slash}S-CONF)": 4.059,
+   "Net-(U16-R1{slash}C1)": 1.665,
+   "Net-(U18-R1{slash}C1)": 1.896,
+   "/A0": 12.451,
+   "/Solar_module/REGN": 18.317,
+   "/PR1": 3.934,
+   "/Solar_module/SW1": 11.123,
+   "/A1": 14.522,
+   "Net-(D4-K)": 3.115,
+   "Net-(U13-R1{slash}C1)": 1.651,
+   "Net-(U7-ST)": 3.89,
+   "Net-(U8-#IRQ)": 2.548,
+   "Net-(LED3-A)": 1.55,
+   "/Solar_module/VBAT": 50.537,
+   "Net-(D7-A)": 6.505,
+   "Net-(D5-A)": 2.509,
+   "/VMUX": 4.461,
+   "Net-(U2-SS{slash}TR)": 2.062,
+   "Net-(U2-FB{slash}VSET)": 4.726,
+   "Net-(U3-DELAY{slash}M_RST)": 1.45,
+   "/Solar_module/BTST1": 2.257,
+   "Net-(U15-R1{slash}C1)": 1.552,
+   "Net-(LED3-K)": 7.571,
+   "Net-(U5-BATP)": 7.87,
+   "Net-(U5-SDRV)": 1.739
+  },
+  "mst_total_mm": 3555.0
+ },
+ "reference": {
+  "tracks": 1654,
+  "vias": 410,
+  "arcs": 16,
+  "blind_or_micro_vias": 0,
+  "length_mm": 3704.23,
+  "unconnected": 0,
+  "nets": {
+   "Net-(C1-Pad2)": {
+    "length": 11.924,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 3.284,
+     "0.25": 8.64
+    },
+    "layers": {
+     "B.Cu": 11.924
+    }
+   },
+   "GND": {
+    "length": 14.312,
+    "vias": 153,
+    "segments": 23,
+    "widths": {
+     "0.5": 9.487,
+     "0.25": 3.623,
+     "1.0": 1.202
+    },
+    "layers": {
+     "F.Cu": 10.499,
+     "B.Cu": 3.813
+    }
+   },
+   "+5V": {
+    "length": 169.702,
+    "vias": 9,
+    "segments": 76,
+    "widths": {
+     "0.75": 127.814,
+     "0.5": 34.317,
+     "0.25": 7.571
+    },
+    "layers": {
+     "B.Cu": 40.662,
+     "PWR": 129.041
+    }
+   },
+   "+3V3": {
+    "length": 148.297,
+    "vias": 35,
+    "segments": 108,
+    "widths": {
+     "0.25": 37.702,
+     "1.0": 66.005,
+     "0.75": 15.028,
+     "0.2": 25.61,
+     "0.5": 3.951
+    },
+    "layers": {
+     "F.Cu": 15.599,
+     "B.Cu": 102.945,
+     "PWR": 29.753
+    }
+   },
+   "/BOOT": {
+    "length": 57.763,
+    "vias": 1,
+    "segments": 20,
+    "widths": {
+     "0.25": 57.763
+    },
+    "layers": {
+     "F.Cu": 40.234,
+     "B.Cu": 17.529
+    }
+   },
+   "/TX_CO2": {
+    "length": 16.914,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 16.914
+    },
+    "layers": {
+     "B.Cu": 16.914
+    }
+   },
+   "/RX_CO2": {
+    "length": 15.285,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 15.285
+    },
+    "layers": {
+     "B.Cu": 15.285
+    }
+   },
+   "/SDA": {
+    "length": 270.756,
+    "vias": 10,
+    "segments": 94,
+    "widths": {
+     "0.15": 50.21,
+     "0.25": 213.444,
+     "0.2": 7.103
+    },
+    "layers": {
+     "F.Cu": 123.045,
+     "B.Cu": 121.516,
+     "GND": 26.196
+    }
+   },
+   "/SCL": {
+    "length": 276.872,
+    "vias": 11,
+    "segments": 100,
+    "widths": {
+     "0.15": 47.381,
+     "0.25": 229.492
+    },
+    "layers": {
+     "F.Cu": 155.167,
+     "B.Cu": 91.31,
+     "GND": 30.395
+    }
+   },
+   "/IO20": {
+    "length": 56.151,
+    "vias": 2,
+    "segments": 24,
+    "widths": {
+     "0.25": 51.622,
+     "0.75": 2.45,
+     "0.2": 2.079
+    },
+    "layers": {
+     "F.Cu": 46.373,
+     "B.Cu": 9.778
+    }
+   },
+   "Net-(LED2-A)": {
+    "length": 6.758,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.5": 6.758
+    },
+    "layers": {
+     "B.Cu": 6.758
+    }
+   },
+   "Net-(USB1-CC1)": {
+    "length": 23.936,
+    "vias": 1,
+    "segments": 15,
+    "widths": {
+     "0.25": 1.533,
+     "0.2": 22.404
+    },
+    "layers": {
+     "F.Cu": 1.533,
+     "B.Cu": 22.404
+    }
+   },
+   "Net-(USB1-CC2)": {
+    "length": 7.846,
+    "vias": 1,
+    "segments": 6,
+    "widths": {
+     "0.25": 7.846
+    },
+    "layers": {
+     "F.Cu": 2.0,
+     "B.Cu": 5.846
+    }
+   },
+   "Net-(U1-IO8)": {
+    "length": 2.228,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.25": 2.228
+    },
+    "layers": {
+     "B.Cu": 2.228
+    }
+   },
+   "/EN": {
+    "length": 36.656,
+    "vias": 2,
+    "segments": 18,
+    "widths": {
+     "0.2": 36.656
+    },
+    "layers": {
+     "B.Cu": 18.347,
+     "GND": 18.309
+    }
+   },
+   "Net-(U3-DELAY{slash}M_RST)": {
+    "length": 1.45,
+    "vias": 0,
+    "segments": 1,
+    "widths": {
+     "0.5": 1.45
+    },
+    "layers": {
+     "B.Cu": 1.45
+    }
+   },
+   "/LED": {
+    "length": 51.084,
+    "vias": 2,
+    "segments": 27,
+    "widths": {
+     "0.25": 51.084
+    },
+    "layers": {
+     "F.Cu": 38.115,
+     "B.Cu": 12.969
+    }
+   },
+   "/IO19": {
+    "length": 63.367,
+    "vias": 2,
+    "segments": 21,
+    "widths": {
+     "0.25": 52.645,
+     "0.75": 2.429,
+     "0.2": 8.293
+    },
+    "layers": {
+     "F.Cu": 47.396,
+     "B.Cu": 15.971
+    }
+   },
+   "/USB_D+": {
+    "length": 44.44,
+    "vias": 1,
+    "segments": 18,
+    "widths": {
+     "0.25": 4.414,
+     "0.2": 40.026
+    },
+    "layers": {
+     "F.Cu": 4.414,
+     "B.Cu": 40.026
+    }
+   },
+   "/USB_D-": {
+    "length": 44.64,
+    "vias": 1,
+    "segments": 42,
+    "widths": {
+     "0.25": 4.614,
+     "0.2": 40.026
+    },
+    "layers": {
+     "F.Cu": 4.614,
+     "B.Cu": 40.026
+    }
+   },
+   "/WD_RST": {
+    "length": 29.369,
+    "vias": 2,
+    "segments": 16,
+    "widths": {
+     "0.5": 29.369
+    },
+    "layers": {
+     "F.Cu": 3.641,
+     "B.Cu": 25.728
+    }
+   },
+   "Net-(U4-VC1)": {
+    "length": 13.805,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.25": 13.805
+    },
+    "layers": {
+     "B.Cu": 13.805
+    }
+   },
+   "Net-(U4-VC2)": {
+    "length": 9.94,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.25": 9.94
+    },
+    "layers": {
+     "B.Cu": 9.94
+    }
+   },
+   "Net-(U4-VC3)": {
+    "length": 8.189,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.25": 8.189
+    },
+    "layers": {
+     "B.Cu": 8.189
+    }
+   },
+   "Net-(U4-VDD)": {
+    "length": 2.809,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.25": 2.809
+    },
+    "layers": {
+     "B.Cu": 2.809
+    }
+   },
+   "/Battery_holder/BAT1": {
+    "length": 28.418,
+    "vias": 1,
+    "segments": 7,
+    "widths": {
+     "0.25": 28.418
+    },
+    "layers": {
+     "F.Cu": 26.603,
+     "B.Cu": 1.815
+    }
+   },
+   "/Battery_holder/VBAT+": {
+    "length": 10.7,
+    "vias": 3,
+    "segments": 11,
+    "widths": {
+     "1.0": 6.048,
+     "2.0": 1.666,
+     "0.25": 2.421,
+     "0.5": 0.566
+    },
+    "layers": {
+     "F.Cu": 6.398,
+     "B.Cu": 4.303
+    }
+   },
+   "/IO21": {
+    "length": 35.402,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.25": 28.907,
+     "0.5": 2.121,
+     "0.2": 4.375
+    },
+    "layers": {
+     "F.Cu": 27.307,
+     "B.Cu": 8.095
+    }
+   },
+   "/IO23": {
+    "length": 40.262,
+    "vias": 2,
+    "segments": 14,
+    "widths": {
+     "0.25": 35.855,
+     "0.5": 2.125,
+     "0.2": 2.282
+    },
+    "layers": {
+     "F.Cu": 33.081,
+     "B.Cu": 7.18
+    }
+   },
+   "/IO22": {
+    "length": 2.021,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 2.021
+    },
+    "layers": {
+     "B.Cu": 2.021
+    }
+   },
+   "/Battery_holder/BAT2": {
+    "length": 100.111,
+    "vias": 1,
+    "segments": 22,
+    "widths": {
+     "0.75": 98.574,
+     "0.25": 1.537
+    },
+    "layers": {
+     "F.Cu": 98.574,
+     "B.Cu": 1.537
+    }
+   },
+   "Net-(C24-Pad2)": {
+    "length": 12.305,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.25": 12.305
+    },
+    "layers": {
+     "B.Cu": 12.305
+    }
+   },
+   "/Battery_holder/SRP": {
+    "length": 15.328,
+    "vias": 0,
+    "segments": 12,
+    "widths": {
+     "0.25": 15.328
+    },
+    "layers": {
+     "B.Cu": 15.328
+    }
+   },
+   "Net-(Q1-G)": {
+    "length": 15.678,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.25": 15.678
+    },
+    "layers": {
+     "B.Cu": 15.678
+    }
+   },
+   "/Battery_holder/SRN": {
+    "length": 9.333,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.25": 9.333
+    },
+    "layers": {
+     "B.Cu": 9.333
+    }
+   },
+   "/Battery_holder/AVDD": {
+    "length": 18.582,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.25": 18.582
+    },
+    "layers": {
+     "B.Cu": 18.582
+    }
+   },
+   "Net-(U5-TS)": {
+    "length": 15.712,
+    "vias": 0,
+    "segments": 13,
+    "widths": {
+     "0.25": 12.307,
+     "0.15": 3.405
+    },
+    "layers": {
+     "B.Cu": 15.712
+    }
+   },
+   "Net-(U4-VTB)": {
+    "length": 2.472,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 2.472
+    },
+    "layers": {
+     "B.Cu": 2.472
+    }
+   },
+   "Net-(U4-CCFG)": {
+    "length": 9.238,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.25": 9.238
+    },
+    "layers": {
+     "B.Cu": 9.238
+    }
+   },
+   "/Solar_module/SYS": {
+    "length": 50.278,
+    "vias": 2,
+    "segments": 31,
+    "widths": {
+     "0.2": 1.361,
+     "1.0": 38.595,
+     "0.5": 10.322
+    },
+    "layers": {
+     "B.Cu": 24.633,
+     "PWR": 25.645
+    }
+   },
+   "/Solar_module/SW1": {
+    "length": 13.888,
+    "vias": 8,
+    "segments": 12,
+    "widths": {
+     "1.0": 12.908,
+     "0.15": 0.98
+    },
+    "layers": {
+     "F.Cu": 11.985,
+     "B.Cu": 1.902
+    }
+   },
+   "/Solar_module/BTST1": {
+    "length": 2.409,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 2.409
+    },
+    "layers": {
+     "B.Cu": 2.409
+    }
+   },
+   "/Solar_module/SW2": {
+    "length": 12.833,
+    "vias": 8,
+    "segments": 11,
+    "widths": {
+     "1.0": 11.832,
+     "0.15": 1.001
+    },
+    "layers": {
+     "F.Cu": 10.869,
+     "B.Cu": 1.964
+    }
+   },
+   "/Solar_module/BTST2": {
+    "length": 2.462,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.15": 2.462
+    },
+    "layers": {
+     "B.Cu": 2.462
+    }
+   },
+   "/Solar_module/Solar+": {
+    "length": 129.293,
+    "vias": 7,
+    "segments": 84,
+    "widths": {
+     "1.0": 68.163,
+     "0.15": 5.504,
+     "0.5": 1.208,
+     "1.5": 54.419
+    },
+    "layers": {
+     "F.Cu": 9.29,
+     "B.Cu": 47.839,
+     "PWR": 72.164
+    }
+   },
+   "Net-(U5-PMID)": {
+    "length": 12.429,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.5": 9.736,
+     "0.15": 2.693
+    },
+    "layers": {
+     "B.Cu": 12.429
+    }
+   },
+   "/Solar_module/REGN": {
+    "length": 20.912,
+    "vias": 2,
+    "segments": 12,
+    "widths": {
+     "0.25": 16.035,
+     "0.15": 4.877
+    },
+    "layers": {
+     "F.Cu": 6.499,
+     "B.Cu": 14.413
+    }
+   },
+   "Net-(U5-SDRV)": {
+    "length": 1.863,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.15": 1.863
+    },
+    "layers": {
+     "B.Cu": 1.863
+    }
+   },
+   "Net-(LED3-K)": {
+    "length": 8.631,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.2": 7.613,
+     "0.15": 1.018
+    },
+    "layers": {
+     "B.Cu": 8.631
+    }
+   },
+   "Net-(LED3-A)": {
+    "length": 1.612,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 1.612
+    },
+    "layers": {
+     "B.Cu": 1.612
+    }
+   },
+   "Net-(U5-CE)": {
+    "length": 3.588,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.2": 3.588
+    },
+    "layers": {
+     "B.Cu": 3.588
+    }
+   },
+   "Net-(U5-BATP)": {
+    "length": 9.436,
+    "vias": 0,
+    "segments": 8,
+    "widths": {
+     "0.2": 9.436
+    },
+    "layers": {
+     "B.Cu": 9.436
+    }
+   },
+   "Net-(U6-SS{slash}TR)": {
+    "length": 2.643,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 2.643
+    },
+    "layers": {
+     "B.Cu": 2.643
+    }
+   },
+   "Net-(D1-Pad2)": {
+    "length": 6.745,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 6.745
+    },
+    "layers": {
+     "B.Cu": 6.745
+    }
+   },
+   "Net-(D2-K)": {
+    "length": 8.714,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 8.714
+    },
+    "layers": {
+     "B.Cu": 8.714
+    }
+   },
+   "/Battery_holder/BAT_TH": {
+    "length": 151.068,
+    "vias": 2,
+    "segments": 25,
+    "widths": {
+     "0.25": 147.889,
+     "0.2": 3.179
+    },
+    "layers": {
+     "F.Cu": 112.103,
+     "B.Cu": 38.965
+    }
+   },
+   "/Battery_holder/DSG": {
+    "length": 9.373,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.25": 9.373
+    },
+    "layers": {
+     "B.Cu": 9.373
+    }
+   },
+   "/Battery_holder/CHG": {
+    "length": 11.722,
+    "vias": 0,
+    "segments": 6,
+    "widths": {
+     "0.25": 11.722
+    },
+    "layers": {
+     "B.Cu": 11.722
+    }
+   },
+   "/Battery_holder/LD": {
+    "length": 9.027,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.25": 9.027
+    },
+    "layers": {
+     "B.Cu": 9.027
+    }
+   },
+   "/Battery_holder/CTRC": {
+    "length": 40.218,
+    "vias": 2,
+    "segments": 20,
+    "widths": {
+     "0.25": 40.218
+    },
+    "layers": {
+     "F.Cu": 33.474,
+     "B.Cu": 6.744
+    }
+   },
+   "/Battery_holder/CTRD": {
+    "length": 3.521,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.25": 3.521
+    },
+    "layers": {
+     "B.Cu": 3.521
+    }
+   },
+   "/Solar_module/PROG": {
+    "length": 8.928,
+    "vias": 0,
+    "segments": 7,
+    "widths": {
+     "0.15": 8.928
+    },
+    "layers": {
+     "B.Cu": 8.928
+    }
+   },
+   "/Solar_module/ILIM_HIZ": {
+    "length": 16.192,
+    "vias": 2,
+    "segments": 14,
+    "widths": {
+     "0.25": 14.503,
+     "0.2": 1.689
+    },
+    "layers": {
+     "F.Cu": 7.183,
+     "B.Cu": 9.009
+    }
+   },
+   "/Solar_module/FB{slash}VSET": {
+    "length": 10.309,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.25": 10.309
+    },
+    "layers": {
+     "B.Cu": 10.309
+    }
+   },
+   "Net-(U6-MODE{slash}S-CONF)": {
+    "length": 2.021,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 2.021
+    },
+    "layers": {
+     "B.Cu": 2.021
+    }
+   },
+   "Net-(U6-PG)": {
+    "length": 5.893,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.25": 5.893
+    },
+    "layers": {
+     "B.Cu": 5.893
+    }
+   },
+   "+5VUSB": {
+    "length": 10.577,
+    "vias": 6,
+    "segments": 15,
+    "widths": {
+     "0.6": 6.799,
+     "0.25": 3.778
+    },
+    "layers": {
+     "F.Cu": 6.799,
+     "B.Cu": 3.778
+    }
+   },
+   "+5VBAT": {
+    "length": 135.709,
+    "vias": 7,
+    "segments": 36,
+    "widths": {
+     "1.0": 115.114,
+     "0.25": 20.595
+    },
+    "layers": {
+     "B.Cu": 28.148,
+     "PWR": 107.561
+    }
+   },
+   "/PR1": {
+    "length": 4.397,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.2": 4.397
+    },
+    "layers": {
+     "B.Cu": 4.397
+    }
+   },
+   "Net-(U7-ST)": {
+    "length": 7.672,
+    "vias": 2,
+    "segments": 6,
+    "widths": {
+     "0.25": 7.672
+    },
+    "layers": {
+     "F.Cu": 4.727,
+     "B.Cu": 2.945
+    }
+   },
+   "/VMUX": {
+    "length": 6.514,
+    "vias": 1,
+    "segments": 5,
+    "widths": {
+     "0.75": 1.41,
+     "0.25": 5.104
+    },
+    "layers": {
+     "B.Cu": 6.514
+    }
+   },
+   "Net-(U8-OSCI)": {
+    "length": 14.595,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 14.595
+    },
+    "layers": {
+     "B.Cu": 14.595
+    }
+   },
+   "Net-(U8-OSCO)": {
+    "length": 13.356,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 13.356
+    },
+    "layers": {
+     "B.Cu": 13.356
+    }
+   },
+   "/I2C_~{RST}": {
+    "length": 4.185,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 4.185
+    },
+    "layers": {
+     "B.Cu": 4.185
+    }
+   },
+   "/SCL_TXD": {
+    "length": 27.699,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 27.699
+    },
+    "layers": {
+     "B.Cu": 27.699
+    }
+   },
+   "/SDA_RXD": {
+    "length": 31.076,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 31.076
+    },
+    "layers": {
+     "B.Cu": 31.076
+    }
+   },
+   "/TX_CE": {
+    "length": 67.023,
+    "vias": 3,
+    "segments": 22,
+    "widths": {
+     "0.25": 67.023
+    },
+    "layers": {
+     "F.Cu": 42.746,
+     "B.Cu": 24.278
+    }
+   },
+   "/RX_CE": {
+    "length": 57.71,
+    "vias": 2,
+    "segments": 15,
+    "widths": {
+     "0.25": 57.71
+    },
+    "layers": {
+     "F.Cu": 36.055,
+     "B.Cu": 21.655
+    }
+   },
+   "/PM1_TXD": {
+    "length": 21.821,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.2": 21.821
+    },
+    "layers": {
+     "B.Cu": 21.821
+    }
+   },
+   "/PM1_RXD": {
+    "length": 18.776,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.2": 18.776
+    },
+    "layers": {
+     "B.Cu": 18.776
+    }
+   },
+   "/PM2_TXD": {
+    "length": 5.394,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 5.394
+    },
+    "layers": {
+     "B.Cu": 5.394
+    }
+   },
+   "/PM2_RXD": {
+    "length": 5.69,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.2": 5.69
+    },
+    "layers": {
+     "B.Cu": 5.69
+    }
+   },
+   "Net-(U8-#IRQ)": {
+    "length": 2.595,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 2.595
+    },
+    "layers": {
+     "B.Cu": 2.595
+    }
+   },
+   "/A0": {
+    "length": 13.959,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.25": 13.959
+    },
+    "layers": {
+     "F.Cu": 9.614,
+     "B.Cu": 4.345
+    }
+   },
+   "/A1": {
+    "length": 16.956,
+    "vias": 2,
+    "segments": 8,
+    "widths": {
+     "0.25": 16.956
+    },
+    "layers": {
+     "F.Cu": 9.356,
+     "B.Cu": 7.6
+    }
+   },
+   "/Solar_module/VBAT": {
+    "length": 94.839,
+    "vias": 8,
+    "segments": 43,
+    "widths": {
+     "0.15": 5.873,
+     "1.0": 8.412,
+     "0.2": 1.683,
+     "2.0": 56.663,
+     "0.5": 22.208
+    },
+    "layers": {
+     "B.Cu": 15.968,
+     "PWR": 78.871
+    }
+   },
+   "Net-(R16-Pad1)": {
+    "length": 2.949,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.15": 2.949
+    },
+    "layers": {
+     "B.Cu": 2.949
+    }
+   },
+   "/EN_CO2": {
+    "length": 49.695,
+    "vias": 2,
+    "segments": 15,
+    "widths": {
+     "0.25": 49.695
+    },
+    "layers": {
+     "B.Cu": 41.439,
+     "GND": 8.256
+    }
+   },
+   "BAT-": {
+    "length": 138.814,
+    "vias": 21,
+    "segments": 51,
+    "widths": {
+     "0.25": 25.16,
+     "0.5": 5.645,
+     "3.0": 108.009
+    },
+    "layers": {
+     "F.Cu": 2.192,
+     "B.Cu": 28.613,
+     "GND": 108.009
+    }
+   },
+   "Net-(F2-Pad2)": {
+    "length": 49.002,
+    "vias": 4,
+    "segments": 11,
+    "widths": {
+     "2.0": 49.002
+    },
+    "layers": {
+     "PWR": 49.002
+    }
+   },
+   "/VOUT3": {
+    "length": 19.198,
+    "vias": 2,
+    "segments": 6,
+    "widths": {
+     "0.75": 19.198
+    },
+    "layers": {
+     "B.Cu": 2.599,
+     "PWR": 16.6
+    }
+   },
+   "/VOUT1": {
+    "length": 49.977,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.75": 49.977
+    },
+    "layers": {
+     "B.Cu": 14.832,
+     "PWR": 35.144
+    }
+   },
+   "/VOUT2": {
+    "length": 61.258,
+    "vias": 2,
+    "segments": 15,
+    "widths": {
+     "0.75": 61.258
+    },
+    "layers": {
+     "B.Cu": 4.865,
+     "PWR": 56.394
+    }
+   },
+   "/EN_PM": {
+    "length": 44.411,
+    "vias": 0,
+    "segments": 14,
+    "widths": {
+     "0.25": 44.411
+    },
+    "layers": {
+     "B.Cu": 44.411
+    }
+   },
+   "PGND": {
+    "length": 31.805,
+    "vias": 55,
+    "segments": 21,
+    "widths": {
+     "0.15": 3.655,
+     "0.2": 0.898,
+     "0.75": 9.101,
+     "0.25": 18.151
+    },
+    "layers": {
+     "B.Cu": 31.805
+    }
+   },
+   "Net-(U2-SS{slash}TR)": {
+    "length": 2.673,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.25": 2.673
+    },
+    "layers": {
+     "B.Cu": 2.673
+    }
+   },
+   "Net-(U2-FB{slash}VSET)": {
+    "length": 5.533,
+    "vias": 0,
+    "segments": 9,
+    "widths": {
+     "0.25": 5.533
+    },
+    "layers": {
+     "B.Cu": 5.533
+    }
+   },
+   "Net-(U2-MODE{slash}S-CONF)": {
+    "length": 5.753,
+    "vias": 0,
+    "segments": 5,
+    "widths": {
+     "0.25": 5.753
+    },
+    "layers": {
+     "B.Cu": 5.753
+    }
+   },
+   "/IO18": {
+    "length": 63.543,
+    "vias": 2,
+    "segments": 19,
+    "widths": {
+     "0.25": 55.814,
+     "0.2": 7.729
+    },
+    "layers": {
+     "F.Cu": 47.965,
+     "B.Cu": 15.578
+    }
+   },
+   "Net-(U13-R1{slash}C1)": {
+    "length": 2.066,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.5": 2.066
+    },
+    "layers": {
+     "B.Cu": 2.066
+    }
+   },
+   "Net-(U14-R1{slash}C1)": {
+    "length": 1.564,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 1.564
+    },
+    "layers": {
+     "B.Cu": 1.564
+    }
+   },
+   "Net-(U15-R1{slash}C1)": {
+    "length": 1.581,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 1.581
+    },
+    "layers": {
+     "B.Cu": 1.581
+    }
+   },
+   "/VOUT4": {
+    "length": 24.747,
+    "vias": 2,
+    "segments": 9,
+    "widths": {
+     "0.75": 24.747
+    },
+    "layers": {
+     "B.Cu": 2.911,
+     "PWR": 21.836
+    }
+   },
+   "/VOUT5": {
+    "length": 56.728,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.75": 56.728
+    },
+    "layers": {
+     "B.Cu": 2.895,
+     "PWR": 53.833
+    }
+   },
+   "Net-(D4-K)": {
+    "length": 4.316,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.2": 4.316
+    },
+    "layers": {
+     "B.Cu": 4.316
+    }
+   },
+   "Net-(D5-A)": {
+    "length": 3.067,
+    "vias": 0,
+    "segments": 3,
+    "widths": {
+     "0.2": 3.067
+    },
+    "layers": {
+     "B.Cu": 3.067
+    }
+   },
+   "Net-(D6-K)": {
+    "length": 10.085,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.2": 10.085
+    },
+    "layers": {
+     "B.Cu": 10.085
+    }
+   },
+   "Net-(D7-A)": {
+    "length": 8.19,
+    "vias": 0,
+    "segments": 4,
+    "widths": {
+     "0.2": 8.19
+    },
+    "layers": {
+     "B.Cu": 8.19
+    }
+   },
+   "/USB-": {
+    "length": 11.843,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "0.2": 11.843
+    },
+    "layers": {
+     "B.Cu": 11.843
+    }
+   },
+   "/USB+": {
+    "length": 11.843,
+    "vias": 0,
+    "segments": 21,
+    "widths": {
+     "0.2": 11.843
+    },
+    "layers": {
+     "B.Cu": 11.843
+    }
+   },
+   "Net-(U6-EN)": {
+    "length": 12.615,
+    "vias": 0,
+    "segments": 11,
+    "widths": {
+     "1.0": 6.997,
+     "0.25": 5.618
+    },
+    "layers": {
+     "B.Cu": 12.615
+    }
+   },
+   "/VOUT6": {
+    "length": 63.899,
+    "vias": 2,
+    "segments": 10,
+    "widths": {
+     "0.75": 63.899
+    },
+    "layers": {
+     "B.Cu": 3.037,
+     "PWR": 60.862
+    }
+   },
+   "/EN_CE": {
+    "length": 86.776,
+    "vias": 2,
+    "segments": 31,
+    "widths": {
+     "0.2": 50.311,
+     "0.25": 36.466
+    },
+    "layers": {
+     "B.Cu": 64.605,
+     "GND": 22.171
+    }
+   },
+   "/EN_NO2": {
+    "length": 50.918,
+    "vias": 2,
+    "segments": 21,
+    "widths": {
+     "0.25": 50.918
+    },
+    "layers": {
+     "B.Cu": 26.486,
+     "GND": 24.431
+    }
+   },
+   "Net-(U17-R1{slash}C1)": {
+    "length": 8.953,
+    "vias": 2,
+    "segments": 11,
+    "widths": {
+     "0.25": 8.953
+    },
+    "layers": {
+     "F.Cu": 5.78,
+     "B.Cu": 3.174
+    }
+   },
+   "Net-(U16-R1{slash}C1)": {
+    "length": 1.776,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 1.776
+    },
+    "layers": {
+     "B.Cu": 1.776
+    }
+   },
+   "Net-(U18-R1{slash}C1)": {
+    "length": 2.048,
+    "vias": 0,
+    "segments": 2,
+    "widths": {
+     "0.25": 2.048
+    },
+    "layers": {
+     "B.Cu": 2.048
+    }
+   }
+  },
+  "unconnected_by_net": {},
+  "drc": {
+   "errors": 226,
+   "warnings": 253,
+   "unconnected": 0,
+   "by_type": {
+    "error:clearance": 12,
+    "error:drill_out_of_range": 199,
+    "error:padstack_invalid": 4,
+    "error:solder_mask_bridge": 10,
+    "error:zones_intersect": 1,
+    "warning:copper_sliver": 4,
+    "warning:lib_footprint_issues": 199,
+    "warning:padstack": 5,
+    "warning:silk_edge_clearance": 8,
+    "warning:silk_over_copper": 16,
+    "warning:silk_overlap": 21
+   }
+  },
+  "drc_error_list": [
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0910 mm)",
+    "items": [
+     "Track [/Solar_module/VBAT] on PWR, length 4.9243 mm",
+     "Track [/Solar_module/SYS] on PWR, length 8.0070 mm"
+    ],
+    "at": [
+     169.181,
+     65.238064
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0910 mm)",
+    "items": [
+     "Track [/Solar_module/VBAT] on PWR, length 4.9243 mm",
+     "Track [/Solar_module/SYS] on PWR, length 2.8057 mm"
+    ],
+    "at": [
+     169.181,
+     65.238064
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 5 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     89.62
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 6 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     90.89
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 7 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     90.87
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 7 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     92.15
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q2 on B.Cu",
+     "Pad 5 [Net-(Q1-D)] of Q2 on B.Cu"
+    ],
+    "at": [
+     183.795,
+     91.5
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q2 on B.Cu",
+     "Pad 6 [Net-(Q1-D)] of Q2 on B.Cu"
+    ],
+    "at": [
+     183.795,
+     91.5
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q2 on B.Cu",
+     "Pad 8 [Net-(Q1-D)] of Q2 on B.Cu"
+    ],
+    "at": [
+     183.795,
+     91.5
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 8 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     93.43
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 1 [/Solar_module/VBAT] of F2 on B.Cu",
+     "Segment [<no net>] of F2 on B.Cu"
+    ],
+    "at": [
+     170.97,
+     71.425
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 2 [Net-(F2-Pad2)] of F2 on B.Cu",
+     "Segment [<no net>] of F2 on B.Cu"
+    ],
+    "at": [
+     167.79,
+     71.425
+    ]
+   },
+   {
+    "type": "zones_intersect",
+    "message": "Copper zones intersect (intersecting zones must have distinct priorities)",
+    "items": [
+     "Zone [BAT-] on F.Cu, priority 5",
+     "Zone [BAT-] on F.Cu, priority 5"
+    ],
+    "at": [
+     104.66,
+     72.87
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 3 [+5VBAT] of U6 on B.Cu"
+    ],
+    "at": [
+     187.84,
+     81.12
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 4 [PGND] of U6 on B.Cu"
+    ],
+    "at": [
+     186.26,
+     81.12
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 7 [Net-(U6-MODE/S-CONF)] of U6 on B.Cu"
+    ],
+    "at": [
+     186.26,
+     79.22
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 9 [/Solar_module/FB/VSET] of U6 on B.Cu"
+    ],
+    "at": [
+     187.84,
+     79.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     167.96,
+     76.67
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     160.16,
+     109.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     119.56,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     98.485,
+     111.845
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     122.76,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     144.91,
+     80.32
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     169.135,
+     106.17
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     147.36,
+     107.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     109.66,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     178.26,
+     85.07
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.56,
+     51.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     130.435,
+     92.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     124.26,
+     69.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     126.06,
+     89.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     110.56,
+     77.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     129.56,
+     85.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     97.56,
+     81.795
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     98.485,
+     62.745
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     103.36,
+     111.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     122.76,
+     72.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     176.41,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     164.41,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     169.56,
+     102.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.66,
+     62.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     115.56,
+     76.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     107.36,
+     60.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     130.18,
+     112.78
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     160.41,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.96,
+     56.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.96,
+     54.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     123.16,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     97.56,
+     104.07
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     151.06,
+     71.32
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     97.56,
+     95.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     115.11,
+     80.445
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     119.76,
+     109.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     119.96,
+     64.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.96,
+     51.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     120.96,
+     87.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     142.46,
+     63.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     97.56,
+     73.795
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     150.86,
+     51.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     164.96,
+     111.97
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     123.56,
+     90.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     157.36,
+     105.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     98.485,
+     58.745
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     149.16,
+     51.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     115.385,
+     108.095
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     136.16,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     178.06,
+     80.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     153.96,
+     115.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     108.66,
+     74.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     138.930061,
+     111.949939
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     110.76,
+     69.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     126.56,
+     104.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     136.16,
+     103.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     125.91,
+     77.195
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     125.16,
+     104.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     97.56,
+     77.795
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     135.16,
+     93.12
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     176.06,
+     79.12
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     177.11,
+     80.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     161.66,
+     79.27
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     122.96,
+     114.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     161.76,
+     101.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     166.81,
+     111.97
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     123.285,
+     84.77
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     148.885,
+     107.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     149.16,
+     66.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.41,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     113.96,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     98.46,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     128.96,
+     113.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.96,
+     107.67
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     116.76,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     161.16,
+     68.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     176.06,
+     80.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     103.985,
+     76.295
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     117.76,
+     97.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     129.56,
+     80.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     157.36,
+     101.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     174.56,
+     97.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     158.21,
+     81.17
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     153.66,
+     89.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     119.96,
+     65.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     132.96,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.96,
+     85.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     124.26,
+     72.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     172.41,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     101.559998,
+     83.12
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     104.56,
+     115.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     98.485,
+     115.845
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     109.685,
+     115.795
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     139.36,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     97.56,
+     69.795
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     142.56,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     122.76,
+     69.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.46,
+     90.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     159.46,
+     116.32
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     126.76,
+     60.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     99.26,
+     94.12
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     137.885,
+     97.282347
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     155.66,
+     89.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.41,
+     92.77
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     161.26,
+     62.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     147.66,
+     51.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     127.36,
+     81.57
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     123.31,
+     97.27
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.96,
+     53.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     161.76,
+     106.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     176.06,
+     77.12
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     163.12,
+     95.81
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     110.56,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     143.06,
+     101.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     117.96,
+     82.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.36,
+     96.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     124.76,
+     65.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     141.96,
+     70.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     101.635,
+     78.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     97.56,
+     100.07
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     118.31,
+     89.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     104.16,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     124.79,
+     64.49
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     98.485,
+     66.745
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     131.36,
+     64.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     156.41,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     142.66,
+     68.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     133.16,
+     78.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     100.96,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.76,
+     88.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     167.51,
+     93.07
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     161.585,
+     89.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     133.378677,
+     80.821362
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     152.36,
+     101.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     120.96,
+     101.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     134.56,
+     89.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     165.16,
+     97.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     126.01,
+     85.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     138.56,
+     103.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     116.36,
+     62.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     156.66,
+     96.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     128.16,
+     116.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     168.41,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     170.76,
+     76.995
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     125.16,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     98.485,
+     107.845
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.96,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     118.31,
+     88.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     113.96,
+     121.92
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     132.76,
+     103.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     107.36,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     127.56,
+     58.02
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [GND] on F.Cu - B.Cu"
+    ],
+    "at": [
+     108.56,
+     63.82
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     162.46,
+     62.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     113.76,
+     95.72
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     126.26,
+     109.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     141.76,
+     102.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     119.06,
+     99.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     122.935,
+     95.67
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     113.86,
+     91.245
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     138.185,
+     102.282347
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+5V] on F.Cu - B.Cu"
+    ],
+    "at": [
+     121.11,
+     109.57
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     127.96,
+     59.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     147.16,
+     87.67
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     146.76,
+     93.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     159.93,
+     62.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     142.56,
+     93.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     144.56,
+     94.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     141.46,
+     93.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     127.36,
+     80.32
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     106.06,
+     109.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     147.81,
+     94.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     101.5,
+     115.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     147.81,
+     96.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     111.55,
+     100.435
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     141.46,
+     96.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     143.56,
+     94.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     143.36,
+     82.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     131.61,
+     71.57
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     140.46,
+     94.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     140.46,
+     95.57
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     144.56,
+     93.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     147.81,
+     93.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     147.81,
+     95.57
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     110.76,
+     84.37
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     141.46,
+     95.57
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     146.76,
+     94.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.61,
+     93.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     143.56,
+     93.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     142.56,
+     94.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     145.61,
+     94.47
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     140.46,
+     93.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     137.16,
+     91.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     108.56,
+     77.22
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     141.46,
+     94.52
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     123.11,
+     79.285
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [+3V3] on F.Cu - B.Cu"
+    ],
+    "at": [
+     126.36,
+     101.42
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [/BOOT] on F.Cu - B.Cu"
+    ],
+    "at": [
+     116.56,
+     83.62
+    ]
+   },
+   {
+    "type": "drill_out_of_range",
+    "message": "Hole size out of range (board setup constraints min hole 0.5080 mm; actual 0.4000 mm)",
+    "items": [
+     "Via [/SDA] on F.Cu - B.Cu"
+    ],
+    "at": [
+     110.01,
+     106.245
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 5 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     93.4
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 6 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     92.13
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 7 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     90.87
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 8 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     89.59
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Segment [<no net>] of F2 on B.Cu",
+     "Pad 2 [Net-(F2-Pad2)] of F2 on B.Cu"
+    ],
+    "at": [
+     168.535,
+     71.425
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Segment [<no net>] of F2 on B.Cu",
+     "Pad 1 [/Solar_module/VBAT] of F2 on B.Cu"
+    ],
+    "at": [
+     168.535,
+     71.425
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 5 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     89.62
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 6 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     90.89
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 7 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     92.15
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 8 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     93.43
+    ]
+   }
+  ]
+ },
+ "unrouted": {
+  "connections": 316,
+  "by_net": {
+   "/Solar_module/Solar+": 11,
+   "PGND": 5,
+   "+3V3": 38,
+   "GND": 5,
+   "/SCL": 11,
+   "/SDA": 11,
+   "BAT-": 14,
+   "/Battery_holder/BAT1": 1,
+   "/Battery_holder/BAT2": 1,
+   "/Battery_holder/VBAT+": 3,
+   "/BOOT": 3,
+   "Net-(C1-Pad2)": 3,
+   "+5VUSB": 4,
+   "Net-(USB1-CC1)": 1,
+   "/USB_D+": 3,
+   "/USB_D-": 3,
+   "Net-(USB1-CC2)": 1,
+   "/Battery_holder/BAT_TH": 2,
+   "Net-(LED2-A)": 2,
+   "Net-(F2-Pad2)": 2,
+   "/Battery_holder/LD": 1,
+   "+5V": 20,
+   "Net-(U4-VC1)": 2,
+   "/EN": 4,
+   "Net-(U5-PMID)": 4,
+   "Net-(U4-CCFG)": 2,
+   "Net-(R16-Pad1)": 1,
+   "/Solar_module/PROG": 1,
+   "+5VBAT": 4,
+   "/VOUT6": 1,
+   "Net-(U4-VDD)": 2,
+   "/Battery_holder/AVDD": 2,
+   "Net-(U4-VC3)": 4,
+   "Net-(U4-VC2)": 2,
+   "/Battery_holder/SRP": 3,
+   "/Battery_holder/SRN": 3,
+   "/Battery_holder/DSG": 1,
+   "/Battery_holder/CHG": 1,
+   "Net-(U4-VTB)": 1,
+   "/Battery_holder/CTRC": 1,
+   "/Battery_holder/CTRD": 1,
+   "/EN_NO2": 3,
+   "/EN_CO2": 2,
+   "/RX_CO2": 1,
+   "/TX_CO2": 1,
+   "Net-(U1-IO8)": 1,
+   "/LED": 1,
+   "/USB-": 1,
+   "/USB+": 1,
+   "/IO18": 2,
+   "/IO19": 2,
+   "/IO20": 2,
+   "/IO21": 2,
+   "/IO22": 1,
+   "/IO23": 2,
+   "/EN_CE": 4,
+   "/RX_CE": 1,
+   "/TX_CE": 1,
+   "/EN_PM": 2,
+   "/WD_RST": 1,
+   "Net-(D2-K)": 4,
+   "/Solar_module/SYS": 4,
+   "/VOUT1": 4,
+   "/PM2_TXD": 1,
+   "/PM2_RXD": 1,
+   "/VOUT5": 1,
+   "/PM1_TXD": 1,
+   "/PM1_RXD": 1,
+   "Net-(D6-K)": 1,
+   "/VOUT2": 2,
+   "Net-(U6-PG)": 1,
+   "Net-(U6-EN)": 6,
+   "Net-(U6-MODE{slash}S-CONF)": 1,
+   "Net-(U6-SS{slash}TR)": 1,
+   "/Solar_module/FB{slash}VSET": 3,
+   "/VOUT4": 1,
+   "/VOUT3": 1,
+   "/SCL_TXD": 1,
+   "/SDA_RXD": 1,
+   "/Solar_module/ILIM_HIZ": 2,
+   "/I2C_~{RST}": 2,
+   "Net-(U14-R1{slash}C1)": 1,
+   "Net-(C24-Pad2)": 3,
+   "Net-(D1-Pad2)": 2,
+   "Net-(U5-CE)": 1,
+   "Net-(Q1-G)": 2,
+   "Net-(U17-R1{slash}C1)": 1,
+   "/Solar_module/SW2": 2,
+   "/Solar_module/BTST2": 1,
+   "Net-(U5-TS)": 3,
+   "Net-(U8-OSCO)": 3,
+   "Net-(U8-OSCI)": 3,
+   "Net-(U2-MODE{slash}S-CONF)": 1,
+   "Net-(U16-R1{slash}C1)": 1,
+   "Net-(U18-R1{slash}C1)": 1,
+   "/A0": 1,
+   "/Solar_module/REGN": 3,
+   "/PR1": 2,
+   "/Solar_module/SW1": 2,
+   "/A1": 1,
+   "Net-(D4-K)": 1,
+   "Net-(U13-R1{slash}C1)": 1,
+   "Net-(U7-ST)": 1,
+   "Net-(U8-#IRQ)": 1,
+   "Net-(LED3-A)": 1,
+   "/Solar_module/VBAT": 8,
+   "Net-(D7-A)": 1,
+   "Net-(D5-A)": 1,
+   "/VMUX": 2,
+   "Net-(U2-SS{slash}TR)": 1,
+   "Net-(U2-FB{slash}VSET)": 2,
+   "Net-(U3-DELAY{slash}M_RST)": 1,
+   "/Solar_module/BTST1": 1,
+   "Net-(U15-R1{slash}C1)": 1,
+   "Net-(LED3-K)": 1,
+   "Net-(U5-BATP)": 1,
+   "Net-(U5-SDRV)": 1
+  },
+  "drc": {
+   "errors": 27,
+   "warnings": 257,
+   "unconnected": 316,
+   "by_type": {
+    "error:clearance": 10,
+    "error:padstack_invalid": 4,
+    "error:solder_mask_bridge": 12,
+    "error:zones_intersect": 1,
+    "warning:copper_sliver": 3,
+    "warning:isolated_copper": 5,
+    "warning:lib_footprint_issues": 199,
+    "warning:padstack": 5,
+    "warning:silk_edge_clearance": 8,
+    "warning:silk_over_copper": 16,
+    "warning:silk_overlap": 21
+   }
+  },
+  "drc_error_list": [
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 5 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     89.62
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 6 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     90.89
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 8 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     93.43
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q1 on B.Cu",
+     "Pad 7 [Net-(Q1-D)] of Q1 on B.Cu"
+    ],
+    "at": [
+     176.815,
+     91.52
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q2 on B.Cu",
+     "Pad 5 [Net-(Q1-D)] of Q2 on B.Cu"
+    ],
+    "at": [
+     183.795,
+     91.5
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q2 on B.Cu",
+     "Pad 6 [Net-(Q1-D)] of Q2 on B.Cu"
+    ],
+    "at": [
+     183.795,
+     91.5
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q2 on B.Cu",
+     "Pad 7 [Net-(Q1-D)] of Q2 on B.Cu"
+    ],
+    "at": [
+     183.795,
+     91.5
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 9 [<no net>] of Q2 on B.Cu",
+     "Pad 8 [Net-(Q1-D)] of Q2 on B.Cu"
+    ],
+    "at": [
+     183.795,
+     91.5
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 1 [/Solar_module/VBAT] of F2 on B.Cu",
+     "Segment [<no net>] of F2 on B.Cu"
+    ],
+    "at": [
+     170.97,
+     71.425
+    ]
+   },
+   {
+    "type": "clearance",
+    "message": "Clearance violation ( clearance 0.1000 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 2 [Net-(F2-Pad2)] of F2 on B.Cu",
+     "Segment [<no net>] of F2 on B.Cu"
+    ],
+    "at": [
+     167.79,
+     71.425
+    ]
+   },
+   {
+    "type": "zones_intersect",
+    "message": "Copper zones intersect (intersecting zones must have distinct priorities)",
+    "items": [
+     "Zone [BAT-] on F.Cu, priority 5",
+     "Zone [BAT-] on F.Cu, priority 5"
+    ],
+    "at": [
+     104.66,
+     72.87
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 3 [+5VBAT] of U6 on B.Cu"
+    ],
+    "at": [
+     187.84,
+     81.12
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 4 [PGND] of U6 on B.Cu"
+    ],
+    "at": [
+     186.26,
+     81.12
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 7 [Net-(U6-MODE/S-CONF)] of U6 on B.Cu"
+    ],
+    "at": [
+     186.26,
+     79.22
+    ]
+   },
+   {
+    "type": "padstack_invalid",
+    "message": "Padstack is not valid (custom pad shape must resolve to a single polygon)",
+    "items": [
+     "Pad 9 [/Solar_module/FB/VSET] of U6 on B.Cu"
+    ],
+    "at": [
+     187.84,
+     79.22
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Front solder mask aperture bridges items with different nets",
+    "items": [
+     "Segment on F.Mask",
+     "Zone [/Solar_module/SW2] on F.Cu and B.Cu, priority 37"
+    ],
+    "at": [
+     176.04,
+     63.93
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Front solder mask aperture bridges items with different nets",
+    "items": [
+     "Segment on F.Mask",
+     "Zone [/Solar_module/SW1] on F.Cu and B.Cu, priority 36"
+    ],
+    "at": [
+     178.09,
+     63.93
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 5 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     89.62
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 6 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     90.89
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 7 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     92.15
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 8 [Net-(Q1-D)] of Q1 on B.Cu",
+     "Pad 9 [<no net>] of Q1 on B.Cu"
+    ],
+    "at": [
+     178.995,
+     93.43
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Segment [<no net>] of F2 on B.Cu",
+     "Pad 2 [Net-(F2-Pad2)] of F2 on B.Cu"
+    ],
+    "at": [
+     168.535,
+     71.425
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Segment [<no net>] of F2 on B.Cu",
+     "Pad 1 [/Solar_module/VBAT] of F2 on B.Cu"
+    ],
+    "at": [
+     168.535,
+     71.425
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 5 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     93.4
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 6 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     92.13
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 7 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     90.87
+    ]
+   },
+   {
+    "type": "solder_mask_bridge",
+    "message": "Rear solder mask aperture bridges items with different nets",
+    "items": [
+     "Pad 8 [Net-(Q1-D)] of Q2 on B.Cu",
+     "Pad 9 [<no net>] of Q2 on B.Cu"
+    ],
+    "at": [
+     181.615,
+     89.59
+    ]
+   }
+  ]
+ },
+ "stripped": {
+  "tracks_and_vias": 2064,
+  "locked": 0,
+  "teardrops": 0
+ }
+}

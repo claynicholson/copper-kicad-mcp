@@ -1,0 +1,51 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.claynicholson/copper",
+  "title": "Copper for KiCad",
+  "description": "Design orderable KiCad boards: schematic, parts sourcing, PCB, ERC/DRC, renders, fab files.",
+  "version": "1.1.0",
+  "websiteUrl": "https://coppereda.com",
+  "repository": {
+    "url": "https://github.com/claynicholson/copper-kicad-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "copper-kicad",
+      "version": "1.1.0",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "serve"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "COPPER_KICAD_CLI",
+          "description": "Path to kicad-cli; leave unset to auto-detect KiCad.",
+          "isRequired": false
+        },
+        {
+          "name": "COPPER_PYTHON",
+          "description": "Python 3.10+ to run Copper on; leave unset to use KiCad's bundled Python.",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.0/copper-1.1.0.mcpb",
+      "version": "1.1.0",
+      "fileSha256": "1648b1efa6f087853fd387e11ffab02b5ee2f13422abe28f5c5d2d7be5fa39fa",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

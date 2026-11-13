@@ -1,0 +1,2 @@
+(version 1)
+(rule "sd_match" (condition "A.NetName == '/SD_D?' || A.NetName == '/SD_CLK'") (constraint skew (max 0.5mm)))
