@@ -48,6 +48,7 @@ os.environ["COPPER_HOME"] = str(TMP / "home")        # spelled out: test_install
 from copper_kicad import project as P  # noqa: E402
 from copper_kicad import sexpr  # noqa: E402
 from copper_kicad.kicad import env  # noqa: E402
+from copper_kicad.mcp.registry import ToolError  # noqa: E402
 from copper_kicad.project import Project  # noqa: E402
 from copper_kicad.sch import model as M  # noqa: E402
 from copper_kicad.sch import netlist as N  # noqa: E402
@@ -193,7 +194,7 @@ FIXTURES = [
     ("hier_sub_delete", "hier", "pic_sockets.kicad_sch", [{"op": "delete", "ref": "C7"}]),
     ("hier_sub_hier_label", "hier", "pic_sockets.kicad_sch", [{"op": "label", "net": "SPARE", "at": [25.4, 25.4], "kind": "hierarchical"}]),
     ("hier_root_move", "hier", None, [{"op": "move", "ref": "C4", "at": [224.79, 170.18]}]),
-    ("hier_root_move_overlap", "hier", None, [{"op": "move", "ref": "C4", "at": [20.32, 20.32]}]),      # see ORDER_SENSITIVE
+    ("hier_root_move_overlap", "hier", None, [{"op": "move", "ref": "C4", "at": [20.32, 20.32]}]),      # see REFUSED
     ("hier_root_place", "hier", None, [R_NEW, {"op": "connect", "pin": "rn.1", "net": "VCC"},
                                        {"op": "connect", "pin": "rn.2", "net": "GND"}]),
     ("multi_shared_set_value", "multi", "ampli_ht.kicad_sch", [{"op": "set_field", "ref": "R201", "field": "Value", "value": "12k"}]),
@@ -209,17 +210,22 @@ FIXTURES = [
 ]
 
 
-# Fixtures whose RESULT is ambiguous to KiCad itself. Moving C4 across the sheet makes the engine stretch its two
-# wires into collinear wires that overlap (16.51..203.2 and 24.13..233.68 on y = 20.32). kicad-cli 10.0 then
-# reports different nets for the SAME items depending on their order in the file (measured: C4's two nets are one
-# net in KiCad's own save order and two nets with the new wires at the end). The patch is right (every item equal);
-# the netlist check is not relaxed for it: such a fixture is counted as KNOWN, never as a pass, and only after
-# the test has shown that the direct result itself, with its items put in the patched order, gives the patched
-# netlist.
-ORDER_SENSITIVE = {"hier_root_move_overlap"}
+# Fixtures whose RESULT is ambiguous to KiCad itself: KiCad's netlist depends on the order of items in the file.
+# Such a fixture is counted as KNOWN, never as a pass, and only after the test has shown that the direct result
+# itself, with its items put in the patched order, gives the patched netlist.
+ORDER_SENSITIVE: set = set()
+
+# Fixtures sch_apply must refuse, with nothing written. Moving C4 across the sheet stretches its two wires into
+# collinear wires that overlap (16.51..203.2 and 24.13..233.68 on y = 20.32); in KiCad's save order that joins
+# C4's two nets. This used to be written (and listed under ORDER_SENSITIVE); the net-merge check now refuses it.
+REFUSED = {"hier_root_move_overlap": "NET_MERGE"}
 
 
 class Known(Exception):
+    pass
+
+
+class Refused(Exception):
     pass
 
 
@@ -358,6 +364,18 @@ def run_fixture(name: str, base_name: str, sheet, fx_ops) -> dict:
             (d / rel).write_text(text, encoding="utf-8", newline="\n")
         return d, info, dict(orig, **new)
 
+    if name in REFUSED:
+        d = _copy(b, work / "refused")
+        before = _sheets(d)
+        try:
+            O.apply_ops(_project(d), _ops_for(fx_ops, d, sheet), sheet=sheet)
+        except ToolError as e:
+            assert e.code == REFUSED[name] and "nothing was written" in e.message, (e.code, e.message)
+        else:
+            raise AssertionError(f"sch_apply should refuse this edit with {REFUSED[name]}")
+        assert _sheets(d) == before, "a refused batch changed a sheet file"
+        raise Refused(f"{REFUSED[name]}, nothing written")
+
     direct_dir, direct = edit("direct", live=False)
     ref_nl = _netlist(direct_dir)
 
@@ -414,6 +432,9 @@ def _main() -> int:
             print(f"PASS {fx[0]} ({time.time() - t0:.1f}s)  canon +{c['added']} ~{c['changed']} -{c['removed']} "
                   f"({c['add_bytes']} B)  live +{lv['added']} ~{lv['changed']} -{lv['removed']} ({lv['add_bytes']} B)  "
                   f"nets {stat['nets']}", flush=True)
+        except Refused as e:
+            passed += 1
+            print(f"PASS {fx[0]} ({time.time() - t0:.1f}s)  refused: {e}", flush=True)
         except Skip as e:
             skipped += 1
             print(f"SKIP {fx[0]}: {e}", flush=True)

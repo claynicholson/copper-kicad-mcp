@@ -8,23 +8,45 @@ All notable changes to Copper for KiCad are documented here. The format follows
 
 ### Added
 
-- **Schematic style rules.** Copper now draws and reviews schematics against one written rule set
-  ([docs/SCHEMATIC_STYLE.md](docs/SCHEMATIC_STYLE.md)), taken from the KiCon talk on drawing good schematics and
-  its Q&A. Where a rule disagrees with an older Copper convention, the rule wins.
-- `design_review` has a new `schematic_style` pass (also part of `verify(what=['review'])`). It reads the saved
-  sheets and reports power symbols pointing the wrong way, four-way junctions, label hops between neighbouring
-  parts, bare `VCC`/`VDD` rail names, rails without a voltage and current note, passives without tolerance,
-  rating or package, missing standard-parts notes, inter-sheet references switched off, discrete transistors
-  without their envelope circle, package-shaped or unfilled IC symbols, test points without an expected reading,
-  unexplained floating inputs, a root sheet that is not a block diagram and crammed sheets. Every finding names
-  its rule and carries a `fix`.
+- `design_review(checks=['schematic_style'])`: drawing-style advice based on the KiCon talk on readable
+  schematics. It runs only when asked for (not in the default `design_review` or in `verify(what=['review'])`),
+  reads the saved sheets and returns its findings apart, under `style`, each with the `rule` id it comes from.
+  It reports power symbols drawn sideways or upside down, four-way junctions, label pairs between neighbouring
+  parts, generic rail names (`VCC`, `VDD`), rails without a voltage and current note, sheets without a
+  standard-parts note, passives with no package, discrete transistors without the envelope circle,
+  package-shaped or unfilled IC symbols, test points without an expected reading, unexplained floating inputs,
+  multi-sheet designs without inter-sheet references or with circuitry on the root sheet, and crammed sheets.
+  The wiring checks skip a sheet that is still exactly as Copper's layout engine drew it, and `sch_tidy()` is
+  only offered as a fix where it can re-lay the sheet. No finding is an error, and no `fix` changes the
+  netlist. `copper_help(tool='design_review')` lists the rules.
 
 ### Changed
 
-- The `kicad-design` and `design-review` skills teach wires before labels, descriptive rail names with
-  min / typ / max notes, notes for anything intentional but odd, full passive specs and the release checklist.
-  The `sch_apply` help says the same.
+- The `kicad-design` skill has a short list of drawing rules (flow, symbol direction, wires over label pairs,
+  rail names that become power symbols, notes) and an example that applies as written; the `design-review`
+  skill covers the new pass.
 - New projects have inter-sheet references switched on.
+
+### Fixed
+
+- `sch_apply`: a pin-to-pin `wire` could run through another net's label stub and be joined to it, while the
+  connectivity check still reported ok. The router now treats every wire end, label, junction and pin of another
+  net as blocked and detours, or refuses with `NO_ROUTE` naming the net in the way. Before writing, `sch_apply`
+  also compares KiCad's netlist of the sheet before and after the batch and refuses it (`NET_MERGE`, nothing
+  written) if two nets were joined that the batch did not ask to join. This adds two netlist exports, run side
+  by side: about 0.5-1 s per batch that wires, labels or moves on a large sheet. A `wire` given as `points`
+  that joins two named nets now says so in a warning.
+- `sch_apply`: a `label` on a pin that already has a wire goes on that wire instead of failing with `NO_ROOM`,
+  at a point no other net's wire crosses. A `connect` whose straight stub spot is taken tries a short stub to the
+  side.
+- `sch_apply`: `move` re-draws the moved part's wires; a label on those wires is now moved back onto them. It used
+  to be left behind, which split the net. As a backstop, a batch is refused (`NET_SPLIT`, nothing written) if
+  KiCad's netlist shows a net split in two that none of its `delete`, `disconnect`, `rename_net` or `swap` ops
+  touches.
+- `sch_apply`: a pin-to-pin `wire` is never drawn as a diagonal; when no orthogonal route is clean it is refused
+  with `NO_ROUTE`. A `label` placed at coordinates where two separate wires cross gets a warning that it joins them.
+  Wire runs are traced the way KiCad joins them: a wire end on the middle of another wire joins it only at a
+  junction.
 
 ## [1.1.0] — 2026-11-12
 

@@ -24,6 +24,8 @@ from .common import (base_net, comp_kind, field_ci, finding, is_auto_net, is_gro
 CHECKS = ["decoupling", "i2c_pullups", "crystal_caps", "usb_c_cc", "usb_esd", "regulator_caps", "enable_pins",
           "led_resistors", "power_flags", "sourcing", "footprints", "single_pin_nets", "net_names",
           "regulator_setpoint", "power_path", "thermal_pad", "schematic_style"]
+# the drawing-style pass (review/sch_style.py) runs only when asked for: checks=['schematic_style']
+DEFAULT_CHECKS = [c for c in CHECKS if c != "schematic_style"]
 
 JLC_EXTENDED_FEE_USD = 3.0     # JLC charges a feeder-loading fee per unique Extended part (standard PCBA)
 
@@ -910,7 +912,7 @@ def review(pr, checks: list[str] | None = None, include_erc: bool = True, netlis
     nl = netlist or load_netlist(pr)
     m = _Model(nl)
     m.pr = pr
-    want = set(checks or CHECKS)
+    want = set(checks or DEFAULT_CHECKS)
     findings: list[dict] = []
     stats: dict = {}
     run = []
@@ -930,13 +932,14 @@ def review(pr, checks: list[str] | None = None, include_erc: bool = True, netlis
         run.append("sourcing")
         f, stats = check_sourcing(m)
         findings += f
+    style = None
     if "schematic_style" in want and pr is not None:
         run.append("schematic_style")
         try:
             from . import sch_style
-            findings += sch_style.check(pr)
+            style = sch_style.check(pr)
         except Exception as e:  # noqa: BLE001 — drawing style must never sink the engineering review
-            findings.append(finding("info", "review_check_failed", f"check schematic_style crashed: {type(e).__name__}: {e}"))
+            style = [finding("info", "review_check_failed", f"check schematic_style crashed: {type(e).__name__}: {e}")]
     if "power_flags" in want and include_erc:
         run.append("power_flags")
         try:
@@ -960,7 +963,11 @@ def review(pr, checks: list[str] | None = None, include_erc: bool = True, netlis
                   "by_kind": _count(m.kind.values())})
     if getattr(m, "setpoints", None):
         stats["regulator_setpoints"] = m.setpoints
-    return {"counts": counts, "findings": findings, "stats": stats, "checks_run": run}
+    out = {"counts": counts, "findings": findings, "stats": stats, "checks_run": run}
+    if style is not None:       # kept apart: drawing advice is never sorted in among engineering findings
+        # (when both lists come back they still share one result size cap)
+        out["style"] = sort_findings(style)
+    return out
 
 
 def _route_to_sheet(f: dict, m: _Model):

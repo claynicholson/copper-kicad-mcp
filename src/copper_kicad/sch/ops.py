@@ -92,6 +92,7 @@ class Ctx:
         self.inline: dict = {}               # (ref, pin) -> {'net','a','b','done'} wired chain links from layout
         self.power_src: dict = {}            # net -> (lib_id, lib_symbols key) of the power symbol to reuse (tidy)
         self.renamed: set = set()            # net names produced by rename_net (they carry their own warnings)
+        self.joins: list = []                # explicit joins (wire points, label at) the net-merge check accepts
 
     def reserved_boxes(self) -> list:
         return []
@@ -471,18 +472,31 @@ def _attach(ctx: Ctx, g: dict, net: str, style: str, kind: str = "local", shape:
     if how == "no_connect":
         ctx.remove_attachments(tip)
         ctx.warnings.append(f"removed no_connect flag on {g['label']} (now connected to {net})")
-    elif how == "wired":
-        ctx.warnings.append(f"{g['label']} already has a wire; the label was added on a separate stub")
-    # pick a stub length that lands on a free point
+    elif how == "wired" and style == "label":
+        r = _label_on_wire(ctx, g, net, kind, shape)
+        if r:
+            return r
+    # pick a stub length that lands on a free point: straight out first, then sideways (a wire already leaving the
+    # pin, or one passing just outside it, takes the straight spots)
     q = None
-    for k in (1, 2, 3, 4, 6):
-        cand = [round(tip[0] + out[0] * STUB * k, 4), round(tip[1] + out[1] * STUB * k, 4)]
-        if ctx.point_is_free(cand, seg_from=tip, owner=si):
-            q = cand
+    body = si.body_bbox()
+    for d in (out, (out[1], out[0]), (-out[1], -out[0])):
+        for k in ((1, 2, 3, 4, 6) if d is out else (1, 2)):
+            cand = [round(tip[0] + d[0] * STUB * k, 4), round(tip[1] + d[1] * STUB * k, 4)]
+            if d is not out and _seg_hits_box(tip, cand, body):
+                continue
+            if ctx.point_is_free(cand, seg_from=tip, owner=si):
+                q = cand
+                break
+        if q is not None:
+            out = d
             break
     if q is None:
         raise ToolError(f"no free spot to attach a label to {g['label']} (something sits right outside the pin)",
                         code="NO_ROOM", fix=f"move the part blocking {g['label']} or use sch_tidy")
+    if how == "wired":
+        ctx.warnings.append(f"{g['label']} already has a wire; the {'power symbol' if style == 'power' else 'label'} "
+                            f"was added on a separate stub")
     ctx.sch.add_wire(tip, q)
     if g.get("alternate"):
         _set_alternate(si, g["pins"][0]["number"], g["alternate"])
@@ -494,6 +508,48 @@ def _attach(ctx: Ctx, g: dict, net: str, style: str, kind: str = "local", shape:
     ctx.sch.add_label(net, q, G.label_angle(out), kind, shape)
     ctx.expect.append({"pins": [(si.ref, p["number"]) for p in g["pins"]], "net": net, "local": kind == "local"})
     return f"{g['label']} → {net} ({kind} label)"
+
+
+def _label_on_wire(ctx: Ctx, g: dict, net: str, kind: str, shape: str) -> str | None:
+    """Name a pin's existing (unnamed) wire: put the label on the wire itself, on a grid point near the pin where
+    nothing else sits and the text clears symbol bodies. None if no such point exists."""
+    tip, si = g["xy"], g["si"]
+    wires = ctx.sch.wires()
+    run, _ = _run_of(wires, tip, _dots(ctx))
+    busy = {_key(l["at"]) for l in ctx.sch.labels()}
+    busy |= {_key(q["xy"]) for s in ctx.sch.symbols() for q in s.pins_world()}
+    for n in ctx.sch.items("junction") + ctx.sch.items("no_connect"):
+        a = sexpr.find(n, "at")
+        busy.add(_key((float(a[1]), float(a[2]))))
+    bodies = [s.body_bbox() for s in ctx.sch.symbols() if not s.is_power]
+    lboxes = [LAY.label_box(l, pad=0.3) for l in ctx.sch.labels()]
+    foreign = _Blocked(ctx, [tip])                         # a label on a crossing wire would join that net too
+    cands = []
+    for i in sorted(run):
+        w = wires[i]
+        a, b = (w["a"], w["b"]) if _near(w["a"], tip) or not _near(w["b"], tip) else (w["b"], w["a"])
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        n = max(abs(dx), abs(dy))
+        if n < EPS or (abs(dx) > EPS and abs(dy) > EPS):
+            continue                                       # diagonal wires: no
+        ux, uy = dx / n, dy / n
+        steps = int(n / 1.27 + EPS)
+        for j in range(1, steps + 1):
+            p = [round(a[0] + ux * 1.27 * j, 4), round(a[1] + uy * 1.27 * j, 4)]
+            d = abs(p[0] - tip[0]) + abs(p[1] - tip[1])
+            cands.append((0 if _near(a, tip) else 1, abs(d - STUB), d, p, (ux, uy)))
+    for _, _, _, p, (ux, uy) in sorted(cands, key=lambda c: c[:3]):
+        if _key(p) in busy or foreign.on_wire(p):
+            continue
+        for ang in ((0, 180) if abs(uy) < EPS else (90, 270)):
+            lb = LAY.label_box({"at": p, "net": net, "kind": kind, "rot": ang})
+            if any(LAY._rect_hit(lb, bb, -0.1) for bb in bodies) or any(LAY._rect_hit(lb, ob) for ob in lboxes):
+                continue
+            ctx.sch.add_label(net, p, ang, kind, shape)
+            ctx.touch(p)
+            ctx.expect.append({"pins": [(si.ref, q["number"]) for q in g["pins"]], "net": net, "local": kind == "local"})
+            return f"{g['label']} → {net} ({kind} label on its wire)"
+    return None
 
 
 def _inline_wire(ctx: Ctx, ent: dict, kind: str) -> str | None:
@@ -666,26 +722,10 @@ def _route_l(a, out_a, b):
 
 
 def _wired_together(ctx: "Ctx", A, B) -> bool:
-    """True if a run of wires (incl. T-joins) already joins points A and B."""
-    wires = ctx.sch.wires()
-    used = [False] * len(wires)
-    todo = [A]
-    while todo:
-        p = todo.pop()
-        if _near(p, B):
-            return True
-        for i, w in enumerate(wires):
-            if used[i]:
-                continue
-            if _near(w["a"], p) or _near(w["b"], p) or _on_segment(p, w["a"], w["b"]):
-                used[i] = True
-                todo += [w["a"], w["b"]]
-                # wire ends that T into this wire
-                for x in wires:
-                    for e in (x["a"], x["b"]):
-                        if _on_segment(e, w["a"], w["b"]):
-                            todo.append(e)
-    return False
+    """True if a run of wires already joins points A and B (T-joins count only at a junction, as in KiCad)."""
+    if _near(A, B):
+        return True
+    return _key(B) in _run_of(ctx.sch.wires(), A, _dots(ctx))[1]
 
 
 def _seg_hits_box(p, q, bb, shrink=0.2) -> bool:
@@ -701,10 +741,187 @@ def _seg_hits_box(p, q, bb, shrink=0.2) -> bool:
     return True
 
 
-def _route(ctx: "Ctx", a: dict, b: dict) -> list:
-    """Orthogonal route between two pin tips that leaves each pin outward and avoids symbol bodies."""
+def _key(p) -> tuple:
+    return (round(p[0] * 100), round(p[1] * 100))
+
+
+def _dots(ctx: "Ctx") -> set:
+    return {_key((float(a[1]), float(a[2]))) for a in (sexpr.find(n, "at") for n in ctx.sch.items("junction"))}
+
+
+def _run_of(wires: list, start, dots: set | None = None) -> tuple[set, set]:
+    """The wire run (with T-joins) that touches ``start``: (indexes into ``wires``, point keys on it).
+    With ``dots`` (junction keys), a point in the middle of a wire joins it only where a junction sits, as in KiCad."""
+    used, pts, todo = set(), {_key(start)}, [start]
+
+    def mid_ok(p):
+        return dots is None or _key(p) in dots
+
+    while todo:
+        p = todo.pop()
+        for i, w in enumerate(wires):
+            if i in used or not (_near(w["a"], p) or _near(w["b"], p) or (_on_segment(p, w["a"], w["b"]) and mid_ok(p))):
+                continue
+            used.add(i)
+            nxt = [w["a"], w["b"]] + [e for x in wires for e in (x["a"], x["b"])
+                                      if _on_segment(e, w["a"], w["b"]) and mid_ok(e)]
+            for e in nxt:
+                if _key(e) not in pts:
+                    pts.add(_key(e))
+                    todo.append(e)
+    return used, pts
+
+
+class _PtIndex:
+    """Point keys indexed by row and column, for fast 'which points lie on this segment' queries."""
+
+    def __init__(self, keys):
+        self.keys = set(keys)
+        self.by_y: dict = {}
+        self.by_x: dict = {}
+        for k in self.keys:
+            self.by_y.setdefault(k[1], []).append(k[0])
+            self.by_x.setdefault(k[0], []).append(k[1])
+
+    def on(self, p, q) -> list:
+        """Keys on segment p→q, both ends included."""
+        if abs(p[1] - q[1]) < EPS:
+            lo, hi = round(min(p[0], q[0]) * 100), round(max(p[0], q[0]) * 100)
+            return [(x, round(p[1] * 100)) for x in self.by_y.get(round(p[1] * 100), ()) if lo <= x <= hi]
+        if abs(p[0] - q[0]) < EPS:
+            lo, hi = round(min(p[1], q[1]) * 100), round(max(p[1], q[1]) * 100)
+            return [(round(p[0] * 100), y) for y in self.by_x.get(round(p[0] * 100), ()) if lo <= y <= hi]
+        return [k for k in self.keys if _near((k[0] / 100, k[1] / 100), q) or _on_segment((k[0] / 100, k[1] / 100), p, q)
+                or _near((k[0] / 100, k[1] / 100), p)]
+
+
+class _Blocked:
+    """What a new wire must not touch: every connectable item (wire end, label anchor, junction, no-connect, pin tip,
+    power symbol pin) that is not on the wire run(s) of the pins being joined. A wire through such a point, or a wire
+    corner on a foreign wire, would join that net (KiCad connects a label anywhere on a wire, and Copper adds a
+    junction where wires T)."""
+
+    def __init__(self, ctx: "Ctx", own_starts):
+        sch = ctx.sch
+        wires = sch.wires()
+        own_w, own = set(), set()
+        dots = _dots(ctx)
+        for s in own_starts:
+            w, p = _run_of(wires, s, dots)
+            own_w |= w
+            own |= p
+        self.ctx = ctx
+        self.pts: dict = {}          # key -> (kind, name, xy)
+        for i, w in enumerate(wires):
+            if i not in own_w:
+                for e in (w["a"], w["b"]):
+                    self.pts.setdefault(_key(e), ("wire", None, e))
+        for kind in ("junction", "no_connect"):
+            for n in sch.items(kind):
+                a = sexpr.find(n, "at")
+                xy = (float(a[1]), float(a[2]))
+                self.pts[_key(xy)] = (kind, None, xy)
+        self.soft = set()            # where a free pin's future connect stub would end: avoid if possible
+        ends = {_key(e) for w in wires for e in (w["a"], w["b"])}
+        for s in sch.symbols():
+            for q in s.pins_world():
+                k = _key(q["xy"])
+                self.pts[k] = ("power", s.value, q["xy"]) if s.is_power else ("pin", f"{s.ref}.{q['number']}", q["xy"])
+                if not s.is_power and k not in ends and k not in own:
+                    self.soft.add(_key((q["xy"][0] + q["out"][0] * STUB, q["xy"][1] + q["out"][1] * STUB)))
+        for l in sch.labels():
+            self.pts[_key(l["at"])] = ("label", l["net"], l["at"])
+        for k in own:
+            self.pts.pop(k, None)
+        self.index = _PtIndex(self.pts)
+        self.soft = _PtIndex(self.soft)
+        self.hw: dict = {}           # foreign horizontal wires by y key: [(x0, x1)]
+        self.vw: dict = {}
+        self.dw: list = []
+        for i, w in enumerate(wires):
+            if i in own_w:
+                continue
+            (x0, y0), (x1, y1) = w["a"], w["b"]
+            if abs(y0 - y1) < EPS:
+                self.hw.setdefault(round(y0 * 100), []).append((min(x0, x1), max(x0, x1)))
+            elif abs(x0 - x1) < EPS:
+                self.vw.setdefault(round(x0 * 100), []).append((min(y0, y1), max(y0, y1)))
+            else:
+                self.dw.append(w)
+
+    def on_wire(self, v) -> bool:
+        """v lies on a foreign wire (end or interior)."""
+        x, y = v
+        if any(a - EPS <= x <= b + EPS for a, b in self.hw.get(round(y * 100), ())):
+            return True
+        if any(a - EPS <= y <= b + EPS for a, b in self.vw.get(round(x * 100), ())):
+            return True
+        return any(_near(v, w["a"]) or _near(v, w["b"]) or _on_segment(v, w["a"], w["b"]) for w in self.dw)
+
+    def overlaps(self, p, q) -> bool:
+        """Segment p→q runs along a foreign wire."""
+        if abs(p[1] - q[1]) < EPS:
+            lo, hi = min(p[0], q[0]), max(p[0], q[0])
+            return any(min(hi, b) - max(lo, a) > EPS for a, b in self.hw.get(round(p[1] * 100), ()))
+        if abs(p[0] - q[0]) < EPS:
+            lo, hi = min(p[1], q[1]), max(p[1], q[1])
+            return any(min(hi, b) - max(lo, a) > EPS for a, b in self.vw.get(round(p[0] * 100), ()))
+        return False
+
+    def conflicts(self, pts: list) -> list:
+        """Foreign point keys a polyline would join (empty = clean). pts[0] / pts[-1] are the pins being wired."""
+        bad = []
+        for p, q in zip(pts, pts[1:]):
+            bad += self.index.on(p, q)
+            if self.overlaps(p, q):
+                bad.append(_key(p))
+        for v in pts[1:-1]:
+            if self.on_wire(v):
+                bad.append(_key(v))
+        return bad
+
+    def soft_hits(self, pts: list) -> int:
+        return sum(len(self.soft.on(p, q)) for p, q in zip(pts, pts[1:]))
+
+    def describe(self, k) -> str:
+        kind, name, xy = self.pts.get(k) or ("wire", None, (k[0] / 100, k[1] / 100))
+        net = None
+        if kind in ("label", "power"):
+            net = name
+        elif kind == "pin":
+            net = self.ctx.net_at_pin(xy)[0] or self.ctx._net_via_wires(xy)
+        else:
+            net = self.ctx._net_via_wires(xy)
+        what = {"label": f"label {name}", "power": f"power symbol {name}", "pin": f"pin {name}",
+                "junction": "a junction", "no_connect": "a no-connect flag"}.get(kind, "a wire end")
+        return f"{what} at {_fmt(xy)}" + (f" (net '{net}')" if net and kind not in ("label", "power") else "")
+
+
+def _clean_path(c: list) -> list:
+    pts = [c[0]]
+    for p in c[1:]:
+        if not _near(p, pts[-1]):
+            pts.append(p)
+    clean = [pts[0]]
+    for i in range(1, len(pts) - 1):                      # drop collinear midpoints
+        p0, p1, p2 = clean[-1], pts[i], pts[i + 1]
+        if (abs(p0[0] - p1[0]) < EPS and abs(p1[0] - p2[0]) < EPS) or (abs(p0[1] - p1[1]) < EPS and abs(p1[1] - p2[1]) < EPS):
+            continue
+        clean.append(p1)
+    clean.append(pts[-1])
+    out = [clean[0]]                                      # a path that doubles back collapses to a repeated point
+    for p in clean[1:]:
+        if not _near(p, out[-1]):
+            out.append(p)
+    return out
+
+
+def _route(ctx: "Ctx", a: dict, b: dict, blocked: "_Blocked | None" = None) -> list:
+    """Orthogonal route between two pin tips that leaves each pin outward, avoids symbol bodies and never touches
+    another net (see _Blocked). Raises NO_ROUTE when every candidate would join a foreign net."""
     A, B = a["xy"], b["xy"]
     oa, ob = a["out"], b["out"]
+    blocked = blocked or _Blocked(ctx, [A, B])
     bodies = []
     for s in ctx.sch.symbols():
         if not s.is_power:
@@ -714,7 +931,9 @@ def _route(ctx: "Ctx", a: dict, b: dict) -> list:
                 bodies.append(G.bbox_world(s.at, s.matrix, gb))
     A2 = [A[0] + oa[0] * STUB, A[1] + oa[1] * STUB]
     B2 = [B[0] + ob[0] * STUB, B[1] + ob[1] * STUB]
-    cands = [[A, B], _route_l(A, oa, B), [A, A2, [A2[0], B2[1]], B2, B], [A, A2, [B2[0], A2[1]], B2, B]]
+    cands = [_route_l(A, oa, B), [A, A2, [A2[0], B2[1]], B2, B], [A, A2, [B2[0], A2[1]], B2, B]]
+    if abs(A[0] - B[0]) < EPS or abs(A[1] - B[1]) < EPS:
+        cands.insert(0, [A, B])                           # straight line; a diagonal is never offered
     ys = [min(bb[1] for bb in bodies) - STUB, max(bb[3] for bb in bodies) + STUB] if bodies else []
     xs = [min(bb[0] for bb in bodies) - STUB, max(bb[2] for bb in bodies) + STUB] if bodies else []
     near = [bb for bb in bodies if _seg_hits_box(A2, [A2[0], B2[1]], bb) or _seg_hits_box(A2, [B2[0], A2[1]], bb)
@@ -730,39 +949,50 @@ def _route(ctx: "Ctx", a: dict, b: dict) -> list:
     for x in xs:
         x = G.snap(x)
         cands.append([A, A2, [x, A2[1]], [x, B2[1]], B2, B])
-    best = None
-    for c in cands:
-        pts = [c[0]]
-        for p in c[1:]:
-            if not _near(p, pts[-1]):
-                pts.append(p)
-        # drop collinear midpoints
-        clean = [pts[0]]
-        for i in range(1, len(pts) - 1):
-            p0, p1, p2 = clean[-1], pts[i], pts[i + 1]
-            if (abs(p0[0] - p1[0]) < EPS and abs(p1[0] - p2[0]) < EPS) or (abs(p0[1] - p1[1]) < EPS and abs(p1[1] - p2[1]) < EPS):
+
+    def evaluate(cs, best, worst):
+        for c in cs:
+            clean = _clean_path(c)
+            bad = blocked.conflicts(clean)
+            if bad:
+                if worst is None or len(bad) < len(worst):
+                    worst = bad
                 continue
-            clean.append(p1)
-        clean.append(pts[-1])
-        segs = list(zip(clean, clean[1:]))
-        diag = sum(1 for p, q in segs if abs(p[0] - q[0]) > EPS and abs(p[1] - q[1]) > EPS)
-        hits = sum(1 for p, q in segs for bb in bodies if _seg_hits_box(p, q, bb))
-        hits += 0.1 * sum(1 for p, q in segs for bb in texts if _seg_hits_box(p, q, bb, 0.0))
-        # never run over a foreign pin tip / wire end (would create an unintended connection)
-        foreign = 0
-        for s in ctx.sch.symbols():
-            for pw in s.pins_world():
-                if _near(pw["xy"], A) or _near(pw["xy"], B):
-                    continue
-                if any(_on_segment(pw["xy"], p, q) or _near(pw["xy"], q) for p, q in segs):
-                    foreign += 1
-        length = sum(abs(p[0] - q[0]) + abs(p[1] - q[1]) for p, q in segs)
-        cost = (diag * 1000 + hits * 100 + foreign * 1000, len(segs), length)
-        if best is None or cost < best[0]:
-            best = (cost, clean)
-    if best[0][0] >= 1000:
-        ctx.warnings.append("wire route could not avoid another pin; check the preview")
-    elif best[0][0] >= 100:
+            segs = list(zip(clean, clean[1:]))
+            diag = sum(1 for p, q in segs if abs(p[0] - q[0]) > EPS and abs(p[1] - q[1]) > EPS)
+            hits = sum(1 for p, q in segs for bb in bodies if _seg_hits_box(p, q, bb))
+            hits += 0.1 * sum(1 for p, q in segs for bb in texts if _seg_hits_box(p, q, bb, 0.0))
+            length = sum(abs(p[0] - q[0]) + abs(p[1] - q[1]) for p, q in segs)
+            cost = (diag * 1000 + hits * 100 + blocked.soft_hits(clean) * 10, len(segs), length)
+            if best is None or cost < best[0]:
+                best = (cost, clean)
+        return best, worst
+
+    best, worst = evaluate(cands, None, None)
+    if best is None or best[0][0] >= 10:
+        # detours: escape further out of each pin, then run along any nearby grid line
+        more = []
+        lines_y = sorted({G.snap(c + j * STUB) for c in (A[1], B[1]) for j in range(-6, 7)} | {G.snap(y) for y in ys})
+        lines_x = sorted({G.snap(c + j * STUB) for c in (A[0], B[0]) for j in range(-6, 7)} | {G.snap(x) for x in xs})
+        for ka in (1, 2, 3, 4):
+            EA = [A[0] + oa[0] * STUB * ka, A[1] + oa[1] * STUB * ka]
+            for kb in (1, 2, 3, 4):
+                EB = [B[0] + ob[0] * STUB * kb, B[1] + ob[1] * STUB * kb]
+                more += [[A, EA, [EA[0], EB[1]], EB, B], [A, EA, [EB[0], EA[1]], EB, B]]
+                more += [[A, EA, [EA[0], y], [EB[0], y], EB, B] for y in lines_y]
+                more += [[A, EA, [x, EA[1]], [x, EB[1]], EB, B] for x in lines_x]
+        best, worst = evaluate(more, best, worst)
+    if best is None:
+        seen, why = set(), []
+        for k in worst or []:
+            if k not in seen:
+                seen.add(k)
+                why.append(blocked.describe(k))
+        raise ToolError(f"no clean route for a wire {a['label']} → {b['label']}: every path touches another net "
+                        f"({'; '.join(why[:3])})", code="NO_ROUTE",
+                        fix=f'join them by name instead: {{"op":"connect","pins":["{a["label"].split("(")[0]}",'
+                            f'"{b["label"].split("(")[0]}"],"net":"<NAME>"}}, or move a part')
+    if best[0][0] >= 100:
         ctx.warnings.append("wire route crosses a symbol body; consider moving parts or using labels")
     return best[1]
 
@@ -787,12 +1017,27 @@ def op_wire(ctx: Ctx, op):
         if _wired_together(ctx, a["xy"], b["xy"]):
             ctx.changed.append(f"{a['label']} and {b['label']} are already wired together")
             return
-        pts = _route(ctx, a, b)
+        blocked = _Blocked(ctx, [a["xy"], b["xy"]])
+        pts = _route(ctx, a, b, blocked)
+        pins = [(g["si"].ref, p["number"]) for g in (a, b) for p in g["pins"]]
+        # a wire joins whatever is already wired to either end (KiCad leaves NC-type pins out of its netlist, so
+        # their wired neighbours would look unrelated to the merge check)
+        wires, dots = ctx.sch.wires(), _dots(ctx)
+        keys = _run_of(wires, a["xy"], dots)[1] | _run_of(wires, b["xy"], dots)[1]
+        ctx.joins.append({"pins": [(s.ref, q["number"]) for s in ctx.sch.symbols(include_power=False)
+                                   for q in s.pins_world() if _key(q["xy"]) in keys] + pins})
         if na or nb:
-            ctx.expect.append({"pins": [(a["si"].ref, a["pins"][0]["number"]), (b["si"].ref, b["pins"][0]["number"])],
-                               "net": na or nb, "local": True})
+            ctx.expect.append({"pins": pins, "net": na or nb, "local": True})
         else:
-            ctx.expect.append({"same": [(a["si"].ref, a["pins"][0]["number"]), (b["si"].ref, b["pins"][0]["number"])]})
+            ctx.expect.append({"same": pins})
+    if op.get("points"):
+        blocked = None
+        # explicit geometry: the caller joins whatever sits at the points they gave, nothing else
+        j = _touching(ctx, pts)
+        ctx.joins.append(j)
+        named = sorted(set(j["names"]))
+        if len(named) > 1:
+            ctx.warnings.append(f"this wire joins the nets {', '.join(named)} into one (ERC will report the extra names)")
     for p, q in zip(pts, pts[1:]):
         if _near(p, q):
             continue
@@ -801,11 +1046,26 @@ def op_wire(ctx: Ctx, op):
         ctx.sch.add_wire(p, q)
         ctx.touch(p, q)
     ctx.changed.append("wire " + " → ".join(_fmt(p) for p in pts))
-    _junctions(ctx, pts)
+    _junctions(ctx, pts, blocked)
 
 
-def _junctions(ctx: Ctx, pts):
-    """Add junctions where new wire points T-into other wires or ≥3 wire ends meet."""
+def _touching(ctx: Ctx, points) -> dict:
+    """Pins and net names reached from these points through the existing wiring: {'pins': [(ref, pin)], 'names': [..]}."""
+    wires = ctx.sch.wires()
+    dots = _dots(ctx) | {_key(p) for p in points}   # a given point joins the wire it lies on; elsewhere KiCad's rule
+    keys: set = set()
+    for p in points:
+        keys |= _run_of(wires, p, dots)[1]
+    pins = [(s.ref, q["number"]) for s in ctx.sch.symbols(include_power=False) for q in s.pins_world() if _key(q["xy"]) in keys]
+    names = [l["net"] for l in ctx.sch.labels() if _key(l["at"]) in keys]
+    names += [s.value for s in ctx.sch.symbols() if s.is_power and not is_flag(s)
+              for q in s.pins_world() if _key(q["xy"]) in keys]
+    return {"pins": pins, "names": names}
+
+
+def _junctions(ctx: Ctx, pts, blocked: "_Blocked | None" = None):
+    """Add junctions where new wire points T-into other wires or ≥3 wire ends meet — never on a point that belongs to
+    another net than the wire's own (``blocked``), which would join the two."""
     have = [(float(sexpr.find(n, "at")[1]), float(sexpr.find(n, "at")[2])) for n in ctx.sch.items("junction")]
     cands = []
     for p in pts:
@@ -816,6 +1076,8 @@ def _junctions(ctx: Ctx, pts):
             for p, q in zip(pts, pts[1:]):
                 if _on_segment(e, p, q):
                     cands.append(e)
+    if blocked is not None:
+        cands = [p for p in cands if _key(p) not in blocked.index.keys and not blocked.on_wire(p)]
     for p in cands:
         it = ctx.items_at(p)
         n_end = len(it["wires_end"])
@@ -844,6 +1106,14 @@ def op_label(ctx: Ctx, op):
     it = ctx.items_at(p)
     if not any(it[k] for k in ("wires_end", "wires_mid", "pins", "power")):
         ctx.warnings.append(f"label {net} at {_fmt(p)} touches no wire or pin (it will dangle)")
+    j = _touching(ctx, [p])
+    dots = [sexpr.find(n, "at") for n in ctx.sch.items("junction")]
+    if len(it["wires_mid"]) + len(it["wires_end"]) >= 2 and not any(_near((float(a[1]), float(a[2])), p) for a in dots):
+        wires = ctx.sch.wires()
+        runs = {frozenset(_run_of(wires, w["a"], _dots(ctx))[0]) for w in it["wires_mid"] + it["wires_end"]}
+        if len(runs) > 1:
+            ctx.warnings.append(f"label {net} at {_fmt(p)} sits on {len(runs)} separate wire runs and joins them")
+    ctx.joins.append({"pins": j["pins"], "names": j["names"] + [net]})
     ctx.sch.add_label(net, p, _rot(op.get("rot")), kind, op.get("shape") or "bidirectional")
     ctx.touch(p)
     ctx.changed.append(f"{kind} label {net} at {_fmt(p)}")
@@ -1065,6 +1335,7 @@ def op_move(ctx: Ctx, op):
         raise ToolError(f"{ref} has {len(insts)} units placed — pass 'unit'", code="BAD_OP")
     for si in insts:
         state = _pin_state(ctx, si)
+        riders = _run_labels(ctx, si, state)
         _clear_pin_attachments(ctx, state)
         a = sexpr.find(si.node, "at")
         old = si.at
@@ -1090,10 +1361,57 @@ def op_move(ctx: Ctx, op):
         keep |= {id(obj["node"] if kind == "label" else obj.node) for rec in state for kind, obj in rec["direct"]}
         _check_pin_contacts(ctx, si, keep, "moved")
         lost = _rebuild(ctx, si, state)
+        _reseat_labels(ctx, si, riders)
         ctx.touch(old, new)
         ctx.changed.append(f"moved {si.ref} to {_fmt(new)} rot {rot}" + (f" mirror {si.mirror}" if si.mirror else ""))
         for rec in lost:
             ctx.warnings.append(f"{si.ref}.{rec['number']} lost its connection")
+
+
+def _run_labels(ctx: Ctx, si: SymInst, state: list[dict]) -> list[tuple]:
+    """Labels sitting on the wire runs of a part's wired pins (not on the pin tip or its own stub, which _rebuild
+    moves itself): [(pin number, label dict)]. A move re-draws those wires and may leave such a label off them."""
+    wires = ctx.sch.wires()
+    dots = _dots(ctx)
+    out, seen = [], set()
+    for rec in state:
+        if not rec["wires"]:
+            continue
+        run, keys = _run_of(wires, rec["xy"], dots)
+        st = ctx.stub_at(rec["xy"])
+        stub = {id(l["node"]) for l in st["labels"]} if st else set()
+        for l in ctx.sch.labels():
+            if id(l["node"]) in seen or id(l["node"]) in stub or _near(l["at"], rec["xy"]):
+                continue
+            if _key(l["at"]) in keys or any(_on_segment(l["at"], wires[i]["a"], wires[i]["b"]) for i in run):
+                seen.add(id(l["node"]))
+                out.append((rec["number"], l))
+    return out
+
+
+def _reseat_labels(ctx: Ctx, si: SymInst, riders: list[tuple]):
+    """Put labels that a move left off their wire back onto the moved pin's wire run (the net keeps its name)."""
+    if not riders:
+        return
+    pins = {p["number"]: p for p in si.pins_world()}
+    for number, l in riders:
+        p = pins.get(number)
+        if p is not None:
+            wires = ctx.sch.wires()
+            run, keys = _run_of(wires, p["xy"], _dots(ctx))
+            if _key(l["at"]) in keys or any(_on_segment(l["at"], wires[i]["a"], wires[i]["b"]) for i in run):
+                continue                               # still on this pin's wire run
+        ctx.sch.remove(l["node"])                      # off the run, or now on another pin's wire: re-seat it
+        if p is None:
+            continue
+        g = {"si": si, "xy": p["xy"], "out": p["out"], "pins": [p], "alternate": None, "label": f"{si.ref}.{number}"}
+        cur, _ = ctx.net_at_pin(p["xy"], si)
+        if cur == l["net"]:
+            continue                                   # another label already names the run
+        shape = str(sexpr.value(l["node"], "shape", "bidirectional"))
+        if not _label_on_wire(ctx, g, l["net"], l["kind"], shape):
+            _attach(ctx, g, l["net"], "label", l["kind"], shape)
+        ctx.changed.append(f"label {l['net']} moved with the wire of {si.ref}.{number}")
 
 
 def _junctions_cleanup(ctx: Ctx):
@@ -1268,6 +1586,7 @@ def op_rename_net(ctx: Ctx, op):
         l["node"][1] = dst
         ctx.touch(l["at"])
     ctx.renamed.add(dst)
+    ctx.joins.append({"names": [src, dst]})       # the merge check: pins of '{src}' now sit on '{dst}'
     for s in pwr:
         s.set_field("Value", dst)
         autoplace_fields(s)
@@ -2108,6 +2427,169 @@ def _pick_instance(sch: Schematic, ops) -> str | None:
     return None
 
 
+JOINING_OPS = {"connect", "power", "wire", "label", "move", "swap", "pwr_flag"}
+
+
+def _auto_net(name: str) -> bool:
+    return name.startswith("Net-(") or name.startswith("unconnected-(")
+
+
+def unintended_merges(before: dict, after: dict, asked: list[dict]) -> list[dict]:
+    """Nets in ``after`` that join pins which were apart in ``before`` without the batch asking for it.
+
+    Pins are grouped by what was already connected (``before``), by the joins the batch asked for (``asked``:
+    expectations {'same': pins} / {'pins', 'net'} and explicit {'pins', 'names'}) and by net name. A net in
+    ``after`` that spans two groups was joined by accident. Pins the batch never mentioned and that did not exist
+    before (new parts' hidden power pins, for instance) are not judged."""
+    parent: dict = {}
+
+    def find(x):
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(xs):
+        xs = list(xs)
+        for x in xs[1:]:
+            parent[find(x)] = find(xs[0])
+
+    def pin(ref, num_):
+        return ("p", str(ref), str(num_))
+
+    tracked = set()
+    for net, nodes in before.get("nets", {}).items():
+        ps = [pin(n["ref"], n["pin"]) for n in nodes if "?" not in n["ref"]]
+        tracked.update(ps)
+        union(ps + ([("n", net.rsplit("/", 1)[-1])] if ps and not _auto_net(net) else []))
+    for e in asked:
+        ps = [pin(*k) for k in (e.get("same") or e.get("pins") or [])]
+        names = ([e["net"]] if e.get("net") else []) + list(e.get("names") or [])
+        tracked.update(ps)
+        union(ps + [("n", str(n)) for n in names])
+    bad = []
+    for net, nodes in after.get("nets", {}).items():
+        groups: dict = {}
+        for n in nodes:
+            p = pin(n["ref"], n["pin"])
+            if p in tracked:
+                groups.setdefault(find(p), []).append(f"{p[1]}.{p[2]}")
+        if len(groups) > 1:
+            bad.append({"net": net, "groups": sorted(sorted(g) for g in groups.values())})
+    return bad
+
+
+def unintended_splits(before: dict, after: dict) -> list[dict]:
+    """Nets of ``before`` whose pins (those still present) end up on more than one net in ``after``."""
+    where = {}
+    for net, nodes in after.get("nets", {}).items():
+        for n in nodes:
+            where[(str(n["ref"]), str(n["pin"]))] = net
+    bad = []
+    for net, nodes in before.get("nets", {}).items():
+        groups: dict = {}
+        for n in nodes:
+            k = (str(n["ref"]), str(n["pin"]))
+            if "?" not in k[0] and k in where:
+                groups.setdefault(where[k], []).append(f"{k[0]}.{k[1]}")
+        if len(groups) > 1:
+            bad.append({"net": net, "groups": sorted(sorted(g) for g in groups.values())})
+    return bad
+
+
+def _split_scope(ops) -> tuple[set, set] | None:
+    """What the batch's delete/disconnect/rename_net/swap ops may split: (refs, net names). None = anything (a
+    deleted wire segment or dangling wires can split any net)."""
+    refs, names = set(), set()
+    for op in ops:
+        k = op["op"]
+        if k == "delete" and (op.get("wire_at") is not None or op.get("dangling")):
+            return None
+        if k in ("delete", "swap") and op.get("ref"):
+            refs.add(str(op["ref"]))
+        if k == "delete" and op.get("label"):
+            names.add(str(op["label"]).strip().rsplit("/", 1)[-1])
+        if k == "rename_net":
+            names |= {str(op.get(x) or "").rsplit("/", 1)[-1] for x in ("from", "to")}
+        if k == "disconnect" or (k == "delete" and op.get("pin")):
+            try:
+                refs |= {str(t).split(".", 1)[0] for t in _pins_of(op)}
+            except ToolError:
+                return None
+    return refs, names
+
+
+def _merge_fix(ops_used: set) -> str:
+    fixes = []
+    if "wire" in ops_used:
+        fixes.append("join the pins by net name (connect op) instead of a wire")
+    if "label" in ops_used:
+        fixes.append("anchor the label on a pin (label with 'pin') or pick a point on one wire only")
+    if ops_used & {"move", "place", "swap"}:
+        fixes.append("give the part another position")
+    return "; or ".join(fixes) or "check what the new items touch with sch_read(query='nets')"
+
+
+def _as_instance(text: str, path: str) -> str:
+    """``text`` with each symbol's instance data cut down to the sheet instance ``path``. Exported on its own, a
+    sheet used several times reports the references of its first instance; the batch speaks in the references of
+    the instance it edits, so the netlist must use those too."""
+    tree = sexpr.loads(text)
+    for n in sexpr.find_all(tree, "symbol"):
+        for proj in sexpr.find_all(sexpr.find(n, "instances") or [], "project"):
+            paths = sexpr.find_all(proj, "path")
+            if any(str(q[1]) == path for q in paths):
+                proj[:] = [e for e in proj if not (isinstance(e, list) and e and e[0] == "path" and str(e[1]) != path)]
+    return sexpr.dumps(tree) + "\n"
+
+
+def _check_merges(ctx: Ctx, pre_text: str | None, ops: list = ()):
+    """Refuse the batch when KiCad's netlist of the edited sheet shows two nets joined that the batch did not ask
+    to join (a wire run over another net's stub, a label landing on the wrong wire, ...), or one net split in two
+    (a moved part leaving a label off its wire) that no delete/disconnect/rename_net/swap op in the batch explains."""
+    if ctx.pr is None or not ctx.sch.symbols(include_power=False):
+        return
+    name = ctx.pr.name or "sheet"
+    post_text = ctx.sch.text()
+    if getattr(ctx.sch, "other_paths", None):      # a sheet used several times: report the edited instance's refs
+        pre_text = pre_text and _as_instance(pre_text, ctx.sch.sheet_path)
+        post_text = _as_instance(post_text, ctx.sch.sheet_path)
+    try:
+        if pre_text:
+            from concurrent.futures import ThreadPoolExecutor
+            with ThreadPoolExecutor(2) as ex:      # two kicad-cli runs side by side
+                fb = ex.submit(_isolated_netlist, pre_text, name)
+                after = _isolated_netlist(post_text, name)
+                before = fb.result()
+        else:
+            before, after = {"nets": {}}, _isolated_netlist(post_text, name)
+    except ToolError:
+        return                                     # no kicad-cli: the post-write connectivity check still runs
+    except Exception as e:                         # a timeout or an unreadable netlist must not abort the batch
+        ctx.warnings.append(f"the net merge check did not run ({type(e).__name__}); check sch_read(query='nets')")
+        return
+    bad = unintended_merges(before, after, ctx.expect + ctx.joins)
+    if bad:
+        b = bad[0]
+        parts = " and ".join("{" + ", ".join(g[:4]) + (" …" if len(g) > 4 else "") + "}" for g in b["groups"][:2])
+        raise ToolError(f"this batch would join {parts} on one net ('{b['net']}') without being asked to",
+                        code="NET_MERGE", data={"merges": bad[:5]}, fix=_merge_fix({op["op"] for op in ops}))
+    scope = _split_scope(ops)
+    if scope is None:
+        return
+    split = [b for b in unintended_splits(before, after)       # splits the batch's delete/disconnect/... may cause
+             if b["net"].rsplit("/", 1)[-1] not in scope[1]
+             and not any(n["ref"] in scope[0] for n in before["nets"].get(b["net"], []))]
+    if split:
+        b = split[0]
+        parts = " and ".join("{" + ", ".join(g[:4]) + (" …" if len(g) > 4 else "") + "}" for g in b["groups"][:2])
+        net = b["net"].rsplit("/", 1)[-1]
+        raise ToolError(f"this batch would split net '{net}' into {parts} without being asked to",
+                        code="NET_SPLIT", data={"splits": split[:5]},
+                        fix=f"add a connect op naming '{net}' for the pins that leave it, or give the part another position")
+
+
 def apply_ops(pr, ops: list[dict], dry_run=False, while_open="refuse", sheet: str | None = None) -> dict:
     """Apply ops atomically. Returns {'changed','refs','warnings','revision', 'expect', 'region', 'file', ...}."""
     ops = _normalize(ops)
@@ -2128,6 +2610,8 @@ def apply_ops(pr, ops: list[dict], dry_run=False, while_open="refuse", sheet: st
         name = next((h["name"] for h in hierarchy(pr) if h["path"] == switched), switched)
         ctx.changed.append(f"editing sheet instance '{name}' (the references named belong to it)")
     pre_h = {l["net"] for l in sch.labels() if l["kind"] == "hierarchical"}
+    joining = any(op["op"] in JOINING_OPS for op in ops)
+    pre_text = sch.text() if joining and sch.symbols(include_power=False) else None
     pre_nodes = [n for n in sch.tree if isinstance(n, list)]     # held so their ids stay unique for 'fresh'
     pre_ids = {id(n) for n in pre_nodes}
     try:
@@ -2148,6 +2632,8 @@ def apply_ops(pr, ops: list[dict], dry_run=False, while_open="refuse", sheet: st
             n_moved = declutter(ctx, fresh=lambda node: id(node) not in pre_ids)
             if n_moved:
                 ctx.changed.append(f"moved {n_moved} power symbol(s) further out on their stub to clear neighbouring labels")
+        if joining:
+            _check_merges(ctx, pre_text, ops)
     except ToolError as e:
         e.data = dict(e.data or {}, applied=False)
         if "nothing was written" not in e.message:

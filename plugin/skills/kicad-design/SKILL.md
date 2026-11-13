@@ -46,30 +46,27 @@ results name their `provider`, and the part-number field is the provider's own i
 
 ## 3. Schematic — `sch_apply` with big batches
 
-One call per functional block (10–60 ops). Place, then connect pins **by name**. Never compute wire coordinates.
-
-**Wires first, labels last.** A reader sees a wire in a blink and has to search for a label. Join the parts of one
-block with `wire` ops pin to pin (`{"op":"wire","from":"R1.2","to":"U1.EN"}`); Copper routes the wire. Use `connect`
-with a net name for power and ground (they become power symbols), for nets that leave the sheet or the block, and
-for runs that would be awkward to draw. Never join two neighbouring parts with a pair of labels. A wired net that
-matters still gets its name (`label` op) so it can be found and cross-checked. On a sheet only Copper has drawn,
-`sch_tidy` turns the remaining in-block label pairs into wires.
+One call per functional block (10–60 ops). Place, then connect pins **by name** to **net names**. Never compute
+wire coordinates — Copper anchors a label (or power symbol for GND/+3V3/VBUS…) to each pin. On a sheet only Copper
+has arranged, its layout then draws the nets inside each block as wires and keeps a name where a net leaves its block.
+`wire` (pin to pin; it routes around other nets or refuses) draws one specific wire, as for the CC lines below; on a
+sheet you arrange yourself (`layout='keep'`, or hand-drawn) use it instead of a pair of labels between neighbours.
+`label` names a wired net that matters.
 
 ```json
 {"ops": [
   {"op": "place", "lcsc": "C165948", "ref": "J1", "group": "connector"},
   {"op": "place", "spec": "5.1k 0402", "ref": "R1", "near": "J1"},
   {"op": "place", "spec": "5.1k 0402", "ref": "R2", "near": "J1"},
-  {"op": "connect", "pins": ["J1.A4", "J1.B4", "J1.A9", "J1.B9"], "net": "VUSB"},
-  {"op": "wire", "from": "J1.A5", "to": "R1.1"}, {"op": "label", "net": "CC1", "pin": "R1.1"},
-  {"op": "wire", "from": "J1.B5", "to": "R2.1"}, {"op": "label", "net": "CC2", "pin": "R2.1"},
-  {"op": "connect", "pins": ["R1.2", "R2.2", "J1.A1", "J1.B12", "J1.S1"], "net": "GND"},
-  {"op": "no_connect", "pins": ["J1.A8", "J1.B8"]},
-  {"op": "text", "text": "VUSB: 4.5 / 5.0 / 5.5 V, 500 mA max (USB 2.0 default)"},
-  {"op": "text", "text": "J1.A8, J1.B8 (SBU): intentionally left open, no alt mode"}
+  {"op": "connect", "pin": "J1.VBUS", "net": "VBUS"},
+  {"op": "wire", "from": "J1.CC1", "to": "R1.1"}, {"op": "label", "net": "CC1", "pin": "R1.1"},
+  {"op": "wire", "from": "J1.CC2", "to": "R2.1"}, {"op": "label", "net": "CC2", "pin": "R2.1"},
+  {"op": "connect", "pins": ["R1.2", "R2.2", "J1.GND", "J1.SH"], "net": "GND"},
+  {"op": "no_connect", "pins": ["J1.SBU1", "J1.SBU2"]}
 ]}
 ```
 
+- J1's D+/D- go to the MCU in that block's batch; until then ERC lists them, and VBUS/GND as not driven.
 - Give new parts temporary `id`s and use them in pins (`"pin": "led.A"`); the result maps each id to its final ref.
   A pin *name* that matches several pins (`J1.VBUS`, `U1.GND`) connects all of them.
 - `sch_read` shows what is already on the sheet (refs, pins, nets) before you edit an existing design.
@@ -86,67 +83,24 @@ nets, pins of a power IC left unconnected.
 
 ## 5. Look at it
 
-`render(target="schematic")` once the schematic is complete (pictures are only attached on request) and hold it
-against the style rules below. `sch_tidy` re-lays out a messy sheet. `design_review(checks=["schematic_style"])`
-measures the rules that can be measured and gives a `fix` for each.
+`render(target="schematic")` once the schematic is complete (pictures are only attached on request) — check
+readability: signal flow left→right, power at top, GND at bottom, no overlapping text. `sch_tidy` re-lays out a messy sheet. Humans will review this schematic; make it legible.
+`design_review(checks=["schematic_style"])` checks the drawing rules below; `copper_help(tool="design_review")`
+lists them with their ids. Use judgement: break a rule when it plainly makes the sheet worse, and say why in a note.
 
-## 5a. Schematic style: draw it so a stranger reads it in a blink
-
-Other people will read this schematic. These rules are not optional and they override any older habit, including
-older examples in tool help. Follow each one until it plainly makes the sheet worse, then break it and leave a note
-saying why. Full list with rule ids: `docs/SCHEMATIC_STYLE.md`.
-
-**Flow**
-- Signal and power flow left to right: inputs left, outputs right. Enables and other control inputs sit with the
-  inputs. A switcher's feedback pin on the right is fine: it is part of the output circuit. If the flow cannot be
-  left to right, leave enough whitespace that the eye can follow the path.
-- Ground and negative-supply symbols always point down. Positive-supply symbols always point up. Never sideways.
-- Where direction is not obvious (bidirectional or RF chains) add an arrow or a note that says which way it flows.
-- Draw standard circuits in their textbook shape (divider, RC filter, follower, inverter, LDO, crystal) so they are
-  recognised, not decoded.
-
-**Symbols**
-- Functional symbols, never the package pinout: supplies on top, grounds at the bottom, inputs left, outputs right,
-  related pins together. The board shows the package; do not paste a pinout picture beside the part. Only RF parts
-  whose schematic is their layout are exempt.
-- IEEE 315 conventions: every mark means something. A discrete transistor is drawn with its envelope circle.
-- Duplicate supply and ground pins are hidden or stacked, unless the design is safety-critical: then show every pin.
-- Symbol bodies are filled with the background colour, not transparent.
-
-**Grouping and sheets**
-- Whitespace is the separator. Group each function, leave space between groups, and give every group a title.
-  A box is only for a sheet too tight for whitespace.
-- As few sheets as possible, but never crammed: one sheet per module (power supply, MCU, connectors). Prefer
-  11x17 in (A3 class) sheets. Out of whitespace means add a sheet, not shrink the drawing.
-- A multi-sheet design has a block diagram on the root sheet, built from hierarchical sheet symbols wired in
-  signal-flow order, with no circuitry of its own.
-
-**Connections**
-- Wires over labels (section 3). Labels only for off-sheet nets and awkward runs; no label hop between neighbours.
-- Global and hierarchical labels are equal to the reader: hierarchical for sheets on the block diagram, global for
-  nets that go everywhere. Inter-sheet references stay on (new Copper projects have them on).
-- At most three wires meet at a junction. A four-way junction is forbidden: stagger it into two tees.
-- A sense (Kelvin) wire leaves the conductor at 45° at the exact point it senses.
-
-**Power**
-- Rail names say where the power comes from or what it feeds: `VUSB`, `VBAT`, `+3V3_MCU`. Never a bare `VCC`/`VDD`.
-- Beside each rail's source write min / typ / max voltage and typical / maximum current
-  ("VUSB: 4.5 / 5.0 / 5.5 V, 35 mA typ, 500 mA max"); at the very least "9-19 V in" or "3V3, 2 A max".
-- Power is distributed with power symbols, not ordinary labels.
-- Circuit common (0 V / GND), chassis and earth are different things with different symbols. Never the earth symbol
-  for circuit common; if a design has more than one reference, a note says what each is.
-
-**Notes** (the `text` op; use it freely)
-- Every test point: what to expect there (voltage, waveform, scope setting).
-- Everything intentional but odd: "pins 11-13 intentionally left floating", "IN1 and IN2 shorted on purpose".
-- Passives (R, C, L, diodes) carry value, tolerance, power or voltage rating and package ("10k 1% 0.1W 0402");
-  check the package can take the rating. ICs do not need this.
-- Every sheet has a standard-parts note ("Unless noted: resistors 1% 0.063W 0402; capacitors X7R 16V 0402") so
-  parts that follow it show only their value.
-
-**Before calling the schematic done**: power through power symbols; every supply pointing the right way; important
-nets descriptively named; MOSFETs oriented correctly for their body diode; bypass capacitors on every IC; the design
-fails safe; modules grouped separately.
+- Flow left to right (inputs left, outputs right); grounds point down, supplies up, never sideways.
+- Standard circuits (divider, RC filter, LDO, crystal) in their textbook shape; each function grouped with
+  whitespace and titled.
+- Wires over labels: no pair of labels between neighbouring parts; at most three wires at a junction.
+- Rail names say voltage or source: +3V3, +5V, VBUS, +BATT, not a bare VCC/VDD. Those are KiCad power-library
+  names, so `connect` draws a power symbol; a custom name such as +3V3_MCU needs the `power` op.
+- Notes (`text` op): each rail's min / typ / max voltage and current, what each test point should read, anything
+  intentional but odd (floating pins, shorted inputs), and per sheet one standard-parts note with the values you
+  really used ("Unless noted: resistors 1% 0.063W 0402; …"). Add notes last: a sheet with notes is no longer
+  re-laid automatically, and `sch_tidy` then needs `force=true`.
+- In a symbol you draw, stack duplicate power pins; never hide them (a hidden power-input pin joins a global net
+  named after the pin).
+- Before calling it done: bypass caps on every IC, MOSFETs oriented for their body diode, the design fails safe.
 
 ## 6. PCB
 

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from .. import project as P
 from .. import render as R
-from ..mcp.registry import Result, ToolError, tool
+from ..mcp.registry import Result, ToolError, add_help, tool
 from ..review import design_review as DR
 from ..review import verify as V
 from ..review.common import out_dir
@@ -17,7 +17,7 @@ PROJECT = {"type": "string", "description": "Project folder or .kicad_pro/.kicad
 
 def _one(f: dict) -> dict:
     d = {k: f.get(k) for k in ("severity", "type", "message", "at", "fix") if f.get(k) is not None}
-    for k in ("net", "sheet", "section", "suggestion"):
+    for k in ("net", "sheet", "section", "suggestion", "rule"):
         if f.get(k):
             d[k] = f[k]
     pins = [i.get("pin_ref") or i.get("ref") for i in f.get("items", []) if isinstance(i, dict)]
@@ -268,10 +268,10 @@ def _next(d: dict) -> str:
     return ""
 
 
-@tool("design_review", """Engineering review of the schematic netlist (and the board when there is one): catches what passes ERC but kills boards.
+@tool("design_review", """Engineering review of the schematic netlist (and the board, if any): catches what passes ERC but kills boards.
 Decoupling, I2C pull-ups, crystal load caps, USB-C CC resistors, USB ESD, regulator caps and feedback-divider voltage, floating EN/RESET/BOOT pins,
-LED resistors, undriven rails, part sourcing (+ the fab's assembly-class fee), missing footprints, label typos, thin power-path tracks, thermal pads without vias, sheet style.
-Read-only. Each finding carries a `fix` with the exact ops to resolve it. checks: subset of the enum (default all).
+LED resistors, undriven rails, part sourcing (+ the fab's assembly-class fee), missing footprints, label typos, thin power-path tracks, thermal pads without vias.
+Read-only. Each finding has a `fix`. checks: subset of the enum (default all but schematic_style).
 Example: design_review(checks=['decoupling','usb_c_cc'])""",
       {"checks": {"type": "array", "items": {"type": "string", "enum": DR.CHECKS}},
        "project": PROJECT,
@@ -290,13 +290,12 @@ Example: design_review(checks=['decoupling','usb_c_cc'])""",
         - Board-aware: power-path nets (inductor, battery, power FET, switch node) narrower than 0.4 mm or left in a thin
           net class; exposed pads of power ICs without thermal vias.
 
-        - schematic_style (rules: docs/SCHEMATIC_STYLE.md), read from the saved sheets: power symbols pointing the wrong
-          way (supplies up, grounds and negative rails down); four-way junctions (max three wires); nets hopping by label
-          between neighbours instead of a wire; bare VCC/VDD rail names; rails without a min/typ/max voltage or current
-          note; passives without tolerance / rating / package and sheets without a standard-parts note; global labels
-          with inter-sheet references off; discrete transistors without the IEEE 315 envelope circle; package-shaped
-          or unfilled IC symbols; test points without an expected reading; no-connect inputs without a note; a root
-          sheet that is not a block diagram; a crammed sheet. Style findings are warnings or notes, never errors.
+        - schematic_style, only when asked for (checks=['schematic_style']): drawing advice read from the saved sheets,
+          returned apart under `style` (the same `limit`, applied separately), each entry naming its `rule` (listed at
+          the end of this page). Never an error. On a sheet still exactly as Copper's layout engine drew it, the wiring rules (C1, C2,
+          C6, sideways power symbols) are skipped: the engine labels nets only where they leave a block, by design.
+          On Copper's stub-and-label sheets (layout='keep') C1, C6 and power-symbol direction are notes whose fix is
+          sch_tidy(), unless sch_tidy cannot re-lay that sheet (buses, sheet symbols).
 
         Net names inside a `fix` are label names (`VBAT`), not KiCad's path form (`/VBAT`, `/power/VBAT`), so the ops can be
         pasted into sch_apply as they are. The finding's `net` field keeps KiCad's full name.
@@ -304,14 +303,27 @@ Example: design_review(checks=['decoupling','usb_c_cc'])""",
         ## Examples
         design_review()
         design_review(checks=['decoupling','usb_c_cc'])
-        design_review(checks=['sourcing','footprints'], limit=80)""")
+        design_review(checks=['sourcing','footprints'], limit=80)
+        design_review(checks=['schematic_style'])            # drawing style only""")
 def design_review(checks=None, project=None, limit=40):
     pr = P.resolve(project)
     r = DR.review(pr, checks=checks)
     c = r["counts"]
-    return Result({"counts": c, **_listing(r["findings"], limit),
-                   "stats": _review_stats(r["stats"]), "checks_run": r["checks_run"]},
-                  summary=f"design review: {c['error']} error(s), {c['warning']} warning(s), {c['info']} note(s)")
+    data = {"counts": c, **_listing(r["findings"], limit), "stats": _review_stats(r["stats"]), "checks_run": r["checks_run"]}
+    summary = f"design review: {c['error']} error(s), {c['warning']} warning(s), {c['info']} note(s)"
+    if r.get("style") is not None:
+        st = r["style"]
+        data["style"] = {"count": len(st), **_listing(st, limit)}
+        summary += f"; style: {len(st)} finding(s)"
+    return Result(data, summary=summary)
+
+
+def _style_rules_help() -> str:
+    from ..review import sch_style
+    return "## Schematic style rules (schematic_style)\n" + sch_style.rules_markdown()
+
+
+add_help("design_review", _style_rules_help())
 
 
 @tool("render", """Look at the design: returns PNG image(s) the model can see. Use after edits to check layout, and with `crop` to zoom on a finding's `at`.

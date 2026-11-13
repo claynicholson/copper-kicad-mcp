@@ -40,6 +40,8 @@ jobs:
         run: python tests/test_compat.py
       - name: Token budgets (unit tests only)
         run: python tests/test_tokens.py
+      - name: Schematic style rules (the KiCad tests skip)
+        run: python tests/test_sch_style.py
 
   packaging:
     runs-on: ubuntu-latest
