@@ -221,6 +221,12 @@ def test_jlc_placement_rules():
     g = fab.placement_row({"name": "SOT-23", "rotation": 0, "layer": "top", "pos": [10, 20],
                            "fields": {"JLC Rotation Offset": "90"}}, [], profile="generic")
     assert g["rotation"] == 0 and g["correction_source"] is None and g["layer"] == "top", g
+    # KiCad's HRO TYPE-C-31-M-12 footprint is drawn the same way round as JLC's own footprint for C165948 (pad row
+    # toward -y, A1/B12 at -x), so the CPL rotation is the board rotation. A former +180 rule flipped the receptacle.
+    for rot in (0, 90, 180):
+        usb = fab.placement_row({"name": "USB_C_Receptacle_HRO_TYPE-C-31-M-12", "rotation": rot, "layer": "top",
+                                 "pos": [0, 0]}, rules, profile=J)
+        assert usb["rotation"] == rot and usb["correction_source"] is None, usb
 
 
 # ── templates ────────────────────────────────────────────────────────────

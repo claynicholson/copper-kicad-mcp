@@ -41,6 +41,9 @@ What is new since 1.0.0, in short:
 
 ### Details
 
+- `fab_export` (JLCPCB): removed a rotation rule that turned the HRO TYPE-C-31-M-12 USB-C receptacle 180° in the
+  placement file, so JLC would have placed it facing into the board.
+
 - `pcb_route_guided` / `pcb_route_plan`, **fixes after a second independent verification**:
   - **A board with existing copper routes the same whatever order KiCad saved its footprints in.** The board
     model renumbers KiCad's connectivity clusters and wrote the new numbers back into the board extract it was

@@ -151,10 +151,6 @@
    "rotation": 270
   },
   {
-   "pattern": "^USB_C_Receptacle_HRO_TYPE-C-31-M-12*",
-   "rotation": 180
-  },
-  {
    "pattern": "^ESP32-W",
    "rotation": 270
   },
