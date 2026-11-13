@@ -3,7 +3,8 @@
 # kicad-cli), the token-budget unit tests, the npm launcher, the manifests and the installer scripts.
 # Everything that edits schematics or boards runs against real KiCad images in kicad-matrix.yml.
 #
-# STATUS: written before the repository was public; it has not run on GitHub Actions yet.
+# STATUS: runs on GitHub Actions since the repository went public (Linux, Node 22). Its first runs found
+# `npm test` relying on Node 26's directory argument, and a Windows-captured fixture path in test_tokens.
 name: ci
 
 on:
@@ -47,6 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Isolated Copper and KiCad config folders
+        run: |
+          echo "COPPER_HOME=$RUNNER_TEMP/copper-home" >> "$GITHUB_ENV"
+          echo "KICAD_CONFIG_HOME=$RUNNER_TEMP/kicad-config" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:
           node-version: "22"

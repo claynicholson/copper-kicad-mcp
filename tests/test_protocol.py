@@ -323,7 +323,10 @@ class _BareMcpProcess(McpProcess):
         cmd = [launcher] if launcher else [sys.executable, "-m", "copper_kicad"]
         env = dict(os.environ, PYTHONIOENCODING="utf-8")
         self.home = tempfile.mkdtemp(prefix="copper-proto-bare-")
-        cfg = Path(self.home) / "AppData" / "Roaming" / "Claude" / "claude_desktop_config.json"
+        # where clients._claude_desktop_dirs reads under COPPER_CONFIG_HOME_OVERRIDE on this platform
+        sub = (("AppData", "Roaming") if sys.platform == "win32" else ("Library", "Application Support")
+               if sys.platform == "darwin" else (".config",))
+        cfg = Path(self.home).joinpath(*sub, "Claude", "claude_desktop_config.json")
         cfg.parent.mkdir(parents=True)
         cfg.write_text('{"mcpServers":{"fs":{"command":"npx","args":["C:\\Users\\me"]}}}', encoding="utf-8")
         env["COPPER_CONFIG_HOME_OVERRIDE"] = self.home

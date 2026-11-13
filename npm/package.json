@@ -40,6 +40,6 @@
   },
   "scripts": {
     "prepack": "node scripts/vendor.js",
-    "test": "node --test test/"
+    "test": "node --test"
   }
 }

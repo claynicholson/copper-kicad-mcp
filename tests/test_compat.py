@@ -84,6 +84,25 @@ def demo_copy(name: str, tag: str) -> P.Project:
     return P.Project(dst, pro.stem)
 
 
+V9_DEMOS = ROOT / "tests" / "data" / "demo-v9"
+
+
+def v9_copy(tag: str) -> P.Project:
+    """A real KiCad 9-format design (complex_hierarchy as KiCad 9.0 saved it), frozen in tests/data/demo-v9.
+    The installed demo cannot serve: KiCad 10.0.8 re-saved it in the 10.0 format."""
+    dst = _TMP / f"complex_hierarchy-{tag}"
+    if dst.exists():
+        shutil.rmtree(dst)
+    shutil.copytree(V9_DEMOS / "complex_hierarchy", dst)
+    for f in dst.rglob("*"):
+        if f.is_file():
+            os.chmod(f, 0o666)
+    pr = P.Project(dst, "complex_hierarchy")
+    for f, want in ((pr.sch, 20250114), (dst / "ampli_ht.kicad_sch", 20250114), (pr.pcb, 20241229)):
+        assert compat.file_format(f)["version"] == want, f"tests/data/demo-v9 drifted: {f.name}"
+    return pr
+
+
 def sha(p) -> str:
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
@@ -327,6 +346,7 @@ def test_too_new_project_is_refused_everywhere_and_stays_restorable():
     real_kicad()
     _tools()
     pr = demo_copy("complex_hierarchy", "future")
+    orig = compat.file_format(pr.sch)["version"]      # 20250114 up to KiCad 10.0.7, 20260306 from 10.0.8
     P.checkpoint(pr, "before", dedupe=False)
     restamp(pr.sch, 20261106, "10.99")
     restamp(pr.pcb, 20261031, "10.99")
@@ -364,7 +384,7 @@ def test_too_new_project_is_refused_everywhere_and_stays_restorable():
         cid = d["checkpoints"][-1] if isinstance(d["checkpoints"][-1], str) else d["checkpoints"][-1]["id"]
         d, err = call("checkpoint", action="restore", id=cid, project=str(pr.dir))
         assert not err, d
-        assert compat.file_format(pr.sch)["version"] == 20250114, "restore must bring the readable file back"
+        assert compat.file_format(pr.sch)["version"] == orig, "restore must bring the readable file back"
 
 
 def test_too_new_subsheet_is_caught_before_kicad_drops_it_silently():
@@ -441,7 +461,7 @@ def test_resolve_overhead_budget():
 def test_old_design_is_upgraded_once_with_a_checkpoint_and_identical_netlist():
     real_kicad()
     _tools()
-    pr = demo_copy("complex_hierarchy", "v9")
+    pr = v9_copy("v9")
     orig = {f.name: f.read_bytes() for f in (pr.sch, pr.pcb, pr.dir / "ampli_ht.kicad_sch")}
     assert compat.file_format(pr.sch)["version"] == 20250114 and compat.file_format(pr.pcb)["version"] == 20241229
 
@@ -491,7 +511,7 @@ def test_old_design_is_upgraded_once_with_a_checkpoint_and_identical_netlist():
         # a sub-sheet kept in a sub-folder belongs to the project above it (state + snapshot live there)
         sub = pr.dir / "sheets"
         sub.mkdir()
-        shutil.copy2(demos() / "complex_hierarchy" / "ampli_ht.kicad_sch", sub / "amp2.kicad_sch")
+        shutil.copy2(V9_DEMOS / "complex_hierarchy" / "ampli_ht.kicad_sch", sub / "amp2.kicad_sch")
         amp2_orig = (sub / "amp2.kicad_sch").read_bytes()
         P.guard_writable(sub / "amp2.kicad_sch")
         assert "format_upgraded" not in compat.take_notes(), "a guard without a write must not report an upgrade"
@@ -514,7 +534,7 @@ def test_old_design_is_upgraded_once_with_a_checkpoint_and_identical_netlist():
 
 def test_drc_save_board_goes_through_the_write_guard():
     k = real_kicad()
-    pr = demo_copy("complex_hierarchy", "drcsave")
+    pr = v9_copy("drcsave")
     old = dataclasses.replace(k, ver=V("10.99.0-test"), full_version="10.99.0-test")
     before = sha(pr.pcb)
     from copper_kicad.pcb import board
@@ -531,7 +551,7 @@ def test_drc_save_board_goes_through_the_write_guard():
 def test_prerelease_never_upgrades_a_stable_format_file_without_consent():
     k = real_kicad()
     _tools()
-    pr = demo_copy("complex_hierarchy", "prerelease")
+    pr = v9_copy("prerelease")
     before = tree_hashes(pr.dir)
     pre = dataclasses.replace(k, ver=V("10.99.0-test"), full_version="10.99.0-test")
     with use_installs([pre]):
@@ -887,7 +907,7 @@ def _v9_fixture(tag: str, sch: int = 20250114, pcb: int = 20241229) -> P.Project
 
 
 def test_newer_point_release_model_changes_nothing_but_the_advisories():
-    """10.0.7 / 10.0.8 (modelled from the release notes; unverified on the real binaries): same command tree,
+    """10.0.7 / 10.0.8 (modelled from the release notes; 10.0.8 since confirmed on the real binary in CI): same command tree,
     same formats, so no flag is dropped and no upgrade note appears — only the advisories differ."""
     pr = _v9_fixture("k1008", sch=20260306, pcb=20260206)
     for ver, ids in (("10.0.6", {"zone-fill-shorts", "erc-json-scale", "bom-preset-error", "via-padstack-crash"}),

@@ -480,7 +480,9 @@ def test_read_only_project_still_verifies():
     try:
         (src / ".copper-probe").write_text("")
         (src / ".copper-probe").unlink()
-        return                                        # running elevated: nothing to test
+        # running elevated (admin, or root on Linux: CI runs this suite as an ordinary user for that reason)
+        print("  note: test_read_only_project_still_verifies tested nothing: the KiCad demos folder is writable")
+        return
     except OSError:
         pass
     e = verify.run_erc(pr)

@@ -25,7 +25,7 @@ import subprocess
 import sys
 import threading
 import time
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 from .. import SERVER_NAME, __version__
 from ..install import clients
@@ -55,7 +55,7 @@ def is_copper_entry(entry: dict | None) -> tuple[bool, str]:
     cmd, args, _env = _cmd_args_env(entry)
     if not cmd:
         return False, "entry has no command"
-    stem = Path(cmd).stem.lower()
+    stem = PureWindowsPath(cmd).stem.lower()     # splits on / and \: a Windows launch line reads right on any OS
     joined = " ".join(args)
     if stem.startswith("copper") and args[-1:] == ["serve"]:      # copper, copper-kicad, an AppImage named Copper-…
         return True, ""

@@ -687,6 +687,11 @@ def handle(req):
         tmp = path + ".copper-tmp"
         if not P.SaveBoard(tmp, b, True):
             raise WorkerError("pcbnew failed to save the board", "SAVE_FAILED")
+        try:    # keep the board's own permissions; the rename would otherwise give it the temp file's
+            import shutil
+            shutil.copymode(path, tmp)
+        except OSError:
+            pass
         for i in range(5):
             try:
                 os.replace(tmp, path)
