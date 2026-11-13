@@ -270,7 +270,7 @@ def _next(d: dict) -> str:
 
 @tool("design_review", """Engineering review of the schematic netlist (and the board when there is one): catches what passes ERC but kills boards.
 Decoupling, I2C pull-ups, crystal load caps, USB-C CC resistors, USB ESD, regulator caps and feedback-divider voltage, floating EN/RESET/BOOT pins,
-LED resistors, undriven rails, part sourcing (+ the fab's assembly-class fee), missing footprints, label typos, thin power-path tracks, thermal pads without vias.
+LED resistors, undriven rails, part sourcing (+ the fab's assembly-class fee), missing footprints, label typos, thin power-path tracks, thermal pads without vias, sheet style.
 Read-only. Each finding carries a `fix` with the exact ops to resolve it. checks: subset of the enum (default all).
 Example: design_review(checks=['decoupling','usb_c_cc'])""",
       {"checks": {"type": "array", "items": {"type": "string", "enum": DR.CHECKS}},
@@ -289,6 +289,14 @@ Example: design_review(checks=['decoupling','usb_c_cc'])""",
         - Named nets with a single pin (label typos, with 'did you mean'); nets whose names differ only by case or separators.
         - Board-aware: power-path nets (inductor, battery, power FET, switch node) narrower than 0.4 mm or left in a thin
           net class; exposed pads of power ICs without thermal vias.
+
+        - schematic_style (rules: docs/SCHEMATIC_STYLE.md), read from the saved sheets: power symbols pointing the wrong
+          way (supplies up, grounds and negative rails down); four-way junctions (max three wires); nets hopping by label
+          between neighbours instead of a wire; bare VCC/VDD rail names; rails without a min/typ/max voltage or current
+          note; passives without tolerance / rating / package and sheets without a standard-parts note; global labels
+          with inter-sheet references off; discrete transistors without the IEEE 315 envelope circle; package-shaped
+          or unfilled IC symbols; test points without an expected reading; no-connect inputs without a note; a root
+          sheet that is not a block diagram; a crammed sheet. Style findings are warnings or notes, never errors.
 
         Net names inside a `fix` are label names (`VBAT`), not KiCad's path form (`/VBAT`, `/power/VBAT`), so the ops can be
         pasted into sch_apply as they are. The finding's `net` field keeps KiCad's full name.

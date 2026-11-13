@@ -6,6 +6,26 @@ All notable changes to Copper for KiCad are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **Schematic style rules.** Copper now draws and reviews schematics against one written rule set
+  ([docs/SCHEMATIC_STYLE.md](docs/SCHEMATIC_STYLE.md)), taken from the KiCon talk on drawing good schematics and
+  its Q&A. Where a rule disagrees with an older Copper convention, the rule wins.
+- `design_review` has a new `schematic_style` pass (also part of `verify(what=['review'])`). It reads the saved
+  sheets and reports power symbols pointing the wrong way, four-way junctions, label hops between neighbouring
+  parts, bare `VCC`/`VDD` rail names, rails without a voltage and current note, passives without tolerance,
+  rating or package, missing standard-parts notes, inter-sheet references switched off, discrete transistors
+  without their envelope circle, package-shaped or unfilled IC symbols, test points without an expected reading,
+  unexplained floating inputs, a root sheet that is not a block diagram and crammed sheets. Every finding names
+  its rule and carries a `fix`.
+
+### Changed
+
+- The `kicad-design` and `design-review` skills teach wires before labels, descriptive rail names with
+  min / typ / max notes, notes for anything intentional but odd, full passive specs and the release checklist.
+  The `sch_apply` help says the same.
+- New projects have inter-sheet references switched on.
+
 ## [1.1.0] — 2026-11-12
 
 What is new since 1.0.0, in short:

@@ -46,19 +46,27 @@ results name their `provider`, and the part-number field is the provider's own i
 
 ## 3. Schematic — `sch_apply` with big batches
 
-One call per functional block (10–60 ops). Place, then connect pins **by name** to **net names**. Never compute
-wire coordinates — Copper anchors a label (or power symbol for GND/+3V3/VBUS…) to each pin.
+One call per functional block (10–60 ops). Place, then connect pins **by name**. Never compute wire coordinates.
+
+**Wires first, labels last.** A reader sees a wire in a blink and has to search for a label. Join the parts of one
+block with `wire` ops pin to pin (`{"op":"wire","from":"R1.2","to":"U1.EN"}`); Copper routes the wire. Use `connect`
+with a net name for power and ground (they become power symbols), for nets that leave the sheet or the block, and
+for runs that would be awkward to draw. Never join two neighbouring parts with a pair of labels. A wired net that
+matters still gets its name (`label` op) so it can be found and cross-checked. On a sheet only Copper has drawn,
+`sch_tidy` turns the remaining in-block label pairs into wires.
 
 ```json
 {"ops": [
   {"op": "place", "lcsc": "C165948", "ref": "J1", "group": "connector"},
   {"op": "place", "spec": "5.1k 0402", "ref": "R1", "near": "J1"},
   {"op": "place", "spec": "5.1k 0402", "ref": "R2", "near": "J1"},
-  {"op": "connect", "pins": ["J1.A4", "J1.B4", "J1.A9", "J1.B9"], "net": "VBUS"},
-  {"op": "connect", "pin": "J1.A5", "net": "CC1"}, {"op": "connect", "pin": "R1.1", "net": "CC1"},
-  {"op": "connect", "pin": "J1.B5", "net": "CC2"}, {"op": "connect", "pin": "R2.1", "net": "CC2"},
+  {"op": "connect", "pins": ["J1.A4", "J1.B4", "J1.A9", "J1.B9"], "net": "VUSB"},
+  {"op": "wire", "from": "J1.A5", "to": "R1.1"}, {"op": "label", "net": "CC1", "pin": "R1.1"},
+  {"op": "wire", "from": "J1.B5", "to": "R2.1"}, {"op": "label", "net": "CC2", "pin": "R2.1"},
   {"op": "connect", "pins": ["R1.2", "R2.2", "J1.A1", "J1.B12", "J1.S1"], "net": "GND"},
-  {"op": "no_connect", "pins": ["J1.A8", "J1.B8"]}
+  {"op": "no_connect", "pins": ["J1.A8", "J1.B8"]},
+  {"op": "text", "text": "VUSB: 4.5 / 5.0 / 5.5 V, 500 mA max (USB 2.0 default)"},
+  {"op": "text", "text": "J1.A8, J1.B8 (SBU): intentionally left open, no alt mode"}
 ]}
 ```
 
@@ -78,8 +86,67 @@ nets, pins of a power IC left unconnected.
 
 ## 5. Look at it
 
-`render(target="schematic")` once the schematic is complete (pictures are only attached on request) — check
-readability: signal flow left→right, power at top, GND at bottom, no overlapping text. `sch_tidy` re-lays out a messy sheet. Humans will review this schematic; make it legible.
+`render(target="schematic")` once the schematic is complete (pictures are only attached on request) and hold it
+against the style rules below. `sch_tidy` re-lays out a messy sheet. `design_review(checks=["schematic_style"])`
+measures the rules that can be measured and gives a `fix` for each.
+
+## 5a. Schematic style: draw it so a stranger reads it in a blink
+
+Other people will read this schematic. These rules are not optional and they override any older habit, including
+older examples in tool help. Follow each one until it plainly makes the sheet worse, then break it and leave a note
+saying why. Full list with rule ids: `docs/SCHEMATIC_STYLE.md`.
+
+**Flow**
+- Signal and power flow left to right: inputs left, outputs right. Enables and other control inputs sit with the
+  inputs. A switcher's feedback pin on the right is fine: it is part of the output circuit. If the flow cannot be
+  left to right, leave enough whitespace that the eye can follow the path.
+- Ground and negative-supply symbols always point down. Positive-supply symbols always point up. Never sideways.
+- Where direction is not obvious (bidirectional or RF chains) add an arrow or a note that says which way it flows.
+- Draw standard circuits in their textbook shape (divider, RC filter, follower, inverter, LDO, crystal) so they are
+  recognised, not decoded.
+
+**Symbols**
+- Functional symbols, never the package pinout: supplies on top, grounds at the bottom, inputs left, outputs right,
+  related pins together. The board shows the package; do not paste a pinout picture beside the part. Only RF parts
+  whose schematic is their layout are exempt.
+- IEEE 315 conventions: every mark means something. A discrete transistor is drawn with its envelope circle.
+- Duplicate supply and ground pins are hidden or stacked, unless the design is safety-critical: then show every pin.
+- Symbol bodies are filled with the background colour, not transparent.
+
+**Grouping and sheets**
+- Whitespace is the separator. Group each function, leave space between groups, and give every group a title.
+  A box is only for a sheet too tight for whitespace.
+- As few sheets as possible, but never crammed: one sheet per module (power supply, MCU, connectors). Prefer
+  11x17 in (A3 class) sheets. Out of whitespace means add a sheet, not shrink the drawing.
+- A multi-sheet design has a block diagram on the root sheet, built from hierarchical sheet symbols wired in
+  signal-flow order, with no circuitry of its own.
+
+**Connections**
+- Wires over labels (section 3). Labels only for off-sheet nets and awkward runs; no label hop between neighbours.
+- Global and hierarchical labels are equal to the reader: hierarchical for sheets on the block diagram, global for
+  nets that go everywhere. Inter-sheet references stay on (new Copper projects have them on).
+- At most three wires meet at a junction. A four-way junction is forbidden: stagger it into two tees.
+- A sense (Kelvin) wire leaves the conductor at 45° at the exact point it senses.
+
+**Power**
+- Rail names say where the power comes from or what it feeds: `VUSB`, `VBAT`, `+3V3_MCU`. Never a bare `VCC`/`VDD`.
+- Beside each rail's source write min / typ / max voltage and typical / maximum current
+  ("VUSB: 4.5 / 5.0 / 5.5 V, 35 mA typ, 500 mA max"); at the very least "9-19 V in" or "3V3, 2 A max".
+- Power is distributed with power symbols, not ordinary labels.
+- Circuit common (0 V / GND), chassis and earth are different things with different symbols. Never the earth symbol
+  for circuit common; if a design has more than one reference, a note says what each is.
+
+**Notes** (the `text` op; use it freely)
+- Every test point: what to expect there (voltage, waveform, scope setting).
+- Everything intentional but odd: "pins 11-13 intentionally left floating", "IN1 and IN2 shorted on purpose".
+- Passives (R, C, L, diodes) carry value, tolerance, power or voltage rating and package ("10k 1% 0.1W 0402");
+  check the package can take the rating. ICs do not need this.
+- Every sheet has a standard-parts note ("Unless noted: resistors 1% 0.063W 0402; capacitors X7R 16V 0402") so
+  parts that follow it show only their value.
+
+**Before calling the schematic done**: power through power symbols; every supply pointing the right way; important
+nets descriptively named; MOSFETs oriented correctly for their body diode; bypass capacitors on every IC; the design
+fails safe; modules grouped separately.
 
 ## 6. PCB
 
