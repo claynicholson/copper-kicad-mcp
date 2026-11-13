@@ -123,19 +123,20 @@ slim("sch_apply",
      """Edit the schematic with ONE atomic batch of ops (all succeed or nothing is written). Put a whole sub-circuit, or the
 whole design, in a single call. Creates the .kicad_sch if missing. One call edits one sheet.
 Pins are 'REF.PIN', PIN = number or name ('U1.PA9', 'J1.VBUS', 'R1.2'); a name on several pins connects them all.
-Never compute coordinates: connect by NET NAME and Copper anchors the label or power symbol on the pin. New parts
-take a temporary 'id' (one word) used in pins ('led.A'); the result's `refs` maps id to reference. Parts without
+Never compute coordinates. In a block prefer `wire` pin to pin; `connect` by NET NAME (label or power symbol on
+the pin) for power, off-sheet nets, awkward runs. New parts take an 'id' (one word) used in pins ('led.A');
+`refs` maps id to reference. Parts without
 'at' are laid out automatically, and a sheet only Copper has arranged is re-drawn as titled functional blocks
 (layout='keep' never does that; nothing is redrawn unless the netlist is proven identical).
 ops (objects with "op"):
 - place: lib_id | lcsc "C25804" | part (+provider) | spec "10k 0402" (resolved by the parts providers); id, ref, value, footprint,
   fields {LCSC:..}, near (ref/id), group mcu|power|connector|passive, at [x,y], rot, mirror, unit, dnp
-- connect: pin | pins [..], net (power names like GND, +3V3, VBUS become power symbols; kind:'global' between sheets)
+- connect: pin | pins [..], net (GND, +3V3, VBUS: power symbols; kind:'global' between sheets)
 - power: pin(s), net · no_connect: pin | pins · pwr_flag: net · wire: from, to | points · label: net + pin | at
 - set_field: ref, field, value | fields · move: ref, at | by, rot, mirror · swap: ref + lib_id | lcsc | part | footprint
 - delete: ref | label | wire_at [x,y] | dangling:true · disconnect: pin(s) · rename_net: from, to · text: text, at
-The result has what changed, the netlist check of every requested connection and KiCad's ERC with a ready `fix`
-per issue, so a separate verify call is not needed.
+The result has what changed, the netlist check of every connection and KiCad's ERC with a `fix` per issue:
+no verify call.
 Example: ops=[{"op":"place","lib_id":"Regulator_Linear:AMS1117-3.3","id":"ldo"},{"op":"place","spec":"10uF 0805","id":"cin"},
 {"op":"connect","pins":["ldo.VI","cin.1"],"net":"VBUS"},{"op":"connect","pins":["ldo.GND","cin.2"],"net":"GND"}]""")
 

@@ -190,8 +190,9 @@ def _preview(pr, sch_file, region, width=1100) -> list[Image]:
 put a whole sub-circuit (or the whole design) in a single call. Creates the .kicad_sch if it doesn't exist.
 
 Pins are 'REF.PIN' where PIN is a pin number OR name: 'U1.PA9', 'U1.12', 'J1.VBUS', 'R1.2', 'U3.~{RESET}'.
-A name matching several pins (e.g. 'U1.GND', 'J1.VBUS') connects all of them. NEVER compute coordinates for wiring:
-Copper anchors a short stub + label (or power symbol) on the exact pin tip, rotation/mirror aware.
+A name matching several pins (e.g. 'U1.GND', 'J1.VBUS') connects all of them. NEVER compute coordinates for wiring.
+Prefer `wire` (pin to pin) inside a block. `connect` anchors a stub + label (or power symbol) on the pin tip,
+rotation/mirror aware: for power, off-sheet nets and awkward runs.
 Parts placed without 'at' are auto-laid-out (clusters around ICs, decaps beside their IC, R→LED chains wired,
 connectors at the edges, page grows A4→A3 as needed). Give temporary 'id's to new parts and use them in pins
 ('led.A'); the result's 'refs' maps id → final reference. ids are single words (no '.'), unique, and must not
@@ -204,7 +205,7 @@ ops (objects with "op"):
   "100nF 0402", "LED red 0603": resolved by the project's parts providers; default a JLC Basic part);
   optional ref ("R5" or "R?"), id, value, footprint, at [x,y] mm, rot 0/90/180/270, mirror x|y, unit (int|"all"; multi-unit
   parts default to all), fields {LCSC:...,MPN:...}, group (mcu|power|connector|passive), near (ref), dnp
-- connect: pin | pins [..], net — power nets (GND, +3V3, +5V, VBUS, VCC …, any power-library name) become power symbols,
+- connect: pin | pins [..], net — power nets (GND, +3V3, +5V, VBUS, VBAT …, any power-library name) become power symbols,
   others local labels; kind:'global' for nets shared between sheets ('hierarchical' needs a matching sheet pin
   on the parent sheet symbol, which Copper cannot add yet — you get a warning)
 - power: pin(s), net — force a power symbol (unknown names use a VCC/GND symbol with that value)
@@ -537,8 +538,13 @@ Example: sch_tidy() · sch_tidy(sheet='power.kicad_sch', dry_run=true) · sch_ti
 Titled functional blocks (power input / regulator / MCU / connectors) in signal-flow columns left to right; canonical
 drawings per idiom (LDO / boost line, op-amp loop, crystal, LED chain, divider); support parts wired at the pin they
 serve (pull-ups above, pull-downs and RC caps below, series parts and LED chains in line); decoupling caps at their
-IC; supplies pointing up and grounds down; names only where a net leaves its block; generated design notes (LED
+IC; supplies pointing up and grounds (and negative rails) down; wires inside a block, names only where a net leaves
+it; generated design notes (LED
 currents, FB-divider Vout, RC corners) and the rails with their sources in the title block; smallest paper that fits.
+
+The drawing rules it follows, and the ones it leaves to you (rail specs, passive ratings, standard-parts note,
+block diagram on the root sheet): docs/SCHEMATIC_STYLE.md; design_review(checks=['schematic_style']) measures them.
+Prefer paper='A3' (the 11x17 class) for anything that is not tiny; a sheet out of whitespace wants a second sheet.
 
 ## What is proven before anything is written
 KiCad's own netlist of the WHOLE project is identical before and after (every component field, net name, pin);

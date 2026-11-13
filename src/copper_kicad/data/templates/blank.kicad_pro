@@ -98,6 +98,11 @@
     "drawing": {
       "default_line_thickness": 6.0,
       "default_text_size": 50.0,
+      "intersheets_ref_own_page": false,
+      "intersheets_ref_prefix": "",
+      "intersheets_ref_short": false,
+      "intersheets_ref_show": true,
+      "intersheets_ref_suffix": "",
       "pin_symbol_size": 25.0,
       "text_offset_ratio": 0.15
     },
