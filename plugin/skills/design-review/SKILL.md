@@ -11,9 +11,10 @@ automated passes first, then work through the checklist yourself, reading datash
 ## 1. Automated passes
 
 1. `verify(what=["erc","drc"])` → every error must be resolved or explicitly justified.
-2. `design_review` → heuristic findings (missing decoupling, CC resistors, crystal load caps, pull-ups, ESD) and
-   the `schematic_style` pass (drawing rules, each finding names its rule in `section`).
-   Each finding has a `fix`. Treat `high` findings as blockers.
+2. `design_review` → heuristic findings (missing decoupling, CC resistors, crystal load caps, pull-ups, ESD).
+   Each finding has a `fix`. Treat `error` findings as blockers. A separate call,
+   `design_review(checks=["schematic_style"])`, runs only the drawing-style pass: advice under `style`, each entry
+   naming its `rule`.
 3. `parts_source_bom(write=false)` → 100% of lines are sourced (an LCSC number with stock in the default setup; the
    project's part-number field with other parts providers).
 4. `render(target="schematic")` and `render(target="pcb")` → **look** at both.
@@ -52,16 +53,16 @@ automated passes first, then work through the checklist yourself, reading datash
 - LED current within the GPIO limit. Power LED current counted in the low-power budget.
 - Test points on every rail and on key signals.
 
-**Drawing style** (rules and ids in `docs/SCHEMATIC_STYLE.md`; the `schematic_style` pass measures the first group)
-- Measured: supplies up, grounds and negative rails down; no four-way junctions; no label hops between neighbours;
-  no bare `VCC`/`VDD` rail names; rails with a min / typ / max voltage and current note; passives with value,
-  tolerance, rating and package or a standard-parts note on the sheet; inter-sheet references on; discrete
-  transistors with their envelope circle; no package-shaped or unfilled IC symbols; test points with an expected
-  reading; floating inputs explained; root sheet a block diagram; no crammed sheet.
-- By eye, on the render: can each block be recognised in a blink? Flow left to right (a switcher's feedback pin on
-  the right is fine)? Groups separated by whitespace and titled? Direction arrows on bidirectional and RF paths?
-  Sense wires at 45° at the sense point? Circuit common, chassis and earth kept apart? Anything intentional but
-  odd called out in a note?
+**Drawing style** (rule ids: `copper_help(tool="design_review")`; the `schematic_style` pass measures some of them)
+- Measured: power symbols drawn sideways or upside down; four-way junctions; label hops between neighbours; bare
+  `VCC`/`VDD` rail names; rails without a min / typ / max note; sheets without a standard-parts note; passives with
+  no package; discrete transistors without the envelope circle; package-shaped or unfilled IC symbols; test points
+  without an expected reading; unexplained floating inputs; multi-sheet designs without inter-sheet references or
+  with circuitry on the root sheet; crammed sheets. The wiring checks skip a sheet still exactly as Copper's layout
+  engine drew it.
+- By eye, on the render: can each block be recognised in a blink? Flow left to right? Groups separated by
+  whitespace and titled? Direction arrows on bidirectional and RF paths? Circuit common, chassis and earth kept
+  apart? Anything intentional but odd called out in a note?
 - MOSFETs oriented correctly for their body diode; the design fails safe.
 
 ## 3. PCB checklist

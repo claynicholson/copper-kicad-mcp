@@ -9,8 +9,9 @@ files blindly.
 - **PCB:** `pcb_sync` → `pcb_setup` (the fab profile's rules) → `pcb_place` → `pcb_route` → `pcb_pour` → `verify(what=["erc","drc"])`.
 - **Release:** `fab_export` only after 0 ERC/DRC errors and a 100% sourced BOM. It writes the pack for the project's
   fab profile (`copper_status` shows it; JLCPCB by default).
-- **Schematic style:** wires over labels, flow left to right, supplies up and grounds down, descriptive rail names
-  with min / typ / max notes, notes for anything odd. `design_review(checks=["schematic_style"])` checks it.
+- **Schematic style:** flow left to right, supplies up and grounds down, a wire rather than two labels between
+  neighbours, rails named by voltage or source with a min / typ / max note, a note for anything odd.
+  `design_review(checks=["schematic_style"])` checks what it can.
 - Every part carries the project's part-number field (`LCSC` by default) plus `MPN`. Never invent part numbers.
 - Direct `.kicad_sch`/`.kicad_pcb` edits are allowed for anything the tools don't cover. Close the file in KiCad
   first, then call `verify`.
