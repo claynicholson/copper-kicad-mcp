@@ -7,7 +7,7 @@ layout and routing, KiCad's own ERC and DRC, renders and JLCPCB fab files.
 [![npm](https://img.shields.io/npm/v/copper-kicad)](https://www.npmjs.com/package/copper-kicad)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-https://github.com/user-attachments/assets/4ba9dcbf-5c93-42ca-8703-2f69df05fd3d
+https://github.com/user-attachments/assets/cc8e8562-1004-438b-ba93-888a205910ff
 
 If the player does not load, the same video is at [docs/media/copper-release.mp4](docs/media/copper-release.mp4).
 
