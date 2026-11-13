@@ -24,7 +24,6 @@ a:hover { text-decoration-color:currentColor; }
 .top { max-width:1000px; margin:0 auto; padding:0 40px; }
 .top-in { display:flex; align-items:center; justify-content:space-between; gap:16px; height:68px; }
 .brand { display:inline-flex; align-items:center; gap:9px; color:var(--ink); font-weight:600; }
-.brand .logo { width:18px; height:18px; color:var(--ink); }
 .where { font-size:14px; color:var(--mute); }
 .progress { height:1px; background:var(--line); position:relative; }
 .progress span { position:absolute; left:0; top:-0.5px; height:2px; width:0; background:var(--copper);

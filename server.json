@@ -42,7 +42,7 @@
       "registryType": "mcpb",
       "identifier": "https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.0/copper-1.1.0.mcpb",
       "version": "1.1.0",
-      "fileSha256": "8a7e36cd4c0194ca82aaf86d16f3ddfc6bdd9761429c0e7bc5a99729df4c705e",
+      "fileSha256": "93487efa1b161aec1278f3031998f967d601674bfc29692042747dd2c12226ab",
       "transport": {
         "type": "stdio"
       }
