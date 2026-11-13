@@ -9,7 +9,7 @@
 # AI-client registration, Freerouting, doctor. With redirected input (CI) it uses --yes.
 #
 # Options (environment variables):
-#   COPPER_VERSION=1.1.0      install a specific release (default: the latest GitHub release)
+#   COPPER_VERSION=1.1.1      install a specific release (default: the latest GitHub release)
 #   COPPER_SOURCE=<spec>      anything `uv tool install` accepts (a wheel path or URL); skips the download
 #   COPPER_SETUP_ARGS="..."   arguments for `copper setup` (default: none = interactive; --yes when input is redirected)
 #   COPPER_NO_SETUP=1         install only
@@ -20,7 +20,7 @@ $ProgressPreference = 'SilentlyContinue'
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 
 $Repo = 'claynicholson/copper-kicad-mcp'
-$DefaultVersion = '1.1.0'          # used when the GitHub API cannot be reached (rate limit, proxy)
+$DefaultVersion = '1.1.1'          # used when the GitHub API cannot be reached (rate limit, proxy)
 function Say($msg) { Write-Host "  " -NoNewline; Write-Host "::" -ForegroundColor DarkYellow -NoNewline; Write-Host " $msg" }
 function Fail($msg) { Write-Host "  x $msg" -ForegroundColor Red; exit 1 }
 

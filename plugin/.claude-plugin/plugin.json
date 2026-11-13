@@ -1,7 +1,7 @@
 {
   "name": "copper",
   "displayName": "Copper for KiCad",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Design real, orderable KiCad boards: schematics, parts sourcing (LCSC/JLCPCB by default, any vendor by config), PCB layout, KiCad-verified ERC/DRC, renders and fab files for any PCB fab.",
   "author": {
     "name": "Clay Nicholson",

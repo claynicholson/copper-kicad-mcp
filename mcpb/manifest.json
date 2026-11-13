@@ -3,7 +3,7 @@
   "manifest_version": "0.4",
   "name": "copper",
   "display_name": "Copper for KiCad",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Design real, orderable KiCad boards: schematics, parts sourcing, PCB layout, verification and fab files for any PCB fab.",
   "long_description": "Copper connects your AI assistant to KiCad 10. It places parts and connects pins to nets by name, sources every part from the configured parts providers (LCSC with JLCPCB Basic parts first by default; a local catalogue file or generic KiCad parts work offline), runs KiCad's own ERC/DRC after every change, renders the schematic, board and 3D view as images, and produces the Gerber/BOM/placement package for a fab profile (JLCPCB by default; PCBWay, OSH Park, generic, or your own).\n\nRequires KiCad 10 (kicad.org); KiCad 9 can only view and check designs. Copper runs locally, never calls a language model and sends no telemetry. It goes online to search and download parts (LCSC, JLCPCB, EasyEDA, with the jlcsearch.tscircuit.com mirror as a fallback), to check for a newer KiCad on gitlab.com during setup and doctor (COPPER_NO_UPDATE_CHECK=1 turns it off), and to download Freerouting and a Java runtime when you ask for autorouting.",
   "author": {

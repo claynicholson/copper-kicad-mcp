@@ -19,7 +19,7 @@ class CopperKicad < Formula
 
   desc "MCP server that lets AI agents design real, orderable KiCad boards"
   homepage "https://coppereda.com"
-  url "https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.0/copper_kicad-1.1.0-py3-none-any.whl",
+  url "https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.1/copper_kicad-1.1.1-py3-none-any.whl",
       using: :nounzip
   sha256 "0000000000000000000000000000000000000000000000000000000000000000" # placeholder: stamp at release
   license "MIT"

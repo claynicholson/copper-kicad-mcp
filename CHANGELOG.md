@@ -6,6 +6,8 @@ All notable changes to Copper for KiCad are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.1] — 2026-11-13
+
 ### Added
 
 - `design_review(checks=['schematic_style'])`: drawing-style advice based on the KiCon talk on readable

@@ -1,6 +1,6 @@
 {
   "name": "copper-kicad",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Copper for KiCad: the MCP server that lets any AI app design real, orderable KiCad boards.",
   "mcpName": "io.github.claynicholson/copper",
   "keywords": [

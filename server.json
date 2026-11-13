@@ -3,7 +3,7 @@
   "name": "io.github.claynicholson/copper",
   "title": "Copper for KiCad",
   "description": "Design orderable KiCad boards: schematic, parts sourcing, PCB, ERC/DRC, renders, fab files.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "websiteUrl": "https://coppereda.com",
   "repository": {
     "url": "https://github.com/claynicholson/copper-kicad-mcp",
@@ -14,7 +14,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "copper-kicad",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
@@ -40,9 +40,9 @@
     },
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.0/copper-1.1.0.mcpb",
-      "version": "1.1.0",
-      "fileSha256": "47e670a356aba6112ea61c23cf8461f4a69356faedfe26610e3914b1a3983d13",
+      "identifier": "https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.1/copper-1.1.1.mcpb",
+      "version": "1.1.1",
+      "fileSha256": "6f6dd3225834e71cd3dbd78575fc4c00540871595f310638c3c321e126dec19c",
       "transport": {
         "type": "stdio"
       }

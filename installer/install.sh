@@ -11,7 +11,7 @@
 # before it changes anything. Without a terminal (CI, docker) it runs
 # `copper setup --yes`, which changes nothing in KiCad's own settings.
 #
-#   COPPER_VERSION=1.1.0     specific release (default: the latest GitHub release)
+#   COPPER_VERSION=1.1.1     specific release (default: the latest GitHub release)
 #   COPPER_SOURCE=<spec>     a wheel path or URL for `uv tool install` (skips the download and checksum)
 #   COPPER_SETUP_ARGS="..."  arguments for `copper setup` (default: none = interactive; --yes without a terminal)
 #   COPPER_NO_SETUP=1        install only
@@ -30,7 +30,7 @@ set -eu
 umask 077
 
 REPO="claynicholson/copper-kicad-mcp"
-DEFAULT_VERSION="1.1.0"   # used when the GitHub API cannot be reached (rate limit, proxy)
+DEFAULT_VERSION="1.1.1"   # used when the GitHub API cannot be reached (rate limit, proxy)
 if [ -t 1 ]; then A="$(printf '\033[38;2;200;120;60m')"; R="$(printf '\033[0m')"; RED="$(printf '\033[31m')"; else A=""; R=""; RED=""; fi
 say() { printf '  %s━━●%s %s\n' "$A" "$R" "$1"; }
 warn() { printf '  %s! %s%s\n' "$RED" "$1" "$R" >&2; }

@@ -41,9 +41,9 @@ another Python 3.10+.
 ## 3. uv or pipx, from the release wheel
 
 ```sh
-uv tool install --python 3.12 https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.0/copper_kicad-1.1.0-py3-none-any.whl
+uv tool install --python 3.12 https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.1/copper_kicad-1.1.1-py3-none-any.whl
 # or
-pipx install https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.0/copper_kicad-1.1.0-py3-none-any.whl
+pipx install https://github.com/claynicholson/copper-kicad-mcp/releases/download/v1.1.1/copper_kicad-1.1.1-py3-none-any.whl
 copper setup
 ```
 

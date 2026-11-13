@@ -13,8 +13,8 @@ You need [KiCad 10](https://www.kicad.org/download/). Then pick one:
 
 | You use | Do this |
 |---|---|
-| Windows, any AI app | Run `Copper-for-KiCad-1.1.0-Setup.exe` from the [latest release](https://github.com/claynicholson/copper-kicad-mcp/releases/latest) and tick your AI apps |
-| Claude Desktop | Double-click `copper-1.1.0.mcpb` from the [latest release](https://github.com/claynicholson/copper-kicad-mcp/releases/latest) |
+| Windows, any AI app | Run `Copper-for-KiCad-1.1.1-Setup.exe` from the [latest release](https://github.com/claynicholson/copper-kicad-mcp/releases/latest) and tick your AI apps |
+| Claude Desktop | Double-click `copper-1.1.1.mcpb` from the [latest release](https://github.com/claynicholson/copper-kicad-mcp/releases/latest) |
 | Claude Code | The two plugin commands below |
 | Cursor, VS Code, Windsurf, Codex, Zed and others | `npx -y copper-kicad setup` (Node.js 18+), or [add to Cursor](https://cursor.com/install-mcp?name=copper&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImNvcHBlci1raWNhZCJdfQ%3D%3D) / [install in VS Code](https://vscode.dev/redirect/mcp/install?name=copper&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22copper-kicad%22%5D%7D) |
 | A terminal | The one-line installer below |

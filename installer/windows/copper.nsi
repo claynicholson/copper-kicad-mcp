@@ -14,7 +14,7 @@
 ;  for each AI app the user ticked.
 ;
 ;  Built by scripts/build_release.py, which passes:
-;    /DVERSION=1.1.0 /DSTAGE=<staging dir> /DWHEEL=<wheel file name> /DOUTFILE=<exe>
+;    /DVERSION=1.1.1 /DSTAGE=<staging dir> /DWHEEL=<wheel file name> /DOUTFILE=<exe>
 ;
 ;  Test mode: if the environment variable COPPER_CONFIG_HOME_OVERRIDE is set
 ;  (or /NOSYSTEM is passed) the installer skips everything outside the install

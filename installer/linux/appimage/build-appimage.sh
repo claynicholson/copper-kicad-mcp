@@ -1,7 +1,7 @@
 #!/bin/sh
 # Build Copper-for-KiCad-<version>-<arch>.AppImage.
 #
-#   installer/linux/appimage/build-appimage.sh dist/copper_kicad-1.1.0-py3-none-any.whl [out-dir]
+#   installer/linux/appimage/build-appimage.sh dist/copper_kicad-1.1.1-py3-none-any.whl [out-dir]
 #
 # STATUS: NOT PUBLISHED, UNTESTED (no AppImage is attached to releases). Written on Windows; it has not been run on Linux, so treat it as a recipe to be
 # debugged on a real machine (or an ubuntu CI runner), not as a working build.

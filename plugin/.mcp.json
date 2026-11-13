@@ -2,7 +2,7 @@
   "mcpServers": {
     "copper": {
       "command": "npx",
-      "args": ["-y", "copper-kicad@1.1.0", "serve"],
+      "args": ["-y", "copper-kicad@1.1.1", "serve"],
       "env": {
         "PYTHONUTF8": "1"
       }

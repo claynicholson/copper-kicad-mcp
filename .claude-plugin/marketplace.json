@@ -12,7 +12,7 @@
       "name": "copper",
       "source": "./plugin",
       "description": "KiCad schematic + PCB design with real parts (LCSC/JLCPCB by default, any vendor by config), KiCad-verified edits, renders and fab output for any PCB fab. Includes the Copper MCP server and design skills.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "category": "Development",
       "tags": [
         "kicad",

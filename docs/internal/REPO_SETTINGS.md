@@ -29,5 +29,5 @@ x-ray art of a real Copper-made board.
 
 **Settings → Code security → Private vulnerability reporting**: on (SECURITY.md links to it).
 
-**Releases**: tag `v1.1.0`, title `Copper 1.1.0`, body = the 1.1.0 section of CHANGELOG.md, assets = the eight files
+**Releases**: tag `v1.1.1`, title `Copper 1.1.1`, body = the 1.1.1 section of CHANGELOG.md, assets = the eight files
 listed in docs/RELEASING.md step 7 (not `BUILD-INFO.json` or `.gitignore`).

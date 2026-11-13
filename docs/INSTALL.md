@@ -9,21 +9,21 @@ not edit them ([COMPATIBILITY.md](COMPATIBILITY.md)). Everything installs per us
 
 ## Windows installer
 
-Download `Copper-for-KiCad-1.1.0-Setup.exe` from the
+Download `Copper-for-KiCad-1.1.1-Setup.exe` from the
 [latest release](https://github.com/claynicholson/copper-kicad-mcp/releases/latest) and click through it, as you
 would KiCad's installer. Tick your AI apps on the *Components* page (apps not found yet are listed unticked).
 Freerouting, for autorouting, is ticked by default (about 120 MB download, once). The installer brings its own Python.
 
-No installer wanted? `Copper-for-KiCad-1.1.0-portable-win64.zip` from the same release: unzip it somewhere
+No installer wanted? `Copper-for-KiCad-1.1.1-portable-win64.zip` from the same release: unzip it somewhere
 permanent and run `install.cmd`.
 
 **Windows SmartScreen.** Until the installer is code-signed, Windows may say *Windows protected your PC*. Check the
-file against `SHA256SUMS.txt` from the same release (`Get-FileHash .\Copper-for-KiCad-1.1.0-Setup.exe`), then
+file against `SHA256SUMS.txt` from the same release (`Get-FileHash .\Copper-for-KiCad-1.1.1-Setup.exe`), then
 choose *More info → Run anyway*.
 
 ## Claude Desktop (.mcpb)
 
-Download `copper-1.1.0.mcpb` from the [latest release](https://github.com/claynicholson/copper-kicad-mcp/releases/latest)
+Download `copper-1.1.1.mcpb` from the [latest release](https://github.com/claynicholson/copper-kicad-mcp/releases/latest)
 and double-click it (or Settings → Extensions → Install extension). The Windows installer registers Claude
 Desktop too, so you need only one of the two.
 
@@ -61,7 +61,7 @@ Or paste the entry yourself:
 | Codex | `~/.codex/config.toml` | `[mcp_servers.copper]` with `command = "npx"`, `args = ["-y", "copper-kicad"]`, `tool_timeout_sec = 600` |
 | Anything else | its MCP settings | command `npx`, args `-y copper-kicad`, transport stdio |
 
-To stay on one version instead of the latest, use `"args": ["-y", "copper-kicad@1.1.0"]` (the Claude Code plugin
+To stay on one version instead of the latest, use `"args": ["-y", "copper-kicad@1.1.1"]` (the Claude Code plugin
 does this).
 
 One click: [Add to Cursor](https://cursor.com/install-mcp?name=copper&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImNvcHBlci1raWNhZCJdfQ%3D%3D) ·
@@ -95,7 +95,7 @@ You can change what they do with these environment variables:
 
 | Variable | Effect |
 |---|---|
-| `COPPER_VERSION=1.1.0` | Installs that release instead of the latest. |
+| `COPPER_VERSION=1.1.1` | Installs that release instead of the latest. |
 | `COPPER_SETUP_ARGS="--tty"` | Passes these arguments to `copper setup`. |
 | `COPPER_NO_SETUP=1` | Installs only; `copper setup` is not run. |
 | `COPPER_SOURCE=<wheel path or URL>` | Installs this wheel. There is no download and no checksum check. |
