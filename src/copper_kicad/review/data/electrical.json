@@ -1,0 +1,142 @@
+{
+  "_about": "Numbers behind the rule-based electrical checks in review/electrical.py (design_review checks cap_voltage, tvs_clamp, ic_supply, joined_pins, mcu_pins, crystal_caps). Every entry carries its source. JSON has no comments: '_note' / 'source' keys are the comments. To extend, add an entry with a 'match' regex (searched, case-insensitive, in value + lib_id + MPN + LCSC part number) and cite where the numbers come from. Datasheet values: 'min'/'max' = recommended operating range, 'abs_max' = absolute maximum rating (null = not known; that check is skipped).",
+
+  "derating": {
+    "ceramic": 1.5,
+    "polarized": 1.25,
+    "headroom_warn": 0.95,
+    "source": "Common design practice: MLCC rated >= 1.5x the applied DC voltage (DC-bias capacitance loss, ripple and transients; e.g. Murata/KEMET application notes recommend 50 % derating for class II), aluminium electrolytic and polymer/tantalum >= 1.25x (KEMET/Vishay tantalum guides recommend 20-50 %; 1.25x is the lenient end). headroom_warn: a supply at more than 95 % of an IC's maximum operating voltage leaves no margin for ripple, charging or load dump."
+  },
+
+  "crystal": {
+    "stray_pf": [3.0, 5.0],
+    "tolerance_pf": 1.0,
+    "source": "Pierce oscillator load: CL = C1*C2/(C1+C2) + Cstray; ST AN2867 'Oscillator design guide for STM8AF/AL/S and STM32 microcontrollers' uses Cstray ~ 2-5 pF (PCB + pin capacitance); 3-5 pF is the usual assumption for a short layout. A load inside [series+stray_min-tol, series+stray_max+tol] passes."
+  },
+
+  "mlcc_voltage_codes": {
+    "_note": "Rated voltage encoded in the MPN of the three MLCC families JLC stocks most. Patterns are anchored at the start of the MPN.",
+    "samsung": {
+      "pattern": "^CL\\d{2}[A-Z]\\d{3}[A-Z]([A-Z])",
+      "codes": {"S": 2.5, "R": 4, "Q": 6.3, "P": 10, "O": 16, "A": 25, "L": 35, "B": 50, "C": 100, "D": 200, "E": 250, "G": 500, "I": 1000, "J": 2000, "K": 3000},
+      "source": "Samsung Electro-Mechanics MLCC part numbering (CL 10 A 106 K O 8NNNC: 6th field = rated voltage; checked against JLC C19666 CL10A475KO8NNNC 16V, C13585 CL31A106KBHNNNE 50V, C15850 CL21A106KAYNNNE 25V)"
+    },
+    "yageo": {
+      "pattern": "^CC\\d{4}[A-Z][A-Z](?:NPO|X7R|X5R|X6S|X7S|Y5V|C0G|COG)(\\d)",
+      "codes": {"4": 4, "5": 6.3, "6": 10, "7": 16, "8": 25, "9": 50, "0": 100},
+      "source": "YAGEO CC series ordering code (CC 0603 K R X7R 9 BB 104: digit after the dielectric = rated voltage; checked against JLC C14663 CC0603KRX7R9BB104 50V)"
+    },
+    "murata": {
+      "pattern": "^G(?:RM|CM|RT|CJ|CQ)\\d{2}\\w[A-Z0-9]{2}([0-9][A-Z]|Y[A-Z])",
+      "codes": {"0G": 4, "0J": 6.3, "1A": 10, "1C": 16, "1E": 25, "YA": 35, "1V": 35, "1H": 50, "2A": 100, "2D": 200, "2E": 250},
+      "source": "Murata GRM part numbering (GRM 18 8 R7 1H 104 KA01: 5th field = rated voltage)"
+    }
+  },
+
+  "tvs_families": {
+    "pattern": "(SMAJ|SMBJ|SMCJ|SMF)(\\d+(?:\\.\\d+)?)(C?A)(?![0-9A-Z])",
+    "_note": "Vrwm (stand-off) -> Vc max at Ipp for the 5 % 'A' / 'CA' grades. SMAJ, SMBJ, SMCJ and SMF share these breakdown/clamp numbers (they differ in power). Non-A (10 %) grades clamp higher and are not in the table: their clamp is taken from the part's LCSC attributes or reported as unknown.",
+    "clamp_by_standoff": {
+      "5.0": 9.2, "6.0": 10.3, "6.5": 11.2, "7.0": 12.0, "7.5": 12.9, "8.0": 13.6, "8.5": 14.4, "9.0": 15.4,
+      "10": 17.0, "11": 18.2, "12": 19.9, "13": 21.5, "14": 23.2, "15": 24.4, "16": 26.0, "17": 27.6, "18": 29.2,
+      "20": 32.4, "22": 35.5, "24": 38.9, "26": 42.1, "28": 45.4, "30": 48.4, "33": 53.3, "36": 58.1, "40": 64.5,
+      "43": 69.4, "45": 72.7, "48": 77.4, "51": 82.4, "54": 87.1, "58": 93.6, "60": 96.8, "64": 103.0
+    },
+    "source": "Littelfuse SMBJ series datasheet, electrical characteristics table (VR / VC max @ IPP), same values in the SMAJ/SMCJ/SMF tables; cross-checked: JLC C19077573 SMBJ18A lists 18 V stand-off / 29.2 V clamp."
+  },
+
+  "ic_supply": [
+    {"name": "STM32G4", "match": "stm32g4", "pins": {
+        "^(VDD|VDD\\d*)$": {"min": 1.71, "max": 3.6, "abs_max": 4.0},
+        "^VDDA$|^VREF\\+?$": {"min": 1.62, "max": 3.6, "abs_max": 4.0},
+        "^VBAT$": {"min": 1.55, "max": 3.6, "abs_max": 4.0}},
+     "source": "ST DS12589 STM32G431xB, Table 'General operating conditions' (VDD 1.71-3.6 V, VDDA 1.62-3.6 V, VBAT 1.55-3.6 V) and 'Voltage characteristics' (VDD-VSS max 4.0 V)"},
+    {"name": "STM32F1", "match": "stm32f1", "pins": {
+        "^(VDD|VDD_\\d|VDDA)$": {"min": 2.0, "max": 3.6, "abs_max": 4.0},
+        "^VBAT$": {"min": 1.8, "max": 3.6, "abs_max": 4.0}},
+     "source": "ST DS5319 STM32F103x8/xB, General operating conditions (VDD 2-3.6 V, VBAT 1.8-3.6 V), Voltage characteristics (4.0 V)"},
+    {"name": "STM32F0", "match": "stm32f0", "pins": {
+        "^(VDD|VDDA)$": {"min": 2.0, "max": 3.6, "abs_max": 4.0},
+        "^VDDIO2$": {"min": 1.65, "max": 3.6, "abs_max": 4.0}},
+     "source": "ST DS9773 STM32F030, General operating conditions / Voltage characteristics (VDD, VDDA 2.0-3.6 V, 4.0 V); ST DS9826 STM32F072, General operating conditions (VDDIO2 1.65-3.6 V, independent of VDD)"},
+    {"name": "STM32F4", "match": "stm32f4", "pins": {
+        "^(VDD|VDDA)$": {"min": 1.7, "max": 3.6, "abs_max": 4.0}},
+     "source": "ST DS8626 STM32F405/407, General operating conditions (1.7 V with PDR off, else 1.8 V), Voltage characteristics (4.0 V)"},
+    {"name": "ESP32 module", "match": "esp32[-\\w]*-(?:wroom|wrover|mini)", "pins": {
+        "^(3V3|VDD|VDD3V3|VCC)$": {"min": 3.0, "max": 3.6, "abs_max": 3.6}},
+     "source": "Espressif ESP32-WROOM-32E / ESP32-C3-MINI-1 / ESP32-S3-WROOM-1 datasheets, Recommended operating conditions (VDD33 3.0-3.6 V) and Absolute maximum ratings (3.6 V)"},
+    {"name": "ATmega328P", "match": "atmega328", "pins": {
+        "^(VCC|AVCC)$": {"min": 1.8, "max": 5.5, "abs_max": 6.0}},
+     "source": "Microchip ATmega328P datasheet, DC characteristics (1.8-5.5 V, speed-grade dependent) and Absolute maximum ratings (6.0 V)"},
+    {"name": "TJA1051", "match": "tja1051", "pins": {
+        "^VCC$": {"min": 4.5, "max": 5.5, "abs_max": 6.0},
+        "^VIO$": {"min": 2.8, "max": 5.5, "abs_max": 6.0}},
+     "source": "NXP TJA1051 product data sheet, Static characteristics (VCC 4.5-5.5 V, VIO 2.8-5.5 V) and Limiting values (-0.3..+6 V)"},
+    {"name": "TPS54202", "match": "tps54202", "pins": {
+        "^VIN$": {"min": 4.5, "max": 28.0, "abs_max": 30.0}},
+     "source": "TI TPS54202 datasheet SLUSCE8, Recommended operating conditions (VIN 4.5-28 V) and Absolute maximum ratings (VIN 30 V)"},
+    {"name": "LM2596", "match": "lm2596", "pins": {
+        "^(VIN|IN|\\+?VIN)$": {"min": 4.5, "max": 40.0, "abs_max": 45.0}},
+     "source": "TI LM2596 datasheet SNVS124, Operating conditions (4.5-40 V) and Absolute maximum ratings (45 V)"},
+    {"name": "AMS1117", "match": "ams1117", "vout_re": "ams1117-?(\\d+\\.\\d+)", "dropout": 1.3, "pins": {
+        "^(VI|VIN|IN|INPUT)$": {"min": null, "max": 15.0, "abs_max": 15.0}},
+     "out_pins": "^(VO|VOUT|OUT|OUTPUT)$",
+     "source": "Advanced Monolithic Systems AMS1117 datasheet, Absolute maximum ratings (input voltage 15 V); dropout 1.3 V max at 800 mA (min input = Vout + dropout)"},
+    {"name": "LM1117", "match": "lm1117", "vout_re": "lm1117\\w*-(\\d+\\.\\d+)", "dropout": 1.2, "pins": {
+        "^(VI|VIN|IN|INPUT)$": {"min": null, "max": 15.0, "abs_max": 20.0}},
+     "out_pins": "^(VO|VOUT|OUT|OUTPUT)$",
+     "source": "TI LM1117 datasheet SNOS412, Recommended operating conditions (input 15 V max), Absolute maximum ratings (20 V), dropout 1.2 V max"},
+    {"name": "L78L05", "match": "\\b(?:l|lm|ua|mc)?78l05(?!\\d)", "vout": 5.0, "pins": {
+        "^(VI|VIN|IN|INPUT)$": {"min": 7.0, "max": 30.0, "abs_max": 30.0}},
+     "out_pins": "^(VO|VOUT|OUT|OUTPUT)$",
+     "source": "ST L78L datasheet, Absolute maximum ratings (VI 30 V for VO 3.3-9 V); no recommended maximum input is given (7-20 V is only the line-regulation test range), so max = abs max; min = Vout + dropout"},
+    {"name": "L78L12", "match": "\\b(?:l|lm|ua|mc)?78l12(?!\\d)", "vout": 12.0, "pins": {
+        "^(VI|VIN|IN|INPUT)$": {"min": 14.5, "max": 35.0, "abs_max": 35.0}},
+     "out_pins": "^(VO|VOUT|OUT|OUTPUT)$",
+     "source": "ST L78L datasheet, Absolute maximum ratings (VI 35 V for VO 12-15 V); no recommended maximum input is given (14.5-27 V is only the line-regulation test range), so max = abs max"},
+    {"name": "L7805", "match": "\\b(?:l|lm|ua|mc)?78m?05(?!\\d)", "vout": 5.0, "pins": {
+        "^(VI|VIN|IN|INPUT)$": {"min": 7.0, "max": 35.0, "abs_max": 35.0}},
+     "out_pins": "^(VO|VOUT|OUT|OUTPUT)$",
+     "source": "ST L78 datasheet, Absolute maximum ratings (VI 35 V for VO 5-18 V); no recommended maximum input is given (7-25 V is only the line-regulation test range), so max = abs max"},
+    {"name": "L7812", "match": "\\b(?:l|lm|ua|mc)?78m?12(?!\\d)", "vout": 12.0, "pins": {
+        "^(VI|VIN|IN|INPUT)$": {"min": 14.5, "max": 35.0, "abs_max": 35.0}},
+     "out_pins": "^(VO|VOUT|OUT|OUTPUT)$",
+     "source": "ST L78 datasheet, Absolute maximum ratings (35 V); no recommended maximum input is given (14.5-30 V is only the line-regulation test range), so max = abs max"},
+    {"name": "MCP1700", "match": "mcp1700", "pins": {
+        "^(VIN|VI|IN)$": {"min": 2.3, "max": 6.0, "abs_max": 6.5}},
+     "source": "Microchip MCP1700 datasheet DS20001826, Electrical characteristics (input 2.3-6.0 V), Absolute maximum ratings (6.5 V)"},
+    {"name": "AP2112", "match": "ap2112", "pins": {
+        "^(VIN|VI|IN)$": {"min": 2.5, "max": 6.0, "abs_max": 6.5}},
+     "source": "Diodes Inc. AP2112 datasheet, Recommended operating conditions (2.5-6.0 V), Absolute maximum ratings (6.5 V)"},
+    {"name": "IR2101-class half-bridge driver", "match": "\\bir(?:s)?21(?:0[1-9]|1[0-3]|8[1-4])", "pins": {
+        "^VCC$": {"min": 10.0, "max": 20.0, "abs_max": 25.0}},
+     "source": "Infineon/IR IR2101(S) datasheet, Recommended operating conditions (VCC 10-20 V) and Absolute maximum ratings (VCC -0.3..25 V); same table in IR2104/IR2110/IR2184"},
+    {"name": "NSG2066", "match": "nsg2066", "pins": {
+        "^VCC$": {"min": 5.0, "max": 20.0, "abs_max": null}},
+     "source": "NSIC NSG2066 three-phase gate driver, LCSC C49023244 listing (gate-drive / VCC range 5-20 V). Absolute maximum not confirmed: abs-max checks skip this part until the datasheet value is added."}
+  ],
+
+  "joined_pins": [
+    {"name": "XKB TS-1187A tact switch", "match": "(?<![0-9a-z])ts-?1187a|(?<![0-9a-z])c318884(?![0-9])", "pairs": [["1", "2"], ["3", "4"]],
+     "source": "XKB TS-1187A-B-A-B datasheet (LCSC C318884) and its LCSC/EasyEDA symbol: A(1)-B(2) one contact, C(3)-D(4) the other"}
+  ],
+  "tactile_generic": {
+    "footprint": "SW-SMD_4P|SW_SPST_TL3342|SW_Push_1P1T_NO|SW_PUSH-?6mm|TACT|Tactile",
+    "subcategory": "Tactile Switches",
+    "pairs": [["1", "2"], ["3", "4"]],
+    "not_lib": "^Switch:SW_Push(?:_Open)?_Dual$",
+    "_not_lib_note": "KiCad Switch.kicad_sym draws SW_Push_Dual / SW_Push_Open_Dual as a ganged DPST button: 1-2 and 3-4 are the SWITCHED pairs (open contact circles under a movable bar), never joined, whatever footprint it carries.",
+    "_note": "An unlisted 4-pin tactile switch is ASSUMED to join 1-2 and 3-4 (the usual 6x6 / 5.1x5.1 mm numbering); findings on it are warnings that say so, never errors."
+  },
+
+  "stm32": {
+    "match": "stm32",
+    "debug_pins": {"PA13": "SWDIO", "PA14": "SWCLK", "PB3": "SWO"},
+    "debug_net_re": "SWD|SWDIO|SWCLK|SWDCLK|SWO|TRACESWO|JTMS|JTCK|JTDO|TMS|TCK|TDO|DBG|DEBUG",
+    "essential": ["PA13", "PA14"],
+    "boot0_shared": [
+      {"family": "stm32g4", "pin": "PB8",
+       "source": "ST RM0440 (STM32G4 reference manual) section 'Boot configuration' and DS12589 pinout: PB8 is shared with BOOT0, sampled at reset when option bit nSWBOOT0=1 (factory default)"}
+    ]
+  }
+}

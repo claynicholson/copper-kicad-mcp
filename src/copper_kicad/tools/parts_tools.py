@@ -9,6 +9,8 @@ Whatever the provider, a placed part also carries the vendor-neutral MPN + Manuf
 """
 from __future__ import annotations
 
+import json
+
 from .. import project as P
 from ..mcp.registry import Result, ToolError, tool
 from ..parts import common as C
@@ -69,8 +71,18 @@ term confirmed; `unconfirmed` then lists the query words that result does not co
 answer) — lcsc results also carry lcsc, class, params, datasheet and a stock_note when stock is not live. `out_of_stock` lists
 parts that carry the asked part number but have no assembly stock (never mixed into `results`).
 Next: place with sch_apply (the result's `next` gives the exact op; it auto-imports symbol+footprint); parts_get for full detail.
-Examples: parts_search(query='10k 0603') → C25804 Basic first; parts_search(query='USB-C 16P', limit=5); parts_search(query='10k 0603', provider='local')""",
+A bare C-number ('C25804') or a single exact part number ('STM32G431CBT6') is one lookup, not a broad search
+('C1815', also a part number: the parts with that MPN, the LCSC part under `lcsc_code`).
+queries: several searches in ONE call, run concurrently (6 at a time): a list of query strings, or of objects
+{query, category, package, basic_only, in_stock, min_stock, limit, provider} whose fields override the top-level ones. A `query` given too runs first.
+The answer is then {queries: {<query>: <the single-query answer>}, order: [...]}, default limit 3 per query; one failing
+query reports `error` and never sinks the others. Live answers are cached 24 h (older stock is labelled `stock_note`);
+a source that times out or answers 5xx twice in a row is skipped for 10 min.
+Examples: parts_search(query='10k 0603') → C25804 Basic first; parts_search(query='USB-C 16P', limit=5); parts_search(query='10k 0603', provider='local');
+parts_search(queries=['10k 0603', '100nF 0402', 'STM32G431CBT6', {'query': 'LED red', 'package': '0603'}])""",
       {"query": {"type": "string", "description": "value spec, MPN, or a description of the part"},
+       "queries": {"type": "array", "items": {"anyOf": [{"type": "string"}, {"type": "object"}]},
+                   "description": "strings or objects"},
        "category": {"type": "string", "description": "optional kind/category filter: resistor, capacitor, led, diode, mosfet, ldo, crystal, usb_connector, header, mcu, module, … "
                                                       "or catalogue wording ('sensor', 'gas sensors', 'wifi module')"},
        "package": {"type": "string", "description": "optional package filter, e.g. '0603', 'SOT-23', 'SOIC-8'"},
@@ -80,9 +92,102 @@ Examples: parts_search(query='10k 0603') → C25804 Basic first; parts_search(qu
        "limit": {"type": "integer", "description": "max results (default 8)"},
        "live": {"type": "boolean", "description": "query live supplier data (default true); false = offline data only"},
        "provider": PROVIDER},
-      ["query"], title="Search parts", read_only=True, idempotent=True, open_world=True, core=True, group="parts")
-def parts_search(query, category=None, package=None, basic_only=False, in_stock=None, min_stock=None, limit=8, live=True,
-                 provider=None):
+      [], title="Search parts", read_only=True, idempotent=True, open_world=True, core=True, group="parts")
+def parts_search(query=None, category=None, package=None, basic_only=False, in_stock=None, min_stock=None, limit=None,
+                 live=True, provider=None, queries=None):
+    if queries:
+        if str(query or "").strip() and isinstance(queries, list):
+            queries = [query] + list(queries)        # never dropped: searched first, a duplicate is answered once
+        return _search_batch(queries, dict(query=None, category=category, package=package, basic_only=basic_only,
+                                           in_stock=in_stock, min_stock=min_stock, limit=limit, live=live,
+                                           provider=provider))
+    if not str(query or "").strip():
+        raise ToolError("pass query='<value spec, MPN or description>' (or queries=[...] for several)",
+                        code="BAD_ARGUMENT", fix="parts_search(query='10k 0603')")
+    r, summ = _search_one(query, category, package, basic_only, in_stock, min_stock, 8 if limit is None else limit,
+                          live, provider)
+    return Result(r, summary=summ)
+
+
+BATCH_WORKERS = 6        # concurrent searches in one parts_search(queries=[...]) call
+BATCH_MAX = 40           # queries per call
+BATCH_LIMIT = 3          # default results per query in a batch
+_BATCH_KEYS = ("query", "category", "package", "basic_only", "in_stock", "min_stock", "limit", "live", "provider")
+_BATCH_DROP = ("note", "spec", "total_considered", "best_relevance", "providers_asked")
+
+
+def _search_batch(queries, top: dict):
+    """Run several parts searches concurrently; {queries: {key: answer}, order: [keys]}."""
+    import concurrent.futures as cf
+    import time
+    from ..parts import search as S
+    if not isinstance(queries, list):
+        raise ToolError("queries must be a list of strings or objects", code="BAD_ARGUMENT",
+                        fix="parts_search(queries=['10k 0603', {'query': 'LED red', 'package': '0603'}])")
+    if len(queries) > BATCH_MAX:
+        raise ToolError(f"{len(queries)} queries in one call (max {BATCH_MAX})", code="BAD_ARGUMENT",
+                        fix=f"split into calls of at most {BATCH_MAX}")
+    jobs, order, seen = [], [], {}
+    for i, item in enumerate(queries):
+        a = {k: v for k, v in top.items() if v is not None}
+        if isinstance(item, dict):
+            bad = sorted(set(item) - set(_BATCH_KEYS))
+            if bad:
+                raise ToolError(f"queries[{i}]: unknown field(s) {bad}", code="BAD_ARGUMENT",
+                                fix=f"each object may carry only {list(_BATCH_KEYS)}")
+            a.update({k: v for k, v in item.items() if v is not None})
+        else:
+            a["query"] = item
+        q = str(a.get("query") or "").strip()
+        if not q:
+            raise ToolError(f"queries[{i}] has no query text", code="BAD_ARGUMENT",
+                            fix="every entry needs a query, e.g. '10k 0603' or {'query': '10k 0603'}")
+        a["query"] = q
+        sig = json.dumps(a, sort_keys=True, default=str)
+        if sig in seen:
+            continue                                  # the same search twice: answer it once
+        key = q
+        n = 2
+        while key in {k for k, _ in jobs}:
+            key = f"{q} #{n}"                         # same text, other filters
+            n += 1
+        seen[sig] = key
+        jobs.append((key, a))
+        order.append(key)
+    t0 = time.time()
+
+    def run(a):
+        try:
+            r, summ = _search_one(a["query"], a.get("category"), a.get("package"), a.get("basic_only", False),
+                                  a.get("in_stock"), a.get("min_stock"), a.get("limit") or BATCH_LIMIT,
+                                  a.get("live", True), a.get("provider"))
+        except ToolError as e:
+            return {"error": e.message, **({"fix": e.fix} if getattr(e, "fix", None) else {})}, f"error: {e.message}"
+        except Exception as e:  # noqa: BLE001 — one query failing must not sink the batch
+            return {"error": f"{type(e).__name__}: {e}"}, f"error: {type(e).__name__}"
+        for k in _BATCH_DROP:
+            r.pop(k, None)
+        return r, summ
+
+    out: dict = {}
+    with cf.ThreadPoolExecutor(max_workers=min(BATCH_WORKERS, len(jobs)), thread_name_prefix="copper-parts") as ex:
+        futs = {key: ex.submit(run, a) for key, a in jobs}
+        for key in order:
+            out[key] = futs[key].result()
+    answers = {k: v[0] for k, v in out.items()}
+    lines = [f"{k}: {v[1]}" for k, v in out.items()]
+    found = sum(1 for v in answers.values() if v.get("results"))
+    payload = {"queries": answers, "order": order, "note": S.CLASS_NOTE,
+               "elapsed_s": round(time.time() - t0, 1)}
+    if C.breaker_state():
+        payload["skipped_sources"] = C.breaker_state()
+    summ = f"{found}/{len(order)} queries answered in {payload['elapsed_s']} s\n" + "\n".join(lines)
+    return Result(payload, summary=summ)
+
+
+def _search_one(query, category=None, package=None, basic_only=False, in_stock=None, min_stock=None, limit=8, live=True,
+                provider=None):
+    """One parts search: (payload, summary). Shared by the single and the batched form of parts_search."""
     PV, cfg, provs = _providers(None, provider)
     if in_stock is None:
         in_stock = bool(cfg.policy.get("require_in_stock", True))
@@ -117,8 +222,8 @@ def parts_search(query, category=None, package=None, basic_only=False, in_stock=
                 f"parts_alternatives(target='{oid}') for substitutes, describe the part instead of naming it "
                 f"(e.g. parts_search(query='<what it is> sensor / module / connector')), or parts_search(query='{query}', "
                 f"in_stock=false) to list it anyway (hand-solder or consign it)")
-        return Result(dict(r, next=hint), summary=f"nothing in stock for '{query}' — {len(oos)} out-of-stock match(es), "
-                                                  f"best {oid} {o.get('mfr_part') or o.get('mpn') or ''}".rstrip())
+        return dict(r, next=hint), (f"nothing in stock for '{query}' — {len(oos)} out-of-stock match(es), "
+                                    f"best {oid} {o.get('mfr_part') or o.get('mpn') or ''}".rstrip())
     if not res:
         hint = "drop the package/category filter, or search by MPN" if (package or category) else \
             "rephrase as a value spec ('10k 0603'), an MPN, or a plainer description ('gas sensor', 'wifi module'); " \
@@ -128,7 +233,9 @@ def parts_search(query, category=None, package=None, basic_only=False, in_stock=
             if others:
                 hint += f"; other providers: {others} (provider=…)"
         what = "in-stock JLC parts" if asked == ["lcsc"] else f"parts in {asked}"
-        return Result(dict(r, next=hint), summary=f"no {what} for '{query}'")
+        if r.get("match_note"):
+            what += f" ({r['match_note']})"
+        return dict(r, next=hint), f"no {what} for '{query}'"
     top = res[0]
     if prov.name == "lcsc":
         summ = (f"{len(res)} result(s) for '{query}' — best: {top['lcsc']} {top.get('class')} {top.get('mfr_part')} "
@@ -145,7 +252,7 @@ def parts_search(query, category=None, package=None, basic_only=False, in_stock=
         summ += f" — {top['match'].upper()} match" + (f" (not confirmed: {', '.join(map(str, un))})" if un else "")
         tid = top.get("lcsc") or top.get("id")
         r["next"] = f"check it first: parts_get(part='{tid}') (datasheet), then " + r["next"].split(" or parts_get(")[0]
-    return Result(r, summary=summ)
+    return r, summ
 
 
 @tool("parts_get", """Full detail for one part by its provider part number. The provider is found from the id (a C-number is LCSC;

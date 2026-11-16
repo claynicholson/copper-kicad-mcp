@@ -71,6 +71,7 @@ def project_dir_of(path) -> Path | None:
 
 
 _SHADOWS: set = set()           # shadow folders live hosts handed out in this process (they may be anywhere)
+_SHADOW_OF: dict = {}           # shadow folder -> the real project folder it was checked out from, when known
 
 
 def _norm(p) -> str:
@@ -81,12 +82,23 @@ def _norm(p) -> str:
         return os.path.normcase(os.path.abspath(str(p)))
 
 
-def note_shadow(directory) -> None:
+def note_shadow(directory, project=None) -> None:
     """A host answered host.checkout with this folder: it is a shadow whatever its path looks like (an app may
     keep shadows outside the project, e.g. in a short temp location to stay under path-length limits)."""
     _SHADOWS.add(_norm(directory))
+    if project is not None:
+        _SHADOW_OF[_norm(directory)] = str(project)
     while len(_SHADOWS) > 256:
-        _SHADOWS.pop()
+        _SHADOW_OF.pop(_SHADOWS.pop(), None)
+
+
+def shadow_project(path):
+    """The real project folder a shadow checkout was made from, if the host said so (else None)."""
+    s = _norm(path)
+    for d, proj in _SHADOW_OF.items():
+        if s == d or s.startswith(d + os.sep):
+            return proj
+    return None
 
 
 def is_shadow(path) -> bool:

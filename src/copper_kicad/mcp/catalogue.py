@@ -163,10 +163,10 @@ refs: only these footprints. net: only that net. drc=true also runs KiCad DRC. s
 in the running KiCad editor.
 Example: pcb_read(what=["footprints"], refs=["U1"]) · pcb_read(what=["nets"], net="GND")""")
 
-slim("pcb_sync", "project,remove_extra,render,update_footprints,while_open",
-     """Update the PCB from the schematic (KiCad's "Update PCB from Schematic"); creates the .kicad_pcb if missing. Adds
-missing footprints beside the outline, updates fields, swaps changed footprints in place, assigns every pad's net
-and keeps existing positions. Copper follows renamed nets; copper left from deleted parts is reported.
+slim("pcb_sync", "eco,project,remove_extra,render,update_footprints,while_open",
+     """Update the PCB from the schematic (KiCad's F8); creates the .kicad_pcb if missing. Adds missing
+footprints beside the outline, updates fields, swaps changed footprints, assigns pad nets, keeps positions.
+eco=true (routed board): rip up only what the change broke.
 remove_extra=true deletes footprints (and their orphaned copper) that are no longer in the schematic.
 Refuses if the schematic has unannotated or duplicate references. board_build() runs this and the following steps.
 Example: pcb_sync()""")
@@ -198,26 +198,22 @@ placement. Returns the ratsnest length before/after and the elegance score.
 Examples: pcb_place(auto=true) · pcb_place(moves=[{"ref":"J1","x":101,"y":115,"rot":90}])""")
 
 slim("pcb_route",
-     "clear_existing,finish,ignore_nets,keep_worse,mode,nets,passes,polish,project,render,signal_layers,timeout,tracks,"
-     "while_open",
-     """Route the board. mode='auto' (default without tracks): autoroute every unrouted connection with Freerouting (Java and
-the router are downloaded once into $COPPER_HOME/tools on first use). Existing tracks and vias are kept; a result
-that is worse than before is reverted; the new tracks are then polished (polish=false skips that). Can take minutes
-on dense boards. 2 layers: pcb_route(ignore_nets=["GND"]) then pcb_pour(net="GND", stitch=true). 4 layers: pour the
-inner planes first.
-tracks=[{"from":"U1.3","to":"C3.1","width":0.3,"layer":"F.Cu","waypoints":[[x,y]]}]: explicit connections; refuses to
-join different nets or to cross other nets' copper.
-pcb_route_guided is the built-in deterministic router (no download); board_build() picks for you.
+     "clear_existing,finish,finish_ripup,force,ignore_nets,keep_worse,layer_policy,mode,nets,passes,polish,project,render,"
+     "signal_layers,timeout,tracks,while_open",
+     """Route the board. mode='auto' (default without tracks): autoroute every unrouted connection with Freerouting
+(downloaded once). Existing tracks and vias are kept; nets=[...] routes only those. A worse result is reverted.
+2 layers: pcb_route(ignore_nets=["GND"]) then pcb_pour(net="GND", stitch=true). 4 layers: pour the inner planes first.
+tracks=[{"from":"U1.3","to":"C3.1","width":0.3,"layer":"F.Cu","waypoints":[[x,y]]}]: explicit connections.
+pcb_route_guided: built-in router; board_build() picks.
 Examples: pcb_route() · pcb_route(tracks=[{"from":"J1.1","to":"U1.3","width":0.5}])""")
 
 slim("pcb_pour",
-     "clearance,fill_only,layers,min_width,net,pad_connection,priority,project,remove,render,stitch,stitch_pitch,"
-     "thermal_gap,thermal_spoke,while_open",
-     """Copper pour: a zone for one net (default GND) over the whole outline on the chosen layers (default F.Cu + B.Cu), then
-fill every zone and re-run DRC. Pads the fill cannot reach get a solid connection or a via; what still cannot join
-is reported with its position. stitch=true adds stitching vias. A pour on an inner layer is a plane.
-Re-running replaces the net's zone; remove=true deletes it; fill_only=true just refills after moving or routing.
-Examples: pcb_pour() · pcb_pour(net="GND", stitch=true) · pcb_pour(net="+3V3", layers=["In2.Cu"]) · pcb_pour(fill_only=true)""")
+     "clearance,fill_only,layers,min_width,net,pad_connection,priority,project,refs,region,region_margin,remove,render,"
+     "stitch,stitch_pitch,thermal_gap,thermal_spoke,while_open",
+     """Copper pour: a zone for one net (default GND) over the outline (or region) on the chosen layers (default F.Cu +
+B.Cu), then fill and re-run DRC. Unreachable pads get a solid connection or a via; the rest is reported. An inner
+pour is a plane. Re-running replaces the zone; remove=true deletes it; fill_only=true refills.
+Examples: pcb_pour() · pcb_pour(net="GND", stitch=true) · pcb_pour(net="VBUS", layers=["In2.Cu"], region="auto")""")
 
 slim("pcb_route_plan", "heatmap,nets,project,ripup",
      """Analyse the board for routing (read-only) and return what you need to write a plan for pcb_route_guided: board and
@@ -249,15 +245,14 @@ and a cropped PNG with the focus outlined. Empty refs with a box or point means 
 Use refs / pins in sch_apply, pcb_place, pcb_route; box_mm in render(crop=...).
 Examples: focus() · focus(wait=60) · focus(action='resolve', document='pcb', box=[100,100,120,115])""")
 
-slim("parts_search", "basic_only,category,in_stock,limit,live,min_stock,package,provider,query",
-     """Find parts. The project's parts providers are asked in order and the first with results answers (`provider` in the
-result says which; 'local' = the user's own catalogue file, 'kicad' = generic library parts). Results are ranked by
-spec match, then by the provider's part class (parts without a setup fee first), stock and price.
-query: a value spec ('10k 0603', '100nF 16V 0402 X7R', 'LED red 0603', '12MHz crystal', 'LDO 3.3V SOT-223'), an MPN
-('AMS1117-3.3') or a category phrase ('USB-C 16P', 'Header 1x4 2.54mm').
-Each result: provider, id (the provider's part number), mpn, package, stock, price, match ('partial' = not every
-term confirmed) and `next` = the exact sch_apply op. Passives by spec and known part numbers need no search:
-sch_apply place resolves and imports them itself.
+slim("parts_search", "basic_only,category,in_stock,limit,live,min_stock,package,provider,queries,query",
+     """Find parts. The project's parts providers are asked in order; the first with results answers (`provider` says
+which: 'local' = the user's catalogue file, 'kicad' = generic library parts). Ranked by spec match, part class
+(no setup fee first), stock, price.
+query: a value spec ('10k 0603', '100nF 16V 0402 X7R', 'LED red 0603'), an MPN ('AMS1117-3.3'), a C-number or a
+category phrase ('USB-C 16P', 'Header 1x4 2.54mm'). queries: many searches in ONE call (concurrent).
+Each result: provider, id, mpn, package, stock, price, match ('partial' = a term unconfirmed); `next` = the exact
+sch_apply op. Passives by spec and known part numbers need no search: sch_apply place imports them itself.
 Example: parts_search(query='USB-C 16P', limit=5)""")
 
 slim("parts_source_bom", "allow_extended,basic_only,boards,live,overwrite,project,provider,while_open,write",

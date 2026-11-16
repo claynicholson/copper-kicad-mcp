@@ -6,8 +6,87 @@ All notable changes to Copper for KiCad are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `pcb_sync(eco=true)`: after a schematic change on a routed board, only the copper the change invalidated is
+  ripped up (copper of nets that lost a pad, back to the nearest junction; vanished nets; other nets' copper that a
+  swapped footprint's pads now collide with), then dangling copper on those nets is pruned. Returns `eco` with what was deleted, the open
+  connections and the next call. Locked tracks and vias are never removed (`locked_kept`), and pruning only
+  follows copper left hanging where something was removed (a via-in-pad or a stub elsewhere stays). `board_build()` takes this path on a board that already has tracks, and rips up
+  the tracks that newly placed parts collide with.
+- `pcb_route(nets=[...])` in auto mode routes only those nets: every other net's copper stays fixed as a keep-out.
+  On a 106-part 4-layer board with 4 nets ripped, re-routing took 81 s, where the old full route took 196 s.
+- Routing preflight: before Freerouting starts, `pcb_route` checks in about 1 s that every pad it has to connect
+  has a way out at the fab's minimum track and clearance. A pad that is provably walled in stops the call with
+  `ROUTE_PREFLIGHT_FAILED`, with the pads, hot spots and suggested moves, and nothing is written. `force=true`
+  routes the rest anyway; `board_build()` does that itself and notes the walled pads. Congestion is only
+  reported, under `preflight.congested`. With `clear_existing=true` and `nets=[...]`, only those nets' copper is
+  deleted first; `nets` that are all also in `ignore_nets` is refused (`BAD_ARGUMENT`).
+- `pcb_route(layer_policy="auto")`: when connections are still open after the main pass, each inner layer whose
+  pours are all non-ground (a GND plane is never opened) becomes a signal layer for one more round on the leftover
+  nets only. A whole-board pour on it is first shrunk to the convex hull of the pads, vias and tracks it has to
+  reach. The round is kept only if fewer connections are left open and DRC errors do not go up; `planes_opened`
+  says what was opened or shrunk. A round (or its finisher) that splits a pour net on the opened layer, even an
+  ignored or frozen one, is discarded, and the report then describes the board that was kept. The default,
+  `"planes_only"`, keeps the old behaviour.
+- `pcb_pour(region=...)` limits a pour to `"auto"` (the hull of the net's copper on that layer), a rectangle
+  `[x0,y0,x1,y1]` or a polygon, and `refs=[...]` limits it to the hull of those parts (`region_margin`, default 1 mm).
+  `"auto"` takes each layer's own hull. A polygon with no area, or none inside the board, is refused before the
+  net's existing pour is touched.
+- The guided finisher now retries once with a targeted rip-up when it leaves connections open. It rips up the
+  failed nets and the nets whose copper crosses their pins' escape regions: only nets that had no copper before
+  the call (never ground, pour, frozen or big rail nets, and never tracks that were already on the board).
+  The retry is kept only if fewer connections are left open and DRC errors do not go up; otherwise the previous
+  board is restored. `finish_ripup=false` turns this off. Blocker labels such as 'track' or 'via' are never
+  passed to the rip-up as net names.
+- `design_review` datasheet rules (new checks `cap_voltage`, `tvs_clamp`, `ic_supply`, `joined_pins`,
+  `mcu_pins`, on by default): capacitor voltage derating (1.5× ceramic, 1.25× electrolytic/tantalum; rating
+  from Value, the LCSC record or the Samsung/Yageo/Murata MPN code), TVS stand-off below its rail or clamp above
+  a protected IC's absolute maximum, IC supply pins outside the part's range, tact-switch pins joined inside the
+  part placed on two nets (a permanent short), STM32 SWD/SWO pins shared with another function and STM32G4
+  PB8/BOOT0 driven at reset. Every number lives in `review/data/electrical.json` with its datasheet source.
+  A TVS clamp above an IC's absolute maximum is an error only when a TVS that still stands off the rail could
+  clamp lower; otherwise (the usual 5 V / 3.3 V case) it is a note. Electrolytic EIA voltage codes (1V = 35 V)
+  are decoded, negative rails keep their sign, and a bare crystal load-cap value ('22') is read as pF.
+- `design_review(rail_volts={'VBUS_M': 24})`: voltages for rails whose name has none, remembered per project
+  (values may be numbers or '24V' / '3V3'; anything else is a clear error). In the app they are kept with the real
+  project, not the shadow checkout, so `sch_apply` and `verify(what=['review'])` there see them too.
+- Datasheet rules also check U/IC parts that LCSC describes with the word "diode" (gate drivers with a bootstrap
+  diode); `VBUS_24V`-style names keep their voltage; an SWD header wired with plain wires or pin-named nets, or an
+  ESD array on SWDIO/SWCLK, no longer reads as a pin conflict; the TS-1187A rule matches its LCSC number exactly.
+- `sch_apply` reports the same rules for the parts a call touched, under `electrical` (advisory; never blocks).
+- `parts_search(queries=[...])`: several part searches in one call, run concurrently (at most 6 at a time).
+  Each entry is a query string or an object with its own filters (`package`, `category`, `limit`, ...); the
+  answer is keyed by query, and a failing query reports its own `error` without sinking the rest. `query`
+  alone works as before.
+
+### Changed
+
+- `pcb_route` skips Freerouting's second ('continue') round when round 1 left fewer than 20 connections or made
+  no progress, and hands the rest straight to the guided finisher. Each round writes its own
+  `.copper/freerouting-round<N>.log`; `freerouting.log` is still the latest round's log.
+- `pcb_edit` with `{"op":"delete","all_tracks":true}` on a routed board now warns (`ALL_TRACKS_DELETED`) and
+  points to the ECO path.
+- `parts_search` is faster. A bare C-number (`C25804`) is now one record lookup; before, it returned no
+  results. A single exact part number (`STM32G431CBT6`) that JLC has in stock skips the jlcsearch
+  supplement. A short C-number that is also a part number (`C1815`, `C945`) still finds the transistor by
+  part number and names the LCSC part under `lcsc_code`; `LCSC C1815` asks for the code only.
+  Independent live requests run side by side. Each source gets about 5 s, retries included.
+  A host that times out or answers 5xx on two calls in a row is skipped for 10 minutes. Search answers are
+  cached for 24 h under the Copper cache folder (empty answers 1 h), and stock older than an hour is labelled
+  in `stock_note`.
+  The per-host request spacing is now 0.25 s for JLC and 0.2 s for jlcsearch.
+  Live check, 3 queries: about 5.5 s before, 2.8 s after one by one, 2.1 s as one batch.
+
 ### Fixed
 
+- `pcb_route`: a via that Freerouting gave a Power-class net with the smaller signal padstack no longer comes back
+  with its class's larger drill, which left a 0.6/0.4 mm via with a 0.1 mm annular ring and a DRC error. On the
+  106-part board, round 1 left 12 to 15 such errors. The via now keeps its padstack's drill
+  (`via_drills_fixed` in the import result). When two padstacks share a diameter with different drills, the via
+  is left as it is.
+- `crystal_caps` now compares C1·C2/(C1+C2) + 3–5 pF stray with the crystal's load capacitance when known
+  (`crystal_load_mismatch`), and a load cap on one terminal no longer turns a missing cap on the other into a note.
 - Linux and macOS: Copper no longer overwrites a schematic, board, project or AI-app config file that is marked
   read-only. It now refuses with `WRITE_FAILED`, as it already did on Windows.
 - Linux and macOS: editing a schematic or board no longer changes the file's permissions (a schematic used to

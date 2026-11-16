@@ -712,10 +712,12 @@ def test_autoroute_keeps_best_round_when_a_later_round_fails():
             res["after"]["unconnected_by_net"] = {"XTAL1": 3 - calls["imp"]}   # round 2 looks best
         return res
     freerouting.run, worker.run = fake_run, fake_worker
+    cmin, route.CONTINUE_MIN = route.CONTINUE_MIN, 0     # this scenario needs the 'continue' round to run
     try:
         s, _ = call("pcb_route", project=d, finish=False, render=False)
     finally:
         freerouting.run, worker.run = real_run, real_worker
+        route.CONTINUE_MIN = cmin
     assert calls["fr"] == 3, calls
     assert any(r.get("failed") for r in s["rounds"]) and {"kept_round": 2} in s["rounds"], s["rounds"]
     assert not any(r.get("strategy") == "guided" for r in s["rounds"]), s["rounds"]

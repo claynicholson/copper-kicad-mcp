@@ -439,6 +439,8 @@ def op_read(b, a, ctx):
             pass
         out["nets"] = [{"name": n, "pads": len(p), "class": nc.get(n, "").split(",")[0], "nodes": p[:12] + (["…"] if len(p) > 12 else [])}
                        for n, p in sorted(nets.items())]
+    if "copper_nets" in what:   # nets that have tracks / vias now (cheap: names only)
+        out["copper_nets"] = sorted({t.GetNetname() for t in b.GetTracks() if t.GetNetname()})
     if "tracks" in what:
         tl = []
         for t in b.GetTracks():
@@ -540,7 +542,7 @@ def _fp_key(fp):
         return fp.GetReference()
 
 
-def _resync_copper(b, nets, old_members, remove_extra, get_net):
+def _resync_copper(b, nets, old_members, remove_extra, get_net, drop_orphans=False):
     """Tracks, vias and zones whose net no longer exists after the sync. A pure rename (every pad the
     old net had is still there, now on one new net) moves the copper to the new net; copper of a net
     whose pads were deleted is orphaned: teardrops are always removed, tracks/vias only with
@@ -575,7 +577,7 @@ def _resync_copper(b, nets, old_members, remove_extra, get_net):
         for it in items:
             is_zone = it.GetClass() == "ZONE"
             tear = is_zone and it.IsTeardropArea()
-            if tear or (remove_extra and not is_zone):
+            if tear or ((remove_extra or drop_orphans) and not is_zone):
                 b.Delete(it)
                 out["removed_copper"][old] = out["removed_copper"].get(old, 0) + 1
             elif is_zone:
@@ -583,6 +585,243 @@ def _resync_copper(b, nets, old_members, remove_extra, get_net):
             else:
                 out["orphan_copper"].setdefault(old, []).append(uuid(it))
     return {k: v for k, v in out.items() if v}
+
+
+# ── ECO: rip up only what a schematic change invalidated ─────────────────
+def _locked(t) -> bool:
+    try:
+        return bool(t.IsLocked())
+    except Exception:  # noqa: BLE001
+        return False
+
+
+class _Seeds:
+    """Where an ECO removed copper: (net -> points) plus regions (swapped footprints). Pruning only follows
+    copper left hanging at these places, so a deliberate stub or via elsewhere on the same net is never touched."""
+
+    def __init__(self):
+        self.pts, self.boxes, self.locked = {}, [], 0
+
+    def add_item(self, t):
+        pts = self.pts.setdefault(t.GetNetname(), [])
+        if t.GetClass() == "PCB_VIA":
+            pts.append((t.GetPosition(), t.GetWidth(P.F_Cu) // 2))
+        else:
+            w = t.GetWidth() // 2
+            pts.extend([(t.GetStart(), w), (t.GetEnd(), w)])
+
+    def near(self, net, p, r=0) -> bool:
+        for q, rq in self.pts.get(net, ()):
+            if (q.x - p.x) ** 2 + (q.y - p.y) ** 2 <= (rq + r + 1000) ** 2:
+                return True
+        x, y = tomm(p.x), tomm(p.y)
+        return any(b0[0] <= x <= b0[2] and b0[1] <= y <= b0[3] for b0 in self.boxes)
+
+
+def _rip_fp(b, fp, deleted, seeds=None):
+    """Delete the tracks/vias of OTHER nets that a footprint's pads now collide with (closer than the
+    clearance rule): copper a swapped or newly placed part landed on. Returns the nets touched, the part's own
+    nets included (copper that ended on a pad the swap moved is left dangling and pruned with them).
+    Locked tracks / vias are kept (counted in seeds.locked)."""
+    nets = {pad.GetNetname() for pad in fp.Pads() if pad.GetNetCode() > 0}
+    if seeds is not None:
+        x0, y0, x1, y1 = _bb(fp)
+        seeds.boxes.append([x0 - 1.0, y0 - 1.0, x1 + 1.0, y1 + 1.0])
+    for pad in fp.Pads():
+        nc = pad.GetNetCode()
+        for lay in [l for l in pad.GetLayerSet().Seq() if P.IsCopperLayer(l)]:
+            shp = pad.GetEffectiveShape(lay)
+            own = pad.GetOwnClearance(lay)
+            for t in list(b.GetTracks()):
+                if (nc > 0 and t.GetNetCode() == nc) or not t.IsOnLayer(lay):
+                    continue
+                clr = max(0, max(own, t.GetOwnClearance(lay)) - 1000)
+                try:
+                    hit = t.GetEffectiveShape(lay).Collide(shp, clr)
+                except Exception:  # noqa: BLE001
+                    continue
+                if hit:
+                    nets.add(t.GetNetname())
+                    _eco_delete(b, t, deleted, seeds)
+    return nets
+
+
+def _eco_delete(b, t, deleted, seeds=None) -> bool:
+    """Delete one ECO casualty; a locked track / via is kept (False)."""
+    if _locked(t):
+        if seeds is not None:
+            seeds.locked += 1
+        return False
+    if seeds is not None:
+        seeds.add_item(t)
+    n = deleted.setdefault(t.GetNetname() or "(no net)", {"tracks": 0, "vias": 0})
+    n["vias" if t.GetClass() == "PCB_VIA" else "tracks"] += 1
+    b.Delete(t)
+    return True
+
+
+def _prune_dangling(b, nets, deleted, seeds=None):
+    """Remove the copper of ``nets`` left hanging by a rip-up: tracks with an end that touches nothing
+    of their net (no pad, via, other track or pour) and vias that join fewer than two items of a net
+    without a pour. Repeats until stable, so a whole dead branch goes back to its junction. With ``seeds``
+    only copper hanging where the rip-up removed something (or inside a swapped part's area) is pruned;
+    locked items and a via inside a pad of its own net are never pruned."""
+    nets = {n for n in nets if n}
+    if not nets:
+        return 0
+    pads, zones = {}, {}
+    for fp in b.GetFootprints():
+        for pad in fp.Pads():
+            if pad.GetNetname() in nets:
+                pads.setdefault(pad.GetNetname(), []).append(pad)
+    for z in b.Zones():
+        try:
+            if not z.GetIsRuleArea() and z.GetNetname() in nets and not z.IsTeardropArea():
+                zones.setdefault(z.GetNetname(), []).append(z)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def in_zone(net, lay, pt):
+        for z in zones.get(net, []):
+            try:
+                if z.IsOnLayer(lay) and z.Outline().Contains(pt):
+                    return True
+            except Exception:  # noqa: BLE001
+                return True      # cannot tell: keep it
+        return False
+
+    def hanging_here(net, p, r):
+        return seeds is None or seeds.near(net, p, r)
+    n_pruned = 0
+    for _ in range(200):
+        items = [t for t in b.GetTracks() if t.GetNetname() in nets]
+        tracks = [t for t in items if t.GetClass() != "PCB_VIA"]
+        vias = [t for t in items if t.GetClass() == "PCB_VIA"]
+        ends = {}
+        for t in tracks:
+            for p in (t.GetStart(), t.GetEnd()):
+                k = (t.GetNetname(), t.GetLayer(), p.x, p.y)
+                ends[k] = ends.get(k, 0) + 1
+        dead = []
+        for t in tracks:
+            if _locked(t):
+                continue
+            net, lay = t.GetNetname(), t.GetLayer()
+            for p in (t.GetStart(), t.GetEnd()):
+                if ends.get((net, lay, p.x, p.y), 0) > 1:
+                    continue
+                if any(pd.IsOnLayer(lay) and pd.HitTest(p) for pd in pads.get(net, [])):
+                    continue
+                if any(v.GetNetname() == net and v.IsOnLayer(lay) and v.HitTest(p) for v in vias):
+                    continue
+                if any(o is not t and o.GetNetname() == net and o.GetLayer() == lay and o.HitTest(p) for o in tracks):
+                    continue
+                if in_zone(net, lay, p):
+                    continue
+                if not hanging_here(net, p, t.GetWidth() // 2):
+                    continue
+                dead.append(t)
+                break
+        for v in vias:
+            net = v.GetNetname()
+            if zones.get(net) or _locked(v):
+                continue
+            pos = v.GetPosition()
+            if any(pd.HitTest(pos) for pd in pads.get(net, [])):
+                continue         # via-in-pad: deliberate, it hangs from nothing
+            deg = sum(1 for t in tracks if t.GetNetname() == net and v.IsOnLayer(t.GetLayer()) and t.HitTest(pos))
+            if deg < 2 and hanging_here(net, pos, v.GetWidth(P.F_Cu) // 2):
+                dead.append(v)
+        if not dead:
+            break
+        for t in dead:
+            if _eco_delete(b, t, deleted, seeds):
+                n_pruned += 1
+    return n_pruned
+
+
+def _eco_rip(b, rip_nets=(), touch=(), fps=(), prune_nets=(), loose_nets=()):
+    """The ECO rip-up. rip_nets: delete all their copper. touch: [(net, pad)] delete the tracks/vias of
+    ``net`` that touch ``pad`` (a pad that left that net). fps: footprints (swapped or newly placed) whose
+    pads now collide with other nets' copper: that copper goes. Then prune what was left hanging where
+    something was removed (``loose_nets``: nets whose lost pad is gone from the board, pruned anywhere).
+    Locked tracks / vias are never removed (``locked_kept``)."""
+    deleted = {}
+    seeds = _Seeds()
+    rip_nets = set(rip_nets)
+    affected = set(prune_nets) | rip_nets | set(loose_nets)
+    if rip_nets:
+        for t in list(b.GetTracks()):
+            if t.GetNetname() in rip_nets:
+                _eco_delete(b, t, deleted, seeds)
+    for net, pad in touch:
+        affected.add(net)
+        for t in list(b.GetTracks()):
+            if t.GetNetname() != net:
+                continue
+            if t.GetClass() == "PCB_VIA":
+                hit = pad.HitTest(t.GetPosition())
+            else:
+                hit = pad.IsOnLayer(t.GetLayer()) and (pad.HitTest(t.GetStart()) or pad.HitTest(t.GetEnd()))
+            if hit:
+                _eco_delete(b, t, deleted, seeds)
+    for fp in fps:
+        affected |= _rip_fp(b, fp, deleted, seeds)
+    loose = set(loose_nets) - {""}
+    pruned = _prune_dangling(b, (affected - loose) - {""}, deleted, seeds)
+    if loose:
+        pruned += _prune_dangling(b, loose, deleted, None)
+    out = {"deleted": deleted, "pruned": pruned,
+           "tracks": sum(v["tracks"] for v in deleted.values()), "vias": sum(v["vias"] for v in deleted.values())}
+    if seeds.locked:
+        out["locked_kept"] = seeds.locked
+    return out
+
+
+def _eco_after_sync(b, old_members, report, swapped):
+    """After a sync: which nets lost pads (their copper to those pads is ripped), which only gained pads
+    (copper kept, the new pads are simply unrouted), which footprints were swapped (other nets' copper their new
+    pads collide with is ripped; their own nets' copper left dangling is pruned)."""
+    new_members, pad_at = {}, {}
+    for fp in b.GetFootprints():
+        k0 = _fp_key(fp)
+        for pad in fp.Pads():
+            pad_at[(k0, pad.GetNumber())] = pad
+            if pad.GetNetCode() > 0:
+                new_members.setdefault(pad.GetNetname(), set()).add((k0, pad.GetNumber()))
+    lost, gained, touch, loose = {}, [], [], set()
+    renamed_to = {k.split(" → ")[1] for k in (report.get("renamed_copper") or {})}
+    for net, mem in old_members.items():
+        gone = mem - new_members.get(net, set())
+        if gone and net in new_members:
+            lost[net] = len(gone)
+            for k in gone:
+                pd = pad_at.get(k)
+                if pd is not None:
+                    touch.append((net, pd))
+                else:
+                    loose.add(net)      # the pad left the board: nowhere to start from, prune the net's loose ends
+    for net, mem in new_members.items():
+        if net not in renamed_to and mem - old_members.get(net, set()):
+            gained.append(net)
+    refs = sorted(swapped)
+    fps = [fp for fp in b.GetFootprints() if fp.GetReference() in swapped]
+    rip = _eco_rip(b, touch=touch, fps=fps, prune_nets=lost, loose_nets=loose)
+    rip.update({"nets_lost_pads": lost, "nets_gained_pads": sorted(gained), "footprints_swapped": refs,
+                "orphans_removed": report.get("removed_copper") or {}})
+    return rip
+
+
+@op("eco_rip")
+def op_eco_rip(b, a, ctx):
+    """Rip up copper invalidated by an ECO: nets=[..] (all their tracks/vias), refs=[..] (other nets' tracks/vias
+    those footprints' pads collide with), then prune dangling copper of the nets touched."""
+    fps = [fp for fp in (b.FindFootprintByReference(r) for r in a.get("refs") or []) if fp is not None]
+    out = _eco_rip(b, rip_nets=a.get("nets") or [], fps=fps, prune_nets=a.get("prune_nets") or [])
+    if out["tracks"] or out["vias"]:
+        ctx["modified"] = True
+        ctx["needs_fill"] = True
+    return out
 
 
 @op("sync")
@@ -596,8 +835,9 @@ def op_sync(b, a, ctx):
               "unassigned_pads": [], "net_changes": 0, "nets": len(nets)}
     # which pads each net had before the sync: tells a renamed net from one whose parts were deleted
     old_members = {}
+    old_key = {}                     # footprint uuid -> its key before the sync (a re-link changes the path)
     for fp in b.GetFootprints():
-        key0 = _fp_key(fp)
+        key0 = old_key[uuid(fp)] = _fp_key(fp)
         for pad in fp.Pads():
             if pad.GetNetCode() > 0:
                 old_members.setdefault(pad.GetNetname(), set()).add((key0, pad.GetNumber()))
@@ -611,6 +851,7 @@ def op_sync(b, a, ctx):
             by_path[pth] = fp
         by_ref[fp.GetReference()] = fp
     new_fps = []
+    swapped = set()                  # eco: references whose footprint was swapped for another one
     sch_refs = set()
     sch_paths = {c.get("path") for c in comps if c.get("path") and not c.get("exclude_board")}
     claimed = set()
@@ -662,15 +903,19 @@ def op_sync(b, a, ctx):
                     report["errors"].append({"ref": ref, "footprint": fpid, "error": e.msg})
                     nfp = None
                 if nfp is not None:
+                    swapped.add(ref)
                     nfp.SetPosition(fp.GetPosition())
                     if fp.IsFlipped():
                         nfp.Flip(nfp.GetPosition(), P.FLIP_DIRECTION_LEFT_RIGHT)
                     nfp.SetOrientation(fp.GetOrientation())
                     nfp.SetLocked(fp.IsLocked())
                     _copy_text_layout(fp, nfp)
+                    k_was = old_key.get(uuid(fp))
                     b.Delete(fp)
                     b.Add(nfp)
                     claimed.add(uuid(nfp))
+                    if k_was is not None:
+                        old_key[uuid(nfp)] = k_was
                     report["replaced"].append({"ref": ref, "from": cur, "to": fpid})
                     fp = nfp
                     fresh = True
@@ -766,7 +1011,19 @@ def op_sync(b, a, ctx):
                     pad.SetPinFunction(meta[0])
                 if pad.GetPinType() != meta[1]:
                     pad.SetPinType(meta[1])
-    report.update(_resync_copper(b, nets, old_members, remove_extra, get_net))
+    # a footprint re-linked by reference (new symbol UUID) or given its first path keeps its pads: key the
+    # pre-sync membership by the new key, else every pad of it looks lost (and the ECO prunes its nets board-wide)
+    rekey = {}
+    for fp in b.GetFootprints():
+        k_old = old_key.get(uuid(fp))
+        if k_old is not None and k_old != _fp_key(fp):
+            rekey[k_old] = _fp_key(fp)
+    if rekey:
+        old_members = {n: {(rekey.get(k, k), p) for k, p in mem} for n, mem in old_members.items()}
+    eco = bool(a.get("eco"))
+    report.update(_resync_copper(b, nets, old_members, remove_extra, get_net, drop_orphans=eco))
+    if eco:
+        report["eco"] = _eco_after_sync(b, old_members, report, swapped)
     # footprint pins that do not exist as pads
     pads_present = {(fp.GetReference(), p.GetNumber()) for fp in b.GetFootprints() for p in fp.Pads()}
     missing = sorted("%s.%s" % k for k in pin_net if k not in pads_present and k[0] in sch_refs
@@ -1467,25 +1724,223 @@ def _zone_outline_pts(b, a):
     return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
 
 
+def _hull(pts):
+    """Convex hull (monotone chain) of [[x, y], ...], counter-clockwise, no repeated first point."""
+    ps = sorted({(round(x, 4), round(y, 4)) for x, y in pts})
+    if len(ps) <= 2:
+        return [list(p) for p in ps]
+
+    def cross(o, p, q):
+        return (p[0] - o[0]) * (q[1] - o[1]) - (p[1] - o[1]) * (q[0] - o[0])
+    lo, hi = [], []
+    for p in ps:
+        while len(lo) >= 2 and cross(lo[-2], lo[-1], p) <= 0:
+            lo.pop()
+        lo.append(p)
+    for p in reversed(ps):
+        while len(hi) >= 2 and cross(hi[-2], hi[-1], p) <= 0:
+            hi.pop()
+        hi.append(p)
+    return [list(p) for p in lo[:-1] + hi[:-1]]
+
+
+def _pts_area(pts):
+    n = len(pts)
+    return abs(sum(pts[i][0] * pts[(i + 1) % n][1] - pts[(i + 1) % n][0] * pts[i][1] for i in range(n))) / 2.0
+
+
+def _net_items_on(b, net, layer_name):
+    """Boxes [x0, y0, x1, y1] (mm) of the copper of ``net`` that a pour on ``layer_name`` must reach: pads on
+    that layer (through-hole), vias, and tracks on that layer. Falls back to every pad of the net."""
+    lid = layer_id(b, layer_name)
+    boxes, every = [], []
+    for fp in b.GetFootprints():
+        for pd in fp.Pads():
+            if pd.GetNetname() != net:
+                continue
+            bb = _bb(pd)
+            every.append(bb)
+            if pd.IsOnLayer(lid):
+                boxes.append(bb)
+    for t in b.GetTracks():
+        if t.GetNetname() != net:
+            continue
+        if t.GetClass() == "PCB_VIA" or (t.GetClass() == "PCB_TRACK" and t.GetLayer() == lid):
+            boxes.append(_bb(t))
+    return boxes or every
+
+
+def _region_pts(b, a, net=None, layer=None):
+    """Outline (mm points) of a pour limited to a region:
+    region='auto'  convex hull of the net's copper that the layer must reach (pads, vias, tracks) + margin;
+    region=[x0, y0, x1, y1]  a rectangle;  region=[[x, y], ...]  a polygon;
+    refs=[...]  convex hull of those footprints (+ margin). Rectangles and hulls are clipped to the board outline box."""
+    region, refs = a.get("region"), a.get("refs")
+    margin = float(a.get("margin", 1.0))
+    ol = outline_info(b)
+    boxes = None
+    if refs:
+        by = {fp.GetReference(): fp for fp in b.GetFootprints()}
+        miss = [r for r in refs if r not in by]
+        if miss:
+            raise WorkerError("unknown footprint(s) %s" % ", ".join(miss), "UNKNOWN_REF", "check pcb_read(what=['footprints'])")
+        boxes = [_bb(pd) for r in refs for pd in by[r].Pads()] or [_bb(by[r]) for r in refs]
+    elif region == "auto":
+        if not net:
+            raise WorkerError("region='auto' needs the zone's net", "BAD_ARGUMENT", "pass net=...")
+        boxes = _net_items_on(b, net, layer or "F.Cu")
+        if not boxes:
+            raise WorkerError("net %s has no pads or vias to bound an 'auto' region" % net, "BAD_ARGUMENT",
+                              "give region=[x0,y0,x1,y1] instead")
+    elif isinstance(region, (list, tuple)) and len(region) == 4 and all(isinstance(v, (int, float)) for v in region):
+        x0, y0, x1, y1 = [float(v) for v in region]
+        x0, x1 = min(x0, x1), max(x0, x1)
+        y0, y1 = min(y0, y1), max(y0, y1)
+        if x1 - x0 <= 0 or y1 - y0 <= 0:
+            raise WorkerError("region rectangle %s has no area" % (region,), "BAD_ARGUMENT", "region=[x0,y0,x1,y1] in mm")
+        pts = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
+    elif isinstance(region, (list, tuple)) and len(region) >= 3 and all(
+            isinstance(p, (list, tuple)) and len(p) == 2 for p in region):
+        # a polygon is used as given (not clipped), but it must have area, some of it inside the board
+        pts = [[float(p[0]), float(p[1])] for p in region]
+        if _pts_area(pts) < 1e-6:
+            raise WorkerError("region polygon %s has no area" % (region,), "BAD_ARGUMENT", "give 3+ non-collinear points")
+        if ol:
+            bx0, by0, bx1, by1 = ol["bbox"]
+            if _pts_area([[min(max(x, bx0), bx1), min(max(y, by0), by1)] for x, y in pts]) < 1e-6:
+                raise WorkerError("the region has no area inside the board", "BAD_ARGUMENT", "give a larger region")
+        return pts
+    else:
+        raise WorkerError("region must be 'auto', [x0,y0,x1,y1] or [[x,y],...] (3+ points)", "BAD_ARGUMENT",
+                          "e.g. region=[100,100,140,130]")
+    if boxes is not None:
+        corners = []
+        for x0, y0, x1, y1 in boxes:
+            corners += [[x0 - margin, y0 - margin], [x1 + margin, y0 - margin],
+                        [x1 + margin, y1 + margin], [x0 - margin, y1 + margin]]
+        pts = _hull(corners)
+    if ol:
+        bx0, by0, bx1, by1 = ol["bbox"]
+        pts = [[min(max(x, bx0), bx1), min(max(y, by0), by1)] for x, y in pts]
+    if len(pts) < 3 or _pts_area(pts) < 1e-6:
+        raise WorkerError("the region has no area inside the board", "BAD_ARGUMENT", "give a larger region")
+    return pts
+
+
+@op("zone_region")
+def op_zone_region(b, a, ctx):
+    """Restrict the existing copper zone(s) of ``net`` on ``layer`` to a region (see _region_pts). Only zones on
+    exactly that one layer are changed (a zone spanning several layers would change on the others too);
+    their clearance, thermal and priority settings stay. ``min_shrink``: leave a zone alone unless the new outline
+    is at most this fraction of its current area (default 1.0 = always)."""
+    layer, net = a["layer"], a["net"]
+    lid = layer_id(b, layer)
+    ol = outline_info(b)
+    board_area = (ol["width"] * ol["height"]) if ol else 0.0
+    pts = _region_pts(b, a, net=net, layer=layer)
+    new_area = _pts_area(pts)
+    out = {"net": net, "layer": layer, "zones": 0, "skipped": [], "polygon": [[round(x, 3), round(y, 3)] for x, y in pts],
+           "area_mm2": round(new_area, 1), "board_area_mm2": round(board_area, 1)}
+    for z in list(b.Zones()):
+        if z.GetIsRuleArea() or z.GetNetname() != net or lid not in list(z.GetLayerSet().Seq()):
+            continue
+        if len(list(z.GetLayerSet().Seq())) != 1:
+            out["skipped"].append("zone %s spans several layers" % z.GetZoneName())
+            continue
+        old = _poly_area(z.Outline()) / 1e12
+        out["area_before_mm2"] = round(old, 1)
+        if old > 0 and new_area > float(a.get("min_shrink", 1.0)) * old:
+            out["skipped"].append("zone %s: the region would not make it smaller (%.0f -> %.0f mm2)"
+                                  % (z.GetZoneName(), old, new_area))
+            continue
+        o = z.Outline()
+        o.RemoveAllContours()
+        o.NewOutline()
+        for x, y in pts:
+            o.Append(mm(x), mm(y))
+        z.UnFill() if hasattr(z, "UnFill") else z.SetIsFilled(False)
+        out["zones"] += 1
+    if out["zones"]:
+        ctx["modified"] = True
+        ctx["needs_fill"] = True
+    return out
+
+
+@op("escape_nets")
+def op_escape_nets(b, a, ctx):
+    """Nets whose tracks / vias enter the escape region (pad box + ``radius`` mm) of each pin ("REF.PAD") or
+    point ([x, y]): the copper a rip-up must clear for that pin to get out. Read-only."""
+    r = float(a.get("radius", 1.0))
+    boxes = []
+    by = {fp.GetReference(): fp for fp in b.GetFootprints()}
+    for pin in a.get("pins") or []:
+        ref, _, num = str(pin).partition(".")
+        fp = by.get(ref)
+        if fp is None:
+            continue
+        for pd in fp.Pads():
+            if pd.GetNumber() == num:
+                x0, y0, x1, y1 = _bb(pd)
+                boxes.append((pin, [x0 - r, y0 - r, x1 + r, y1 + r], pd.GetNetname()))
+    for p in a.get("points") or []:
+        try:
+            x, y = float(p[0]), float(p[1])
+        except Exception:  # noqa: BLE001
+            continue
+        boxes.append(("%g,%g" % (x, y), [x - r, y - r, x + r, y + r], None))
+    pads = {}
+    for fp in b.GetFootprints():
+        for pd in fp.Pads():
+            if pd.GetNetname():
+                pads[pd.GetNetname()] = pads.get(pd.GetNetname(), 0) + 1
+    hits = {}
+    for t in b.GetTracks():
+        n = t.GetNetname()
+        if not n:
+            continue
+        tb = _bb(t)
+        for key, box, own in boxes:
+            if n != own and _hit(tb, box):
+                if t.GetClass() == "PCB_TRACK":   # a diagonal's box can touch the region while the track misses it
+                    s, e = vxy(t.GetStart()), vxy(t.GetEnd())
+                    cx, cy = (box[0] + box[2]) / 2, (box[1] + box[3]) / 2
+                    half = max(box[2] - box[0], box[3] - box[1]) / 2 * 1.42 + tomm(t.GetWidth()) / 2
+                    if _seg_dist(cx, cy, s[0], s[1], e[0], e[1]) > half:
+                        continue
+                hits.setdefault(key, set()).add(n)
+    return {"by_pin": {k: sorted(v) for k, v in hits.items()},
+            "nets": sorted({n for v in hits.values() for n in v}),
+            "pad_count": {n: pads.get(n, 0) for v in hits.values() for n in v},
+            "board_nets": sorted(pads)}
+
+
 @op("zone")
 def op_zone(b, a, ctx):
     net = net_item(b, a["net"])
     layers = a.get("layers") or ["F.Cu", "B.Cu"]
     replaced = 0
+    for ln in layers:
+        if not P.IsCopperLayer(layer_id(b, ln)):
+            raise WorkerError("'%s' is not a copper layer" % ln, "BAD_LAYER", "use F.Cu, B.Cu or In1.Cu ...")
+    # every outline is worked out (and validated) before an existing pour is deleted; region='auto' gets one hull
+    # per layer: each layer's pour must reach that layer's copper of the net (bottom-side pads, B.Cu tracks ...)
+    restricted = a.get("region") is not None or bool(a.get("refs"))
+    if restricted and a.get("region") == "auto" and not a.get("refs"):
+        outlines = {ln: _region_pts(b, a, net=a["net"], layer=ln) for ln in layers}
+    else:
+        pts = _region_pts(b, a, net=a["net"], layer=layers[0]) if restricted else _zone_outline_pts(b, a)
+        outlines = {ln: pts for ln in layers}
     if a.get("replace", True):
         for z in list(b.Zones()):
             if not z.GetIsRuleArea() and z.GetNetname() == a["net"] and any(
                     b.GetLayerName(l) in layers for l in z.GetLayerSet().Seq()):
                 b.Delete(z)
                 replaced += 1
-    pts = _zone_outline_pts(b, a)
     made = []
     conn = {"thermal": P.ZONE_CONNECTION_THERMAL, "solid": P.ZONE_CONNECTION_FULL,
             "none": P.ZONE_CONNECTION_NONE, "tht_thermal": P.ZONE_CONNECTION_THT_THERMAL}[a.get("pad_connection", "thermal")]
     for ln in layers:
-        if not P.IsCopperLayer(layer_id(b, ln)):
-            raise WorkerError("'%s' is not a copper layer" % ln, "BAD_LAYER", "use F.Cu, B.Cu or In1.Cu ...")
-    for ln in layers:
+        pts = outlines[ln]
         z = P.ZONE(b)
         z.SetLayer(layer_id(b, ln))
         z.SetNetCode(net.GetNetCode())
@@ -1737,6 +2192,8 @@ def op_fanout(b, a, ctx):
     if a.get("planes"):
         nets |= set(plane_layers(b).values())
     nets -= set(a.get("skip") or [])
+    if a.get("only") is not None:            # an ECO route: fan out only the nets being routed
+        nets &= set(a["only"])
     if not nets:
         return {"fanout_vias": 0, "thermal_vias": 0, "pads": [], "failed": []}
     ds = b.GetDesignSettings()
@@ -1987,8 +2444,11 @@ def op_heal(b, a, ctx):
         for pt in (t.GetStart(), t.GetEnd()):
             ends.setdefault((t.GetNetCode(), t.GetLayer(), pt.x, pt.y), []).append(t)
     healed = []
+    only = set(a.get("nets") or [])          # an ECO route: touch only the nets being routed
     for (nc, lay, x, y), owners in list(ends.items()):
         if nc <= 0 or len(owners) > 1:
+            continue
+        if only and owners[0].GetNetname() not in only:
             continue
         pt = P.VECTOR2I(x, y)
         # connected to anything else of the same net at this point?
@@ -2055,6 +2515,27 @@ def plane_layers(b):
                 continue
             if _poly_area(z.Outline()) >= 0.5 * board_area:
                 out[b.GetLayerName(lay)] = z.GetNetname()
+    return out
+
+
+def inner_zones(b):
+    """{inner layer: [{net, frac (of the board outline box), single_layer}]} for every copper zone on an inner layer."""
+    ol = outline_info(b)
+    board_area = max(1.0, ol["width"] * ol["height"]) * 1e12 if ol else 0.0
+    out = {}
+    for z in b.Zones():
+        try:
+            if z.GetIsRuleArea() or z.IsTeardropArea():
+                continue
+        except Exception:  # noqa: BLE001
+            continue
+        lays = list(z.GetLayerSet().Seq())
+        for lay in lays:
+            if not P.IsCopperLayer(lay) or lay in (P.F_Cu, P.B_Cu):
+                continue
+            out.setdefault(b.GetLayerName(lay), []).append(
+                {"net": z.GetNetname(), "frac": round(_poly_area(z.Outline()) / board_area, 3) if board_area else None,
+                 "single_layer": len(lays) == 1})
     return out
 
 
@@ -2163,7 +2644,7 @@ def op_export_dsn(b, a, ctx):
                 padnets[pd.GetNetname()] = padnets.get(pd.GetNetname(), 0) + 1
     return {"dsn": path, "bytes": os.path.getsize(path), "copper_graphics": keep, "protected": len(relock),
             "nets": sorted(n for n, k in padnets.items() if k >= 2),
-            "clearances": cl, "max_clearance": clr, "planes": plane_layers(b),
+            "clearances": cl, "max_clearance": clr, "planes": plane_layers(b), "inner_zones": inner_zones(b),
             "edge_clearance": tomm(b.GetDesignSettings().m_CopperEdgeClearance),
             "copper_layers": [b.GetLayerName(l) for l in P.LSET.AllCuMask(b.GetCopperLayerCount()).Seq()],
             "neck": neck_widths(b, clr)}
@@ -2228,6 +2709,34 @@ def op_import_ses(b, a, ctx):
                 dups += 1
                 continue
             seen.add(k)
+    # KiCad's importer gives every new via its net class's DRILL whatever padstack Freerouting chose: a Power
+    # net that fell back to the 0.6 mm signal via came back as 0.6/0.4 (annular 0.1 mm, a DRC error). The
+    # padstack names carry the drill ("Via[0-3]_600:300_um"): give such a via the drill of its padstack.
+    drills = {}
+    try:
+        import re as _re2
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for dia, dr in _re2.findall(r"Via\[[^\]]*\]_(\d+):(\d+)_um", fh.read()):
+                drills.setdefault(int(dia) * 1000, set()).add(int(dr) * 1000)
+    except OSError:
+        pass
+    drill_fixed = 0
+    if drills:
+        for t in b.GetTracks():
+            if t.GetClass() != "PCB_VIA":
+                continue
+            p = t.GetPosition()
+            if (p.x, p.y, t.GetNetCode()) in old_vias:
+                continue
+            opts = drills.get(t.GetWidth(P.F_Cu)) or set()
+            # a drill one of the padstacks of that diameter has is legitimate; two padstacks with one diameter and
+            # different drills (e.g. 600:300 and 600:400 from two net classes) cannot be told apart: left alone
+            if t.GetDrillValue() in opts or len(opts) != 1:
+                continue
+            want = next(iter(opts))
+            if want < t.GetDrillValue():
+                t.SetDrill(want)
+                drill_fixed += 1
     # KiCad has the last word: Freerouting sometimes runs a new trace through copper that was on the board
     # (it drops or re-plans "fixed" wiring of unfinished nets internally, while the board keeps it). Wiring
     # of this session that comes closer to another net than the clearance rule is taken out again, whole
@@ -2252,7 +2761,7 @@ def op_import_ses(b, a, ctx):
     ctx["modified"] = True
     after = track_stats(b)
     return {"before": before, "after": after, "duplicates_removed": dups, "stale_duplicates": min(stale, dups),
-            "vias_restored": resized, "clashes_removed": clashes}
+            "vias_restored": resized, "clashes_removed": clashes, "via_drills_fixed": drill_fixed}
 
 
 def _clashes(it, others, tol=2000):

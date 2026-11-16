@@ -227,7 +227,8 @@ ops (objects with "op"):
 
 After writing, KiCad re-saves the file, Copper re-checks every requested connection in KiCad's netlist
 (`connectivity` ok/checked + mismatches), runs ERC (`verify.erc`: one entry per issue type, each example with its
-`at` [x,y] mm and a ready `fix` routed to the right sheet; on big designs `new_issues` = what THIS call introduced) and returns a preview cropped to the change.
+`at` [x,y] mm and a ready `fix` routed to the right sheet; on big designs `new_issues` = what THIS call introduced),
+checks the parts it touched against datasheet rules (`electrical`) and returns a preview cropped to the change.
 Typical next step: apply the `fix` ops from verify.erc, or sch_read(query='unconnected').
 Example: ops=[{"op":"place","lib_id":"Regulator_Linear:AMS1117-3.3","id":"ldo"},
  {"op":"place","spec":"10uF 0805","id":"cin"},{"op":"connect","pins":["ldo.VI","cin.1"],"net":"VBUS"},
@@ -278,6 +279,7 @@ def sch_apply(ops, project=None, dry_run=False, while_open="refuse", sheet=None,
     if verify:
         if _progress:
             _progress(0.6, "netlist check")
+        nl = None
         try:
             nl = N.export_netlist(pr)
             chk = N.check_expectations(nl, r["expect"])
@@ -289,6 +291,10 @@ def sch_apply(ops, project=None, dry_run=False, while_open="refuse", sheet=None,
                                  "fix": "sch_read(query='pins', ref=...) to inspect, then disconnect + connect"})
         except ToolError as e:
             data["connectivity"] = {"error": e.message}
+        if nl is not None:
+            el = _electrical(pr, nl, ops, r.get("refs"))
+            if el:
+                data["electrical"] = el
         if _progress:
             _progress(0.75, "ERC")
         try:
@@ -311,7 +317,21 @@ def sch_apply(ops, project=None, dry_run=False, while_open="refuse", sheet=None,
         summ += f"; connectivity {conn.get('ok')}/{conn.get('checked')} ok"
     if "errors" in erc:
         summ += f"; ERC {erc['errors']} error(s), {erc.get('warnings', 0)} warning(s)"
+    el = data.get("electrical") or {}
+    if el.get("findings"):
+        summ += f"; electrical rules: {el['errors']} error(s), {el['warnings']} warning(s) on the parts just touched"
     return Result(data, images, summ)
+
+
+def _electrical(pr, nl, ops, refs_map) -> dict | None:
+    """Datasheet rules (cap voltage, IC supply range, TVS clamp, joined switch pins, STM32 debug/BOOT0 pins, crystal
+    load) on the netlist just exported, for the parts this call touched. Advisory: never fails the write."""
+    try:
+        from ..review import electrical as E
+        from ..review.design_review import rail_volts_for
+        return E.quick_check(nl, E.touched_refs(ops, refs_map), rail_volts_for(pr))
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def _netlist_safe(pr, sch=None):

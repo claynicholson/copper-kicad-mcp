@@ -71,18 +71,90 @@ def cache_age(ns: str, key: str) -> float | None:
 
 def cache_put(ns: str, key: str, obj):
     f = cache_dir(ns) / _key(key)
-    tmp = f.with_suffix(".tmp")
+    # one temp name per writer: parts_search answers a batch on several threads, two may store the same key
+    tmp = f.with_suffix(f".{os.getpid()}-{threading.get_ident()}.tmp")
     try:
         tmp.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
         os.replace(tmp, f)
     except OSError:
-        pass
+        try:                    # Windows refuses a replace while another writer is replacing the same file
+            tmp.unlink()
+        except OSError:
+            pass
 
 
 # ── HTTP ─────────────────────────────────────────────────────────────────
 _host_lock = threading.Lock()
 _host_next: dict[str, float] = {}
-MIN_INTERVAL = {"jlcpcb.com": 1.05, "jlcsearch.tscircuit.com": 0.35, "wmsc.lcsc.com": 1.0}
+# minimum gap between request STARTS per host (a batch of searches runs on several threads; this keeps the
+# combined rate polite: ~4 req/s to JLC, ~5 req/s to jlcsearch, still far below what their own web UIs send)
+MIN_INTERVAL = {"jlcpcb.com": 0.25, "jlcsearch.tscircuit.com": 0.2, "wmsc.lcsc.com": 1.0}
+
+# Circuit breaker (process-local): a host that failed BREAKER_FAILURES calls in a row (a timeout, a 5xx or an
+# "overloaded" body, each call already retried) is skipped for BREAKER_SECONDS by calls made with breaker=True,
+# so a dead source costs two timeouts, not one per query. One blip never opens it; any success closes the count.
+BREAKER_SECONDS = 600.0
+BREAKER_FAILURES = 2
+_breaker_lock = threading.Lock()
+_breaker: dict[str, tuple[float, str]] = {}      # host -> (open until, reason)
+_fails: dict[str, tuple[int, float]] = {}        # host -> (failed calls in a row, time of the last one)
+
+
+def _host(url: str) -> str:
+    return re.sub(r"^https?://([^/]+).*$", r"\1", url).lower()
+
+
+def breaker_open(url_or_host: str) -> str | None:
+    """Why this host is being skipped right now, or None when it may be asked."""
+    host = _host(url_or_host) if "/" in url_or_host else url_or_host.lower()
+    with _breaker_lock:
+        until, why = _breaker.get(host, (0.0, ""))
+        if until > time.time():
+            return f"{host} skipped for {until - time.time():.0f} s more after {why}"
+        _breaker.pop(host, None)
+    return None
+
+
+def breaker_trip(url_or_host: str, why: str, seconds: float | None = None) -> None:
+    """Open the breaker now (no failure count)."""
+    host = _host(url_or_host) if "/" in url_or_host else url_or_host.lower()
+    with _breaker_lock:
+        _breaker[host] = (time.time() + (BREAKER_SECONDS if seconds is None else seconds), why)
+        _fails.pop(host, None)
+
+
+def breaker_fail(url_or_host: str, why: str) -> bool:
+    """Count one failed call; opens the breaker at BREAKER_FAILURES in a row (within BREAKER_SECONDS).
+    True when this failure opened it."""
+    host = _host(url_or_host) if "/" in url_or_host else url_or_host.lower()
+    now = time.time()
+    with _breaker_lock:
+        n, last = _fails.get(host, (0, 0.0))
+        n = n + 1 if now - last < BREAKER_SECONDS else 1
+        if n < BREAKER_FAILURES:
+            _fails[host] = (n, now)
+            return False
+        _fails.pop(host, None)
+        _breaker[host] = (now + BREAKER_SECONDS, f"{n} failed calls in a row (last: {why})")
+        return True
+
+
+def breaker_ok(url_or_host: str) -> None:
+    host = _host(url_or_host) if "/" in url_or_host else url_or_host.lower()
+    with _breaker_lock:
+        _fails.pop(host, None)
+
+
+def breaker_reset() -> None:
+    with _breaker_lock:
+        _breaker.clear()
+        _fails.clear()
+
+
+def breaker_state() -> dict:
+    now = time.time()
+    with _breaker_lock:
+        return {h: {"seconds_left": round(u - now), "why": w} for h, (u, w) in _breaker.items() if u > now}
 
 
 def offline() -> bool:
@@ -90,7 +162,7 @@ def offline() -> bool:
 
 
 def _throttle(url: str):
-    host = re.sub(r"^https?://([^/]+).*$", r"\1", url).lower()
+    host = _host(url)
     gap = next((v for k, v in MIN_INTERVAL.items() if host.endswith(k)), 0.0)
     if not gap:
         return
@@ -102,36 +174,78 @@ def _throttle(url: str):
         time.sleep(wait)
 
 
+def _urlopen(req, timeout):
+    """The one place a request leaves the process (tests replace it)."""
+    return urllib.request.urlopen(req, timeout=timeout)
+
+
 def http(url: str, *, data: bytes | None = None, headers: dict | None = None, timeout: float = 25,
-         retries: int = 3, backoff: float = 1.5, retry_if=None) -> bytes:
+         retries: int = 3, backoff: float = 1.5, retry_if=None, budget: float | None = None,
+         breaker: bool = False) -> bytes:
     """GET/POST with retry + exponential backoff on 429/5xx/timeouts and on
-    bodies ``retry_if(body)`` flags (e.g. jlcsearch 'D1 overloaded')."""
+    bodies ``retry_if(body)`` flags (e.g. jlcsearch 'D1 overloaded').
+
+    budget: total seconds this call may take, retries included (each attempt's timeout is cut to what is
+    left; no retry starts with under 0.5 s left). breaker=True: refuse at once while the host's circuit
+    breaker is open, and count a call that finally fails on a timeout, a 5xx or an overloaded body
+    (BREAKER_FAILURES in a row open it). breaker="check": refuse while open, but count nothing (the caller
+    decides with breaker_fail; the failure reason is on the raised NetError as .trip, None when the call is
+    no outage: a 4xx, or the breaker's own refusal). Any good answer, in either mode, closes the count."""
     if offline():
         raise NetError("offline mode (COPPER_OFFLINE=1)")
+    if breaker:
+        why = breaker_open(url)
+        if why:
+            err = NetError(why)
+            err.trip = None                 # the breaker's own refusal is never a new failure
+            raise err
     h = {"User-Agent": UA_HONEST, "Accept": "application/json, */*"}
     h.update(headers or {})
-    last = None
+    last, trip = None, None
+    t0 = None
     for attempt in range(retries + 1):
         _throttle(url)
+        if t0 is None:
+            t0 = time.time()        # the budget starts once this request may go: queueing behind the rate limit is free
+        tmo = timeout
+        if budget is not None:
+            tmo = min(timeout, budget - (time.time() - t0))
+            if tmo < 0.5:
+                break
         try:
             req = urllib.request.Request(url, data=data, headers=h, method="POST" if data is not None else "GET")
-            with urllib.request.urlopen(req, timeout=timeout) as r:
+            with _urlopen(req, tmo) as r:
                 body = r.read()
                 if r.headers.get("Content-Encoding") == "gzip":
                     body = gzip.decompress(body)
             if retry_if and retry_if(body):
                 last = NetError(f"{url}: transient upstream error: {body[:160]!r}")
+                trip = "an overloaded answer"
             else:
+                if breaker:                 # 'check' too: a good answer proves the host is up
+                    breaker_ok(url)
                 return body
         except urllib.error.HTTPError as e:
             last = NetError(f"{url}: HTTP {e.code}")
             if e.code not in (408, 425, 429, 500, 502, 503, 504):
+                last.trip = None
                 raise last
+            trip = f"HTTP {e.code}" if e.code >= 500 or e.code == 408 else None
         except (urllib.error.URLError, TimeoutError, OSError) as e:
-            last = NetError(f"{url}: {getattr(e, 'reason', e)}")
+            reason = getattr(e, "reason", e)
+            last = NetError(f"{url}: {reason}")
+            timed_out = isinstance(e, TimeoutError) or isinstance(reason, TimeoutError) or "timed out" in str(reason).lower()
+            trip = "a timeout" if timed_out else None
         if attempt < retries:
-            time.sleep(backoff * (2 ** attempt) * (0.75 + 0.5 * (hash(url) % 100) / 100))
-    raise last or NetError(url)
+            pause = backoff * (2 ** attempt) * (0.75 + 0.5 * (hash(url) % 100) / 100)
+            if budget is not None:
+                pause = min(pause, max(0.0, budget - (time.time() - t0) - 0.5))
+            time.sleep(pause)
+    err = last or NetError(f"{url}: no time left (budget {budget} s)")
+    err.trip = trip
+    if breaker is True and trip:
+        breaker_fail(url, trip)
+    raise err
 
 
 def http_json(url: str, payload: dict | None = None, **kw):

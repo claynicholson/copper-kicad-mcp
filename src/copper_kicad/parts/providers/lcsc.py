@@ -38,7 +38,8 @@ class LcscProvider(Provider):
         # expand: a description ('alcohol gas sensor', 'wifi module') is asked in the catalogue's wording and by its
         # category, and out-of-stock matches for a part number are listed apart from the results
         r = search.search(query, dict(filters or {}), limit=limit, live=live, expand=True)
-        for x in r["results"] + (r.get("out_of_stock") or []):
+        for x in r["results"] + (r.get("out_of_stock") or []) + (r.get("filtered_out") or []) \
+                + ([r["lcsc_code"]] if r.get("lcsc_code") else []):
             self.normalize(x)
         return r
 

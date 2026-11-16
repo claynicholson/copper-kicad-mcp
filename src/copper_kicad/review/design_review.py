@@ -16,6 +16,7 @@ import re
 import fnmatch
 import json
 import math
+from pathlib import Path
 
 from .. import sexpr
 from .common import (base_net, comp_kind, field_ci, finding, is_auto_net, is_ground_net, is_ground_pin, is_load_part,
@@ -23,7 +24,9 @@ from .common import (base_net, comp_kind, field_ci, finding, is_auto_net, is_gro
 
 CHECKS = ["decoupling", "i2c_pullups", "crystal_caps", "usb_c_cc", "usb_esd", "regulator_caps", "enable_pins",
           "led_resistors", "power_flags", "sourcing", "footprints", "single_pin_nets", "net_names",
-          "regulator_setpoint", "power_path", "thermal_pad", "schematic_style"]
+          "regulator_setpoint", "power_path", "thermal_pad",
+          # datasheet rules (review/electrical.py, numbers in review/data/electrical.json)
+          "cap_voltage", "tvs_clamp", "ic_supply", "joined_pins", "mcu_pins", "schematic_style"]
 # the drawing-style pass (review/sch_style.py) runs only when asked for: checks=['schematic_style']
 DEFAULT_CHECKS = [c for c in CHECKS if c != "schematic_style"]
 
@@ -187,7 +190,25 @@ def check_i2c_pullups(m: _Model) -> list[dict]:
     return out
 
 
+def _load_cap_pf(raw: str) -> float | None:
+    """A crystal load cap's value in pF; a bare number ('22', old-style schematics) means pF."""
+    v = parse_value(raw)
+    if v is None:
+        return None
+    tok = (raw or "").split()[0] if (raw or "").split() else ""
+    if v >= 1 and re.fullmatch(r"\d+(?:\.\d+)?", tok):
+        return v
+    return v * 1e12
+
+
 def check_crystal_caps(m: _Model) -> list[dict]:
+    """Pierce crystals: a load cap from each terminal to ground, and — when the crystal's load capacitance is known
+    (LCSC record, a 'Load Capacitance' field, or 'xx pF' in its Value) — caps that actually make that load:
+    CL = C1·C2/(C1+C2) + Cstray (3–5 pF, review/data/electrical.json)."""
+    from . import electrical as E
+    xd = E.data()["crystal"]
+    s_lo, s_hi = xd["stray_pf"]
+    tol = xd["tolerance_pf"]
     out = []
     for ref in sorted(m.comps, key=natural_key):
         if m.kind.get(ref) != "crystal" or m.comps[ref].get("dnp"):
@@ -198,19 +219,53 @@ def check_crystal_caps(m: _Model) -> list[dict]:
         terms = [p for p in m.comp_pins.get(ref, []) if p["net"] not in m.gnd and not p["net"].startswith("unconnected-")]
         if len(terms) != 2:
             continue
-        missing = [p for p in terms if not m.two_pin_between("capacitor", p["net"], m.gnd)]
-        if not missing:
+        loads = {p["net"]: m.two_pin_between("capacitor", p["net"], m.gnd) for p in terms}
+        missing = [p for p in terms if not loads[p["net"]]]
+        if missing:
+            # 32.768 kHz crystals on chips with internal load caps are common, and a cap in SERIES with a terminal
+            # (to anything but ground: a trimmer, the other terminal) means a non-Pierce topology — notes only.
+            # A load cap to ground on the other terminal is not a series cap.
+            series_cap = any(r != ref and m.kind.get(r) == "capacitor" and r not in loads[p["net"]]
+                             and not m.comps[r].get("dnp")
+                             for p in terms for r in m.comps_on(p["net"]))
+            sev = "info" if ("32.768" in t or "32k" in t or series_cap) else "warning"
+            out.append(finding(
+                sev, "crystal_no_load_caps",
+                f"crystal {ref} terminal(s) {', '.join(p['net'] for p in missing)} have no load capacitor to GND",
+                fix=(f"add a load cap per terminal: CL_each ≈ 2×(CL − Cstray≈3pF), e.g. 2×(10pF−3pF)=14pF→ spec '15pF 0402' via "
+                     f"sch_apply place+connect each to its terminal net and GND (skip only if the MCU datasheet specifies internal load caps)"),
+                items=[f"{ref}.{p['pin']}" for p in missing]))
             continue
-        # 32.768 kHz crystals on chips with internal load caps are common, and a cap in series with a
-        # terminal means a non-Pierce topology (trimmer/series resonance) — report those as notes only
-        series_cap = any(r != ref and m.kind.get(r) == "capacitor" for p in terms for r in m.comps_on(p["net"]))
-        sev = "info" if ("32.768" in t or "32k" in t or series_cap) else "warning"
-        out.append(finding(
-            sev, "crystal_no_load_caps",
-            f"crystal {ref} terminal(s) {', '.join(p['net'] for p in missing)} have no load capacitor to GND",
-            fix=(f"add a load cap per terminal: CL_each ≈ 2×(CL − Cstray≈3pF), e.g. 2×(10pF−3pF)=14pF→ spec '15pF 0402' via "
-                 f"sch_apply place+connect each to its terminal net and GND (skip only if the MCU datasheet specifies internal load caps)"),
-            items=[f"{ref}.{p['pin']}" for p in missing]))
+        cl = E.crystal_load_pf(m.comps[ref])
+        caps = []
+        for p in terms:
+            vals = [_load_cap_pf(m.comps[c].get("value", "")) for c in loads[p["net"]]]
+            caps.append(sum(v for v in vals if v) if all(vals) else None)
+        if cl is None or None in caps or not all(caps) or not all(0.5 <= c <= 1000 for c in caps):
+            continue                            # unparsed or implausible (e.g. '100n' on a crystal pin): no CL maths
+        c1, c2 = caps
+        series = c1 * c2 / (c1 + c2)
+        lo, hi = series + s_lo - tol, series + s_hi + tol
+        cap_refs = [c for p in terms for c in loads[p["net"]]]
+        if not lo <= cl <= hi:
+            each = 2 * (cl - (s_lo + s_hi) / 2)
+            pick = E._e12_near(each)
+            fix = (f"for CL={cl:g} pF use C1=C2≈2×(CL−Cstray≈{(s_lo + s_hi) / 2:g} pF)={each:.3g} pF → {pick:g}pF C0G: sch_apply(ops=["
+                   + ",".join(f'{{"op":"set_field","ref":"{c}","field":"Value","value":"{pick:g}pF"}}' for c in cap_refs)
+                   + "]) then parts_source_bom() to re-source them") if each > 0 else (
+                   f"CL={cl:g} pF is below the board's stray capacitance alone: use a crystal specified for a larger load (8–12 pF) "
+                   f"or check the MCU datasheet's oscillator section")
+            out.append(finding(
+                "warning", "crystal_load_mismatch",
+                f"crystal {ref} needs CL={cl:g} pF but its load caps {', '.join(cap_refs)} ({c1:g} pF, {c2:g} pF) give "
+                f"{series:.3g} pF + {s_lo:g}–{s_hi:g} pF stray = {series + s_lo:.3g}–{series + s_hi:.3g} pF: the oscillator "
+                f"runs off-frequency (or fails to start)",
+                fix=fix, items=[ref] + cap_refs))
+        elif max(c1, c2) / min(c1, c2) > 1.5:
+            out.append(finding("info", "crystal_caps_unequal",
+                               f"crystal {ref} load caps differ ({c1:g} pF vs {c2:g} pF); Pierce loads are normally equal",
+                               fix="use the same value on both terminals unless the MCU's oscillator guide says otherwise",
+                               items=[ref] + cap_refs))
     return out
 
 
@@ -908,10 +963,81 @@ def check_thermal_pad(m: _Model) -> list[dict]:
 
 
 # ── entry point ───────────────────────────────────────────────────────────
-def review(pr, checks: list[str] | None = None, include_erc: bool = True, netlist: dict | None = None) -> dict:
+def parse_volts(v, net: str = "") -> float:
+    """24 / 24.0 / '24' / '24V' / '24 V' / '3V3' → float; anything else is a ValueError that names the net."""
+    if isinstance(v, bool):
+        pass
+    elif isinstance(v, (int, float)):
+        f = float(v)
+        if math.isfinite(f):
+            return f
+    elif isinstance(v, str):
+        s = v.strip().replace(" ", "")
+        mm = re.fullmatch(r"([+-]?\d+(?:\.\d+)?)(?:V(?:DC)?)?", s, re.I) or re.fullmatch(r"(\d+)V(\d+)", s, re.I)
+        if mm:
+            return float(f"{mm.group(1)}.{mm.group(2)}") if mm.lastindex == 2 else float(mm.group(1))
+    raise ValueError(f"rail_volts[{net!r}] = {v!r} is not a voltage: give a number of volts, e.g. 24 or '3V3' "
+                     f"(null forgets the net)")
+
+
+def _state_project(pr):
+    """The project whose .copper/ holds remembered state: a live host's shadow checkout
+    (<project>/.copper/shadow/<rev>/) shares the real project's, so values outlive the rev."""
+    try:
+        from ..host import route
+        d = Path(pr.dir)
+        if not route.is_shadow(d):
+            return pr
+    except (AttributeError, TypeError, ImportError):
+        return pr
+    from ..project import Project
+    real = route.shadow_project(d)
+    if real:
+        pros = sorted(Path(real).glob("*.kicad_pro"))
+        name = next((x.stem for x in pros if x.stem == getattr(pr, "name", None)), pros[0].stem if pros else None)
+        if name:
+            return Project(Path(real), name)
+    for a in d.parents:
+        if a.name.lower() == ".copper":
+            pros = sorted(a.parent.glob("*.kicad_pro"))
+            name = next((x.stem for x in pros if x.stem == getattr(pr, "name", None)), pros[0].stem if pros else None)
+            if name:
+                return Project(a.parent, name)
+    return pr
+
+
+def rail_volts_for(pr, rail_volts: dict | None = None) -> dict:
+    """The project's remembered rail voltages ({net: volts}, .copper/verify.json) merged with `rail_volts`;
+    a non-empty `rail_volts` is remembered for later reviews and sch_apply's post-write checks (null drops a net)."""
+    from .common import load_state, save_state
+    if pr is not None:
+        pr = _state_project(pr)
+    try:
+        saved = dict((load_state(pr) or {}).get("rail_volts") or {}) if pr is not None else {}
+    except (AttributeError, OSError, TypeError, ValueError):     # a bare stand-in project (tests, live hosts)
+        saved, pr = {}, None
+    if rail_volts:
+        if not isinstance(rail_volts, dict):
+            raise ValueError("rail_volts must be an object {net: volts}, e.g. {'VBUS_M': 24}")
+        parsed = {}
+        for k, v in rail_volts.items():
+            parsed[k] = None if v is None else parse_volts(v, k)
+        for k, v in parsed.items():                 # all validated before anything is remembered
+            if v is None:
+                saved.pop(k, None)
+            else:
+                saved[k] = v
+        if pr is not None:
+            save_state(pr, "rail_volts", saved)
+    return saved
+
+
+def review(pr, checks: list[str] | None = None, include_erc: bool = True, netlist: dict | None = None,
+           rail_volts: dict | None = None) -> dict:
     nl = netlist or load_netlist(pr)
     m = _Model(nl)
     m.pr = pr
+    m.rail_override = rail_volts_for(pr, rail_volts)
     want = set(checks or DEFAULT_CHECKS)
     findings: list[dict] = []
     stats: dict = {}
@@ -921,6 +1047,8 @@ def review(pr, checks: list[str] | None = None, include_erc: bool = True, netlis
              ("enable_pins", check_enable_pins), ("led_resistors", check_led_resistors),
              ("footprints", check_footprints), ("single_pin_nets", check_single_pin_nets), ("net_names", check_net_names),
              ("regulator_setpoint", check_regulator_setpoint), ("power_path", check_power_path), ("thermal_pad", check_thermal_pad)]
+    from . import electrical
+    table += electrical.TABLE
     for name, fn in table:
         if name in want:
             run.append(name)
@@ -963,6 +1091,9 @@ def review(pr, checks: list[str] | None = None, include_erc: bool = True, netlis
                   "by_kind": _count(m.kind.values())})
     if getattr(m, "setpoints", None):
         stats["regulator_setpoints"] = m.setpoints
+    if getattr(m, "_rails", None):
+        stats["rail_volts"] = {base_net(n): (v if how != "tvs_bound" else f"<={v:g} (TVS stand-off)")
+                               for n, (v, how) in sorted(m._rails.items()) if how != "ground"}
     out = {"counts": counts, "findings": findings, "stats": stats, "checks_run": run}
     if style is not None:       # kept apart: drawing advice is never sorted in among engineering findings
         # (when both lists come back they still share one result size cap)

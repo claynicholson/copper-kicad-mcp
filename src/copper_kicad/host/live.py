@@ -85,10 +85,10 @@ def route_of(tool) -> str:
 
 
 class _Checkout:
-    def __init__(self, res: dict):
+    def __init__(self, res: dict, project=None):
         self.dir = Path(res["shadow_dir"])
         from . import route
-        route.note_shadow(self.dir)
+        route.note_shadow(self.dir, project)
         self.rev = res["rev"]
         self.sheets = [s for s in res.get("sheets") or [] if isinstance(s, dict) and s.get("file")]
         self.before = self.read_sheets()
@@ -174,7 +174,7 @@ class LiveSession:
             co = self.checkouts.get(document)
             if co is not None and self.revs.get(document) in (None, co.rev) and co.dir.is_dir():
                 return co
-            co = _Checkout((host or self.host).checkout(document))
+            co = _Checkout((host or self.host).checkout(document), self.project_dir)
             self.checkouts[document] = co
             self.revs[document] = co.rev
             return co

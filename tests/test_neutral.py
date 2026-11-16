@@ -743,6 +743,8 @@ VENDOR_FILES = {
     "review/common.py": "lcsc_of(): the LCSC field parser used by the lcsc provider and the jlcpcb profile",
     "review/design_review.py": "JLC class/fee check, active only for profiles with part_classes; ESD example part",
     "review/verify.py": "_DEFAULT_FAB: hint numbers when no profile can be read",
+    "review/electrical.py": "part ratings read from the LCSC field via the lcsc engine's offline table / cache (MPN and Value work without it)",
+    "review/data/electrical.json": "datasheet sources cross-checked against JLC/LCSC part records",
     "sch/ops.py": "'lcsc' op key = shorthand for the default provider; LCSC as default part field",
     "sch/model.py": "shows LCSC/MPN fields in component listings", "pcb/workers/board.py": "copies LCSC/MPN fields to footprints",
     "pcb/route.py": "comments citing JLC numbers as examples", "kicad/libs.py": "a comment",

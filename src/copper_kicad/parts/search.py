@@ -25,11 +25,20 @@ A part that confirms only some of the words comes back match='partial' with the 
 Ranking: spec relevance first (a '10k 0603' query only returns 10 kΩ 0603
 parts at the top), then Basic > Preferred > Extended, then in-stock, stock,
 price.
+
+Speed: inside search() every live request has a SOURCE_TIMEOUT budget (retries included) and goes through
+the per-host circuit breaker (common.http), answers are cached for SEARCH_TTL (24 h; stock older than an
+hour is labelled), independent requests run concurrently, a C-number is one record lookup (cached 24 h),
+and a part number that JLC answers with an exact in-stock match skips the jlcsearch supplement.
 """
 from __future__ import annotations
 
+import concurrent.futures as _cf
+import contextlib
 import json
 import re
+import threading
+import time
 import urllib.parse
 from typing import Iterable
 
@@ -38,8 +47,84 @@ from .common import NetError
 
 JLC_LIST_URL = "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList"
 JLCSEARCH = "https://jlcsearch.tscircuit.com"
-LIVE_TTL = 3600          # JLC / jlcsearch results
+LIVE_TTL = 3600          # JLC / jlcsearch results (parts_get, importer: fresh stock)
 NEG_TTL = 600
+SEARCH_TTL = 86400       # search() answers and C-number records: 24 h (stock older than LIVE_TTL is labelled)
+SOURCE_TIMEOUT = 5.0     # seconds one live source may take inside search(), retries included
+
+# ── request options for the live sources (per thread, so a batch can run searches side by side) ──
+_NET = threading.local()
+_IO_POOL = _cf.ThreadPoolExecutor(max_workers=12, thread_name_prefix="copper-parts-io")
+
+
+def _opts() -> dict:
+    return getattr(_NET, "opts", None) or {}
+
+
+@contextlib.contextmanager
+def net_options(**kw):
+    """Within the block, jlc_query / jlcsearch_get on this thread use ttl / budget / breaker from kw."""
+    old = getattr(_NET, "opts", None)
+    _NET.opts = dict(old or {}, **kw)
+    try:
+        yield
+    finally:
+        _NET.opts = old
+
+
+def _bg(fn, *a, **kw) -> _cf.Future:
+    """Run fn on the I/O pool with this thread's request options."""
+    opts = _opts()
+
+    def run():
+        _NET.opts = opts
+        try:
+            return fn(*a, **kw)
+        finally:
+            _NET.opts = None
+    return _IO_POOL.submit(run)
+
+
+def _wait(fut: _cf.Future, budget: float | None = None):
+    """A background source's answer; a source that overruns its budget is a NetError, never a hang."""
+    lim = (budget or SOURCE_TIMEOUT) * 3 + 2      # the request budget, plus time queued behind the per-host rate limit
+    try:
+        return fut.result(timeout=lim)
+    except _cf.TimeoutError:
+        err = NetError(f"no answer within {lim:.0f} s")
+        err.trip = "no answer in time"
+        raise err
+
+
+def _net_kw() -> dict:
+    o = _opts()
+    kw = {}
+    if o.get("budget"):
+        kw["budget"] = o["budget"]
+    if o.get("breaker"):
+        kw["breaker"] = o["breaker"]        # True, or "check": skip an open breaker but never count a failure
+    return kw
+
+
+def _stale_empty(hit, ns: str, key: str) -> bool:
+    """An EMPTY cached answer ('not listed', no rows) lives at most LIVE_TTL even under the 24 h search TTL:
+    a transient empty answer or a part added to the catalogue today must not stay invisible for a day."""
+    if isinstance(hit, dict):
+        lists = [v for v in hit.values() if isinstance(v, list)]
+        empty = bool(lists) and not any(lists)
+    else:
+        empty = hit == []
+    if not empty:
+        return False
+    age = C.cache_age(ns, key)
+    return age is None or age > LIVE_TTL
+
+
+def _aged(rows: list, age: float | None) -> list:
+    if age is not None and age > LIVE_TTL:
+        for r in rows:
+            r["cached_s"] = int(age)
+    return rows
 
 
 # ── record normalisation ─────────────────────────────────────────────────
@@ -107,8 +192,11 @@ def from_jlcsearch(it: dict) -> dict:
 
 # ── JLC live API ─────────────────────────────────────────────────────────
 def jlc_query(keyword: str, *, page_size: int = 50, basic_only: bool = False, preferred_only: bool = False,
-              in_stock: bool = True, ttl: float = LIVE_TTL, category: str | None = None) -> list[dict]:
-    """category = an exact (case-sensitive) JLC catalogue sub-category name, e.g. 'Gas Sensors'."""
+              in_stock: bool = True, ttl: float | None = None, category: str | None = None) -> list[dict]:
+    """category = an exact (case-sensitive) JLC catalogue sub-category name, e.g. 'Gas Sensors'.
+    ttl: cache lifetime (default LIVE_TTL, or the enclosing net_options' ttl)."""
+    if ttl is None:
+        ttl = _opts().get("ttl") or LIVE_TTL
     body = {"keyword": keyword or "", "currentPage": 1, "pageSize": max(1, min(100, page_size))}
     if category:
         body["secondSortName"] = category      # JLC's request field for what its rows call firstSortName
@@ -120,9 +208,9 @@ def jlc_query(keyword: str, *, page_size: int = 50, basic_only: bool = False, pr
         body["stockFlag"] = True
     key = json.dumps(body, sort_keys=True)
     hit = C.cache_get("jlc", key, ttl)
-    if hit is not None:
-        return [from_jlc(x) for x in hit]
-    d = C.http_json(JLC_LIST_URL, body, retries=2, backoff=2.0)
+    if hit is not None and not _stale_empty(hit, "jlc", key):
+        return _aged([from_jlc(x) for x in hit], C.cache_age("jlc", key))
+    d = C.http_json(JLC_LIST_URL, body, retries=2, backoff=2.0, **_net_kw())
     if not isinstance(d, dict) or d.get("code") != 200:
         raise NetError(f"JLC API returned {str(d)[:160]}")
     lst = ((d.get("data") or {}).get("componentPageInfo") or {}).get("list") or []
@@ -145,12 +233,15 @@ def _d1_overloaded(body: bytes) -> bool:
     return b"overloaded" in body[:400] or b"D1_ERROR" in body[:400]
 
 
-def jlcsearch_get(path: str, params: dict, ttl: float = LIVE_TTL) -> dict:
+def jlcsearch_get(path: str, params: dict, ttl: float | None = None) -> dict:
+    if ttl is None:
+        ttl = _opts().get("ttl") or LIVE_TTL
     url = f"{JLCSEARCH}{path}?{urllib.parse.urlencode({k: v for k, v in params.items() if v is not None})}"
     hit = C.cache_get("jlcsearch", url, ttl)
-    if hit is not None:
+    if hit is not None and not _stale_empty(hit, "jlcsearch", url):
         return hit
-    d = C.http_json(url, headers={"User-Agent": C.UA_BROWSER}, retries=4, backoff=1.5, retry_if=_d1_overloaded)
+    d = C.http_json(url, headers={"User-Agent": C.UA_BROWSER}, retries=4, backoff=1.5, retry_if=_d1_overloaded,
+                    **_net_kw())
     if isinstance(d, dict) and d.get("error"):
         raise NetError(f"jlcsearch: {d.get('message') or d.get('error')}")
     C.cache_put("jlcsearch", url, d)
@@ -535,13 +626,135 @@ def _jlc_keyword(spec: dict, raw: str) -> str:
     return " ".join(t for t in toks if t)
 
 
+# ── exact identifiers: one lookup, no broad search ───────────────────────
+_CODE_RE = re.compile(r"\s*(LCSC[\s#:]*)?[Cc]([1-9]\d{1,9})\s*", re.I)
+CODE_SURE_DIGITS = 5      # 'C25804': an LCSC code. 'C1815' / 'C945' / 'C5200' are also transistor part numbers
+
+
+def exact_code(q) -> str | None:
+    """'C25804' / 'c25804' / 'LCSC C25804' → 'C25804'; anything else (a value, an MPN, digits alone) → None."""
+    m = _CODE_RE.fullmatch(str(q or ""))
+    return "C" + m.group(2) if m else None
+
+
+def code_is_ambiguous(q) -> bool:
+    """A bare C plus 2-4 digits ('C1815', 'C945', 'C3198') reads as an LCSC code AND as a common transistor part
+    number (2SC1815, 2SC945): search() asks both. 'LCSC C1815' or 5+ digits is a code only."""
+    m = _CODE_RE.fullmatch(str(q or ""))
+    return bool(m) and not m.group(1) and len(m.group(2)) < CODE_SURE_DIGITS
+
+
+def confident_mpn(spec: dict, q: str) -> bool:
+    """The whole query is one part number ('STM32G431CBT6', 'AMS1117-3.3'): a single token, letters and digits,
+    6+ characters, nothing else parsed. JLC answering it with that exact part ends the search."""
+    from .basic import _alnum
+    mpn = spec.get("mpn")
+    q = str(q or "").strip()
+    if not mpn or spec.get("value") is not None or not q or re.search(r"\s", q):
+        return False
+    a = _alnum(q)
+    return a == _alnum(mpn) and len(a) >= 6 and bool(re.search(r"[a-z]", a)) and bool(re.search(r"\d", a))
+
+
+def lookup_code(code: str, filters: dict | None = None, limit: int = 10, live: bool = True,
+                sources: tuple = ("seed", "jlc", "jlcsearch"), raw: bool = False) -> dict:
+    """One LCSC C-number: JLC, else jlcsearch, else the offline table. Both live answers come from their own
+    caches (SEARCH_TTL, the age carried as cached_s / stock_note), so a repeat costs no request and old stock is
+    never re-stored as fresh. Same answer shape as search(); a part that fails only the stock filter is listed
+    under out_of_stock."""
+    from . import basic
+    f = dict(filters or {})
+    f.setdefault("in_stock", True)
+    status: dict[str, str] = {}
+    rec = None
+    if live and "jlc" in sources:
+        try:
+            rec = next((r for r in jlc_query(code, page_size=5, in_stock=False) if r.get("lcsc") == code), None)
+            if rec is None:
+                status["jlc"] = "ok (not listed)"
+            elif rec.get("cached_s"):
+                status["jlc"] = f"ok (1 row, assembly stock cached {int(rec['cached_s'] // 3600)} h ago)"
+            else:
+                status["jlc"] = "ok (1 row, live assembly stock)"
+        except NetError as e:
+            status["jlc"] = f"unavailable: {e}"
+    if rec is None and live and "jlcsearch" in sources:
+        try:
+            rec = next((r for r in jlcsearch_components(code, limit=5) if r.get("lcsc") == code), None)
+            status["jlcsearch"] = "ok (1 row)" if rec else "ok (not listed)"
+        except NetError as e:
+            status["jlcsearch"] = f"unavailable: {e}"
+    if rec is None and "seed" in sources:
+        rec = next((dict(r) for r in basic.all_parts() if r.get("lcsc") == code), None)
+        status["seed"] = f"ok (snapshot {basic.snapshot_date()})" if rec else "ok (not in the offline table)"
+    res = {"results": [], "sources": status, "spec": {"lcsc": code}, "total_considered": 1 if rec else 0,
+           "best_relevance": 0, "note": CLASS_NOTE, "exact": "lcsc"}
+    if rec is None:
+        down = [k for k, v in status.items() if v.startswith("unavailable")]
+        res["match_note"] = f"{code} was not found" + (f" ({', '.join(down)} unreachable: try again later)" if down
+                                                       else " in the JLC catalogue")
+        return res
+    if apply_filters([rec], f):
+        res["results"] = [present(rec, relevance=0)]
+        if raw:
+            res["records"] = [dict(rec, _score=0)]
+        return res
+    nostock = {k: v for k, v in f.items() if k not in ("in_stock", "min_stock")}
+    if apply_filters([rec], nostock) and rec.get("stock") is not None and rec["stock"] <= 0:
+        res["out_of_stock"] = [present(rec, relevance=0)]
+    else:
+        res["filtered_out"] = [present(rec, relevance=0)]
+        res["match_note"] = (f"{code} exists ({rec.get('mfr') or '?'}, {rec.get('package') or '?'}, stock {rec.get('stock')}) "
+                             f"but does not pass the filters {sorted(k for k, v in f.items() if v)}")
+    return res
+
+
 def search(query: str = "", filters: dict | None = None, limit: int = 10, live: bool = True,
            sources: tuple = ("seed", "jlc", "jlcsearch"), raw: bool = False, expand: bool = False) -> dict:
     """Combined search. Returns {'results': [...], 'sources': {name: status}, 'spec': parsed}.
     raw=True also returns the full ranked records (with '_score') under 'records'.
     expand=True (parts_search) spends extra live queries on a descriptive query that found too little —
     wording variants, then the catalogue category — and lists out-of-stock matches under 'out_of_stock'
-    when nothing in stock carries the asked part number."""
+    when nothing in stock carries the asked part number.
+    A bare C-number ('C25804', 'LCSC C1815') is one record lookup (lookup_code). A short one that is also a part
+    number ('C1815', 'C945') is asked both ways at once: parts carrying that part number answer and the LCSC record
+    is named under `lcsc_code`; with no part-number match the LCSC record answers. Live requests made here are
+    bounded by SOURCE_TIMEOUT, go through the circuit breaker and are cached for SEARCH_TTL (empty answers 1 h)."""
+    with net_options(ttl=SEARCH_TTL, budget=SOURCE_TIMEOUT, breaker=True):
+        code = exact_code(query)
+        if code and not code_is_ambiguous(query):
+            return lookup_code(code, filters, limit=limit, live=live, sources=sources, raw=raw)
+        if code:
+            return _either(code, query, filters, limit, live, sources, raw, expand)
+        return _search(query, filters, limit, live, sources, raw, expand)
+
+
+def _either(code, query, filters, limit, live, sources, raw, expand) -> dict:
+    """'C1815': the part-number search and the LCSC-code lookup side by side."""
+    fut = _bg(lookup_code, code, filters, limit=limit, live=live, sources=sources, raw=raw)
+    by_mpn = _search(query, filters, limit, live, sources, raw, expand)
+    try:
+        by_code = _wait(fut)
+    except NetError as e:
+        by_code = {"results": [], "sources": {"lcsc_code": f"unavailable: {e}"}}
+    rec = (by_code.get("results") or by_code.get("out_of_stock") or by_code.get("filtered_out") or [None])[0]
+    if by_mpn.get("results"):
+        if rec is not None:
+            by_mpn["lcsc_code"] = rec
+            by_mpn["match_note"] = ((by_mpn["match_note"] + "; ") if by_mpn.get("match_note") else "") + (
+                f"'{query.strip()}' is also the LCSC code of {rec.get('mfr_part') or rec.get('mfr') or '?'} "
+                f"({rec.get('package') or '?'}): ask 'LCSC {code}' for that part")
+        return by_mpn
+    by_code.setdefault("sources", {})
+    for k, v in (by_mpn.get("sources") or {}).items():
+        by_code["sources"].setdefault(k, v)
+    if rec is not None:
+        by_code["match_note"] = ((by_code["match_note"] + "; ") if by_code.get("match_note") else "") + (
+            f"no part carries the part number '{query.strip()}': this is LCSC code {code}")
+    return by_code
+
+
+def _search(query, filters, limit, live, sources, raw, expand) -> dict:
     from . import basic
     f = dict(filters or {})
     f.setdefault("in_stock", True)
@@ -618,18 +831,37 @@ def search(query: str = "", filters: dict | None = None, limit: int = 10, live: 
     # a keyword rebuilt from a parsed value ('10k 0603', '1x5P 2.54mm') is already in catalogue wording
     widen = bool(expand and descriptive and (kw == q or mpn))
     stock_flag = bool(f.get("in_stock"))
+    one_mpn = bool(q) and confident_mpn(spec, q)
+    parametric = spec.get("kind") in _JS_ROUTES and spec.get("value") is not None
+    # jlcsearch is all but certain to be asked for a part number or a description: ask it alongside JLC, not
+    # after it (a lone part number asks JLC first: an exact in-stock match there ends the search)
+    js_fut = None
+    if live and q and "jlc" in sources and "jlcsearch" in sources and not one_mpn and not parametric \
+            and (mpn or widen):
+        with net_options(breaker="check"):          # its answer may be discarded: a failure counts only when used
+            js_fut = _bg(jlcsearch_components, mpn or q, limit=40)
+    exact_hit = False
     if live and "jlc" in sources and q:
         tried, n_rows = [], 0
         try:
-            rows = jlc_query(kw, page_size=100, basic_only=bool(f.get("basic_only")), in_stock=stock_flag)
+            fb = None
             if spec.get("value") is not None and not f.get("basic_only"):
-                rows += jlc_query(kw, page_size=50, basic_only=True, in_stock=stock_flag)
+                fb = _bg(jlc_query, kw, page_size=50, basic_only=True, in_stock=stock_flag)
+            try:
+                rows = jlc_query(kw, page_size=100, basic_only=bool(f.get("basic_only")), in_stock=stock_flag)
+            finally:
+                extra = _wait(fb) if fb is not None else []
+            rows += extra
             if not rows and kw != q:
                 rows = jlc_query(q, page_size=100, in_stock=stock_flag)
             add(rows, prefer=True)
             jlc_ok = True
             n_rows = len(rows)
-            status["jlc"] = f"ok ({n_rows} rows, live assembly stock)"
+            status["jlc"] = f"ok ({n_rows} rows, live assembly stock)" if not any(r.get("cached_s") for r in rows) \
+                else f"ok ({n_rows} rows, assembly stock cached up to {SEARCH_TTL // 3600} h)"
+            if one_mpn:
+                want = basic._alnum(mpn)
+                exact_hit = any(basic._alnum(r.get("mfr")) == want for r in apply_filters(rows, f))
             if widen:
                 variants = [v for v in keyword_variants(phrase) if v.lower() not in (kw.lower(), q.lower())]
                 if cat and cat not in C.KINDS:
@@ -650,11 +882,22 @@ def search(query: str = "", filters: dict | None = None, limit: int = 10, live: 
 
     # 3. jlcsearch (fallback / supplement). Its search reads descriptions, so it finds what JLC's keyword matcher misses.
     short = (not enough()) if widen else len(pool) < limit
+    if exact_hit:
+        short = False
+        if live and "jlcsearch" in sources:
+            status["jlcsearch"] = "skipped (JLC has this exact part number in stock)"
     if live and "jlcsearch" in sources and q and (not jlc_ok or short):
         try:
             rows = []
-            if spec.get("kind") in _JS_ROUTES and spec.get("value") is not None:
+            if parametric:
                 rows = jlcsearch_parametric(spec["kind"], spec["value"], spec.get("package"), bool(f.get("basic_only")))
+            elif js_fut is not None:
+                try:
+                    rows = _wait(js_fut)
+                except NetError as e:
+                    if getattr(e, "trip", None):    # an outage only: not a 4xx, an error body or the breaker's own skip
+                        C.breaker_fail(JLCSEARCH, e.trip)
+                    raise
             else:
                 rows = jlcsearch_components(mpn or q, limit=40)
             # jlcsearch stock can be stale/null: never let it override a JLC record
@@ -749,6 +992,8 @@ def present(r: dict, relevance: int | None = None, unconfirmed: list | None = No
         d["params"] = {k: (round(v, 15) if isinstance(v, float) else v) for k, v in r["typed"].items() if v is not None}
     if str(r.get("stock_source") or "").startswith(("snapshot", "jlcsearch")):
         d["stock_note"] = f"stock from {r['stock_source']} (not live)"
+    elif r.get("cached_s"):
+        d["stock_note"] = f"JLC assembly stock as of {r['cached_s'] // 3600} h ago (cached; parts_get for live stock)"
     if r.get("stock") is not None and r["stock"] <= 0:
         d["warning"] = "out of JLC assembly stock"
     if relevance is not None and relevance > 0:

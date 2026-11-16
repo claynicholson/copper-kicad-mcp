@@ -170,6 +170,21 @@ def _groups(findings: list, limit: int = 6) -> tuple[list, dict]:
     return errs, warn
 
 
+def route_past_preflight(call, timeout, timeout_after, notes: list, open_pads: list) -> dict:
+    """board_build's Freerouting step: pcb_route, and when its preflight proves some pads walled in
+    (ROUTE_PREFLIGHT_FAILED) note them and route everything else anyway (force=True) — one unreachable pad
+    must not stop the whole build. ``call(**kw)`` runs pcb_route and returns its data."""
+    try:
+        return call(timeout=timeout)
+    except ToolError as e:
+        if e.code != "ROUTE_PREFLIGHT_FAILED":
+            raise
+        w = ((e.data or {}).get("preflight") or {}).get("walled") or []
+        notes.append(f"preflight: {e.message[:200]}" + (f" ({e.fix[:160]})" if e.fix else ""))
+        open_pads.extend(x["pad"] for x in w if x.get("pad") and x["pad"] not in open_pads)
+        return call(timeout=timeout_after(), force=True)
+
+
 @tool("board_build",
       """The whole board in ONE call: update the PCB from the schematic, outline, placement, routing, ground pour and
 KiCad's DRC + ERC, with one compact report (a line per stage, error groups with fixes, `fab_ready`, `next`). Use it
@@ -197,7 +212,9 @@ Example: board_build(width=50, height=32)""",
        "while_open": {"type": "string", "enum": ["refuse", "revert"], "description": "refuse (default) | revert"}},
       title="Build the board (sync to DRC)", destructive=True, open_world=False, group="pcb", max_bytes=6000,
       help="""## What it does, step by step
-        sync    pcb_sync(): footprints and nets from the schematic. Never removes footprints. On a board that has
+        sync    pcb_sync(): footprints and nets from the schematic. Never removes footprints. A routed board takes
+                the ECO path (pcb_sync(eco=true)): only copper of nets that lost pads, of vanished nets and under
+                swapped footprints is ripped up; new parts that land on tracks get those tracks ripped. On a board that has
                 copper and was not built by board_build, footprints that differ from the schematic's are reported
                 and kept as drawn (pcb_sync() swaps them).
         setup   pcb_setup(width, height, radius, holes, layers): only when there is no outline, with outline='replace',
@@ -360,7 +377,10 @@ def _build(pr, width, height, radius, holes, layers, outline, steps, router, pou
             want_fp = {c.get("ref"): c.get("footprint") for c in nl.get("components", [])}
             differ = sorted(f["ref"] for f in snap0.get("footprints", [])
                             if want_fp.get(f["ref"]) and f.get("footprint") and want_fp[f["ref"]] != f["footprint"])
-        r = T.pcb_sync(project=proj, remove_extra=False, update_footprints=swap, while_open=while_open, render=False).data
+        # a routed board takes the ECO path: only copper the change invalidated is ripped up, the rest stays
+        eco = bool(snap0.get("tracks") or snap0.get("vias"))
+        r = T.pcb_sync(project=proj, remove_extra=False, update_footprints=swap, while_open=while_open, render=False,
+                       eco=eco).data
         after = snapshot(fresh=True)
         new_refs = sorted({f["ref"] for f in after.get("footprints", [])} - refs_before)
         line = f"+{r['added']} parts" if r.get("added") else "no new parts"
@@ -369,6 +389,10 @@ def _build(pr, width, height, radius, holes, layers, outline, steps, router, pou
         if r.get("replaced"):
             line += f", {r['replaced']} footprints swapped"
         line += f", {r.get('nets')} nets"
+        e = r.get("eco") or {}
+        if e.get("tracks_removed") or e.get("vias_removed"):
+            line += (f"; ECO rip-up {e['tracks_removed']} tracks, {e['vias_removed']} vias on "
+                     f"{len(e.get('deleted') or {})} nets (the rest of the routing kept)")
         if r.get("extra"):
             line += f"; {len(r['extra'])} on the board but not in the schematic ({', '.join(r['extra'][:6])}): kept"
         errs = r.get("errors") or []
@@ -464,6 +488,14 @@ def _build(pr, width, height, radius, holes, layers, outline, steps, router, pou
             kw["moves"] = moves
         r = T.pcb_place(**kw).data
         cache["unconnected"] = ((r.get("verify") or {}).get("drc") or {}).get("unconnected", cache["unconnected"])
+        if state != "new" and kw.get("refs") and (snap.get("tracks") or snap.get("vias")):
+            # ECO: tracks / vias the new parts now sit on are ripped up (and what that leaves dangling); their
+            # connections are routed again by the route step with everything else kept
+            rr = board.run_ops(pr, [{"op": "eco_rip", "refs": list(kw["refs"])}], while_open=while_open,
+                               label="before-eco-rip")["results"][0]
+            if rr.get("tracks") or rr.get("vias"):
+                notes.append(f"ECO: ripped {rr['tracks']} tracks, {rr['vias']} vias under the new parts")
+                cache["unconnected"] = None              # the route step reads it fresh
         sc = r.get("score") or {}
         n = len(r.get("changed") or [])
         line = (f"{n} placed" + (f", {kept_placed} already on the board kept" if kept_placed else "")
@@ -565,8 +597,10 @@ def _build(pr, width, height, radius, holes, layers, outline, steps, router, pou
             if router == "freerouting" or ready:
                 tmo = int(max(20, remaining() - 8))
                 skip = pour_nets or [n["name"] for n in snapshot().get("nets", []) if placer.is_ground(n["name"])]
-                r = T.pcb_route(project=proj, ignore_nets=skip or None, timeout=tmo, while_open=while_open,
-                                render=False, _progress=progress).data
+                r = route_past_preflight(
+                    lambda **k: T.pcb_route(project=proj, ignore_nets=skip or None, while_open=while_open,
+                                            render=False, _progress=progress, **k).data,
+                    tmo, lambda: int(max(20, remaining() - 8)), notes, open_pads)
                 if r.get("nothing_to_route"):
                     lines.append("freerouting: nothing to route")
                 else:

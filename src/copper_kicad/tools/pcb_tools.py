@@ -6,6 +6,7 @@ while_open='revert'), checkpointed first, and re-verified with kicad-cli DRC.
 """
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -283,20 +284,31 @@ Copper follows the nets: tracks/vias/zones of a renamed net move to the new name
 are removed; tracks/vias left from deleted parts are reported (ORPHAN_COPPER with their uuids).
 remove_extra=true deletes footprints that are no longer in the schematic (mounting holes / board-only items are kept)
 and that orphaned copper.
-Example: pcb_sync() → then pcb_setup(width=50, height=40) on a new board.""",
+
+eco=true — engineering change on a ROUTED board: rip up only what the change invalidated instead of the whole board.
+Copper of nets that lost a pad is removed back from that pad to the nearest junction, copper of vanished nets is
+removed, other nets' tracks/vias that a swapped footprint's new pads collide with are removed, and any copper left
+dangling on those nets (the swapped part's own nets included) is pruned. Nets that only GAINED pads keep their copper; pure renames keep theirs.
+Returns `eco` {deleted {net: {tracks, vias}}, nets_lost_pads, nets_gained_pads, footprints_swapped, open {net: n},
+next}: route just those with pcb_route(nets=[...]) — every other net's copper stays fixed. Never use
+pcb_edit(delete all_tracks) for a schematic change: a full re-route of a dense board takes tens of minutes.
+Example: pcb_sync() → then pcb_setup(width=50, height=40) on a new board.
+ECO example: pcb_sync(eco=true) → pcb_place(auto=true, refs=[<new parts>]) → pcb_route(nets=<eco.open>)""",
       {"project": PROJECT,
        "remove_extra": {"type": "boolean", "description": "Delete board footprints whose symbol was deleted (default false: report only)"},
        "update_footprints": {"type": "boolean", "description": "Swap footprints whose schematic Footprint field changed (default true)"},
+       "eco": {"type": "boolean", "description": "Rip up only what changed"},
        "while_open": WHILE_OPEN, "render": RENDER},
       destructive=False, idempotent=True, group="pcb", title="Update PCB from schematic")
-def pcb_sync(project=None, remove_extra=False, update_footprints=True, while_open="refuse", render=True):
+def pcb_sync(project=None, remove_extra=False, update_footprints=True, while_open="refuse", render=True, eco=False):
     pr = projmod.resolve(project)
     nl = board.netlist(pr)
     _check_annotation(nl)
     libs = board.fp_libs(pr)
     create = not pr.pcb.exists()
     res = board.run_ops(pr, [{"op": "sync", "components": nl["components"], "nets": nl["nets"], "libs": libs,
-                              "remove_extra": remove_extra, "update_footprints": update_footprints}],
+                              "remove_extra": remove_extra, "update_footprints": update_footprints,
+                              **({"eco": True} if eco else {})}],
                         create=create, while_open=while_open, label="before-pcb-sync")
     rep = res["results"][0]
     try:   # older projects / templates: 'VBAT*' never matched the local-label net '/VBAT'
@@ -336,6 +348,12 @@ def pcb_sync(project=None, remove_extra=False, update_footprints=True, while_ope
         [f"copper re-netted {k} ({v} items)" for k, v in (rep.get("renamed_copper") or {}).items()] + \
         [f"removed {v} stale copper items of vanished net {k}" for k, v in (rep.get("removed_copper") or {}).items()] + \
         ([f"Power net-class patterns + {', '.join(pats_added)} (match local-label nets)"] if pats_added else [])
+    eco_out = None
+    if eco and rep.get("eco"):
+        eco_out = _eco_report(pr, rep["eco"], [a_["ref"] for a_ in rep["added"]])
+        if rep["eco"]["tracks"] or rep["eco"]["vias"]:
+            changed.append(f"ECO rip-up: {rep['eco']['tracks']} tracks, {rep['eco']['vias']} vias on "
+                           f"{len(rep['eco']['deleted'])} nets")
     if len(changed) > 30:
         changed = changed[:30] + [f"… and {len(changed) - 30} more (pcb_read(what=['footprints']) for the full list)"]
     data = {"changed": changed, "added": len(rep["added"]), "updated": len(rep["updated"]),
@@ -343,10 +361,38 @@ def pcb_sync(project=None, remove_extra=False, update_footprints=True, while_ope
             "nets": rep["nets"], "unassigned_pads": rep["unassigned_pads"][:40],
             "pins_without_pad": rep.get("pins_without_pad", []), "errors": rep["errors"],
             "revision": res["revision"], "verify": {"drc": _drc_brief(d)}, "findings": findings}
+    if eco_out is not None:
+        data["eco"] = eco_out
     imgs = _render(pr, "pcb-sync") if render else []
     summ = (f"pcb_sync: +{len(rep['added'])} added, {len(rep['updated'])} updated, {len(rep['replaced'])} replaced, "
             f"{len(rep['removed'])} removed; parity {d['parity']}, unrouted {d['unconnected']}")
     return Result(data, images=imgs, summary=summ)
+
+
+def _eco_report(pr, e: dict, added: list) -> dict:
+    """pcb_sync(eco=true)'s `eco` block: what was ripped and which connections are open now."""
+    from ..pcb import route as _route
+    try:
+        by_net = _route._board_stats(pr.pcb).get("unconnected_by_net") or {}
+    except ToolError:
+        by_net = {}
+    open_ = dict(sorted(((k, v) for k, v in by_net.items() if v), key=lambda kv: -kv[1]))
+    out = {"deleted": e.get("deleted") or {}, "tracks_removed": e.get("tracks", 0), "vias_removed": e.get("vias", 0),
+           "pruned": e.get("pruned", 0), "nets_lost_pads": e.get("nets_lost_pads") or {},
+           "nets_gained_pads": e.get("nets_gained_pads") or [], "footprints_swapped": e.get("footprints_swapped") or [],
+           "orphans_removed": e.get("orphans_removed") or {}, "open": open_}
+    if e.get("locked_kept"):
+        out["locked_kept"] = e["locked_kept"]     # locked tracks / vias in the way were left alone
+    steps = []
+    if added:
+        steps.append(f"pcb_place(auto=true, refs={added})")
+    route_nets = [n for n in open_ if not placer.is_ground(n)]
+    if route_nets:
+        steps.append(f"pcb_route(nets={route_nets[:40]})")
+    if any(placer.is_ground(n) for n in open_):
+        steps.append("pcb_pour(fill_only=true) for the ground net")
+    out["next"] = " → ".join(steps) if steps else "nothing to re-route"
+    return out
 
 
 def _check_annotation(nl: dict):
@@ -980,7 +1026,11 @@ so on a hand-routed board only the missing connections are added. The DSN is mad
 different net classes keep the largest class clearance (as KiCad DRC does), and power nets whose class width cannot
 leave a fine-pitch pad (0.4 mm QFN) are routed at the widest legal width (`necked_nets`). Connections Freerouting
 cannot finish are handed to Copper's guided router (`guided_finish`: how many it routed and why the rest failed;
-finish=false skips this); its result is only kept when it routes more without adding DRC errors. If the result has
+finish=false skips this); its result is only kept when it routes more without adding DRC errors. If it still
+leaves connections open, it retries once with a targeted rip-up: the failed nets plus the nets whose copper crosses
+their pins' escape region are ripped up and re-routed (`finish_ripup`) — only nets that had no copper before this
+call (pour nets, frozen nets and nets you routed are never ripped); kept only if unrouted drops and DRC errors do
+not rise, else the previous board is put back (finish_ripup=false skips it). If the result has
 more DRC errors and no fewer unrouted connections than before, the board is restored (`reverted`).
 Typical 10–30 part board: 10–90 s; a dense 4-layer board with a 0.4 mm-pitch QFN: 4–7 min and usually some
 connections left at the QFN (what is left is a pad-escape problem, not a lack of layers — opening an inner layer
@@ -991,8 +1041,24 @@ does not finish them; move the decoupling caps off the pad rows or finish by han
 pcb_route() — plane layers are reserved (no traces) and plane nets reach their plane through vias; then optionally
 pcb_pour(net="GND", stitch=true) on the outer layers. On a 4-layer board both inner layers are reserved by default;
 signal_layers=["F.Cu","In2.Cu","B.Cu"] (any subset) overrides that.
+layer_policy='auto': if connections are still open after the main pass, every inner layer whose pours are all
+non-ground (e.g. an In2 +5V / VBUS plane; GND planes are never opened) becomes a signal layer for one more round on the
+leftover nets only. A pour on it that covers the whole board is first shrunk to the convex hull of the pads / vias it
+must reach (+1 mm); a pour already limited with pcb_pour(region=...) is used as it is. The round and the shrink are
+kept only if unrouted drops and DRC errors do not rise (`planes_opened` says what was opened / shrunk).
 clear_existing=true rips up all tracks/vias first (also when nothing is unrouted, e.g. after changing net classes).
-Returns unrouted before/after and `unrouted_nets` {net: count}.
+nets=[...] routes only those nets (an ECO, e.g. the `eco.open` nets of pcb_sync(eco=true)): every other net's copper is
+frozen as a keep-out and its unrouted connections are left alone (`nets_frozen`). Much faster than a full re-route.
+With clear_existing=true only those nets' tracks/vias are deleted first. To re-route a net you changed by hand:
+pcb_edit(ops=[{"op":"delete","nets":[...]}]) then pcb_route(nets=[...]).
+Returns unrouted before/after and `unrouted_nets` {net: count}; `rounds` lists each stage (Freerouting round logs in
+.copper/freerouting-round<N>.log). A second Freerouting round runs only when round 1 left 20+ connections and made
+progress; fewer go straight to the guided finisher.
+Preflight: before Freerouting starts (about 1 s), every pad still to connect is checked for a way out at the fab's
+minimum track/clearance; if a pad is provably walled in, nothing is written and ROUTE_PREFLIGHT_FAILED returns the
+pads, congestion hot spots and suggested moves (force=true routes the rest anyway; board_build() does that itself and
+notes the walled pads). Congestion alone is only reported
+(`preflight.congested`).
 After routing, the tracks this call created are polished (collinear segments merged, 90 degree corners chamfered to
 two 45s, pad entries centred) and unreadable reference designators are re-seated; tracks that existed before the
 call and locked items are never touched, and the polish is undone if it adds a DRC error or an unrouted connection
@@ -1003,27 +1069,31 @@ tracks=[...] — explicit routing, one entry per connection:
   {"from":"U1.3","to":"C3.1","width":0.3,"layer":"F.Cu","style":"45"|"L"|"L2"|"direct","waypoints":[[x,y]],"via_at":[x,y]}
   Pads on different layers get a via automatically. Refuses to join pads on different nets, and checks the path against
   other nets' copper: if every style collides nothing is drawn (ROUTE_BLOCKED names the obstacles; add waypoints).
-Examples: pcb_route() · pcb_route(ignore_nets=["GND"]) · pcb_route(tracks=[{"from":"J1.1","to":"U1.3","width":0.5}])""",
+Examples: pcb_route() · pcb_route(ignore_nets=["GND"]) · pcb_route(tracks=[{"from":"J1.1","to":"U1.3","width":0.5}]) ·
+pcb_sync(eco=true) → pcb_route(nets=["/SPI_SCK","/CS"]) · pcb_route(layer_policy="auto") (4 layers, In2 power plane)""",
       {"project": PROJECT,
        "mode": {"type": "string", "enum": ["auto", "tracks", "polish"]},
        "tracks": {"type": "array", "items": {"type": "object"}},
        "passes": {"type": "integer", "description": "Freerouting max passes (default 30)"},
-       "timeout": {"type": "integer", "description": "Seconds before the router is stopped (default 600, whole call)"},
+       "timeout": {"type": "integer", "description": "Seconds for the whole call (default 600)"},
        "ignore_nets": {"type": "array", "items": {"type": "string"}, "description": "Nets the autorouter must skip"},
        "clear_existing": {"type": "boolean", "description": "Delete existing tracks/vias before autorouting"},
        "signal_layers": {"type": "array", "items": {"type": "string"},
-                         "description": "Copper layers the autorouter may put traces on (default: all but plane layers; "
-                                        "outer layers only on a 4-layer board)"},
-       "keep_worse": {"type": "boolean", "description": "Keep the routed result even if it adds DRC errors without "
-                                                         "reducing unrouted connections (default false: restore)"},
-       "finish": {"type": "boolean", "description": "Hand what Freerouting leaves to the guided router (default true)"},
-       "polish": {"type": "boolean", "description": "Tidy the new tracks and unreadable references afterwards (default true)"},
-       "nets": {"type": "array", "items": {"type": "string"}, "description": "mode='polish': only these nets"},
+                         "description": "Layers for traces (default: all but plane layers)"},
+       "keep_worse": {"type": "boolean", "description": "Keep a result that adds DRC errors without fewer unrouted (default false)"},
+       "finish": {"type": "boolean", "description": "Guided router on what Freerouting leaves (default true)"},
+       "polish": {"type": "boolean", "description": "Tidy the new tracks afterwards (default true)"},
+       "nets": {"type": "array", "items": {"type": "string"},
+                "description": "Only these nets"},
+       "force": {"type": "boolean", "description": "Skip the preflight"},
+       "layer_policy": {"type": "string", "enum": ["planes_only", "auto"],
+                        "description": "auto: open non-ground inner pours to leftovers"},
+       "finish_ripup": {"type": "boolean", "description": "Rip up new copper near open connections and retry (default true)"},
        "while_open": WHILE_OPEN, "render": RENDER},
       destructive=True, open_world=True, group="pcb", title="Route (Freerouting / explicit)")
 def pcb_route(project=None, mode=None, tracks=None, passes=30, timeout=600, ignore_nets=None, clear_existing=False,
               signal_layers=None, keep_worse=False, finish=True, while_open="refuse", render=True, _progress=None,
-              polish=True, nets=None):
+              polish=True, nets=None, force=False, layer_policy="planes_only", finish_ripup=True):
     pr = projmod.resolve(project)
     mode = mode or ("tracks" if tracks else "auto")
     if mode == "polish":
@@ -1068,9 +1138,10 @@ def pcb_route(project=None, mode=None, tracks=None, passes=30, timeout=600, igno
                               f"{d['unconnected']}; DRC errors {before['errors']} → {d['errors']}")
     from ..pcb import route
     names = None
-    if ignore_nets:
+    if ignore_nets or nets:
         names = {n["name"] for n in board.read(pr, what=["nets"]).get("nets", [])}
-        ignore_nets = [_resolve_net(pr, n, names) for n in ignore_nets]
+        ignore_nets = [_resolve_net(pr, n, names) for n in ignore_nets or []] or None
+        nets = [_resolve_net(pr, n, names) for n in nets or []] or None
     try:
         rules_mod.normalize_project(pr, while_open)
     except ToolError:
@@ -1081,7 +1152,8 @@ def pcb_route(project=None, mode=None, tracks=None, passes=30, timeout=600, igno
         uu0 = setup_ext.track_uuids(pr)
     r = route.autoroute(pr, passes=passes, timeout=timeout, clear_existing=clear_existing, ignore_nets=ignore_nets,
                         while_open=while_open, progress=_progress, signal_layers=signal_layers, keep_worse=keep_worse,
-                        finish=finish)
+                        finish=finish, nets=nets, force=force, layer_policy=layer_policy or "planes_only",
+                        finish_ripup=finish_ripup)
     d = r.pop("drc")
     if polish and not r.get("nothing_to_route") and not r.get("reverted"):
         try:
@@ -1092,7 +1164,9 @@ def pcb_route(project=None, mode=None, tracks=None, passes=30, timeout=600, igno
             r["polish"] = {"skipped": str(e)[:200]}
     if r.get("nothing_to_route"):
         return Result(dict(r, changed=[], verify={"drc": _drc_brief(d)}, findings=_findings(d)),
-                      summary="pcb_route: nothing to route (0 unrouted connections); board unchanged")
+                      summary=("pcb_route: nothing to route (the named nets are complete; "
+                               f"{d['unconnected']} unrouted elsewhere); board unchanged" if r.get("nets_routed") else
+                               "pcb_route: nothing to route (0 unrouted connections); board unchanged"))
     r = {k: v for k, v in r.items() if v is not None}
     data = dict(r, changed=[] if r.get("reverted") else
                 [f"autorouted: {r['tracks_added']:+d} track segments, {r['vias_added']:+d} vias "
@@ -1100,7 +1174,12 @@ def pcb_route(project=None, mode=None, tracks=None, passes=30, timeout=600, igno
                 + ([f"removed {r['duplicates_removed']} duplicate segments already on the board"]
                    if r.get("duplicates_removed") else [])
                 + ([f"guided router finished {r['guided_finish']['routed']} connections Freerouting left"]
-                   if r.get("guided_finish") else []),
+                   if r.get("guided_finish") else [])
+                + ([f"finisher rip-up of {len(r['finish_ripup']['nets'])} nets closed {r['finish_ripup']['routed']} more"]
+                   if r.get("finish_ripup") else [])
+                + [f"opened {o['layer']} to signals" + "".join(
+                    f"; {s_['net']} pour on it shrunk {s_.get('area_before_mm2')} -> {s_['area_after_mm2']} mm2"
+                    for s_ in o.get("shrunk") or []) for o in r.get("planes_opened") or []],
                 verify={"drc": _drc_brief(d)}, findings=_findings(d))
     if r.get("reverted"):
         data["findings"].insert(0, {"severity": "warning", "code": "ROUTE_REVERTED", "message": r["reverted"],
@@ -1180,8 +1259,13 @@ in by signal tracks) gets a via into the net's copper on another layer; fragment
 reserves that layer and fans the net's pads out to it with vias.
 Re-running replaces the existing zone for that net/layer. remove=true deletes that net's zones instead.
 fill_only=true just refills all existing zones (after moving parts or routing).
+region limits the pour instead of covering the whole outline: 'auto' = convex hull of the net's pads / vias / tracks
+that the layer must reach (+ region_margin, default 1 mm), [x0,y0,x1,y1] = a rectangle, [[x,y],...] = a polygon (mm);
+refs=["Q1","C14"] = convex hull of those parts. A restricted inner power pour leaves the rest of the layer free for
+signals (pcb_route(layer_policy="auto") routes there; a GND plane should stay whole).
 Examples: pcb_pour() (GND on F.Cu+B.Cu) · pcb_pour(net="GND", stitch=true, stitch_pitch=6) ·
-pcb_pour(net="+3V3", layers=["In2.Cu"]) · pcb_pour(fill_only=true)""",
+pcb_pour(net="+3V3", layers=["In2.Cu"]) · pcb_pour(net="VBUS", layers=["In2.Cu"], region="auto") ·
+pcb_pour(net="VBUS", layers=["In2.Cu"], region=[100,100,140,135]) · pcb_pour(fill_only=true)""",
       {"project": PROJECT,
        "net": {"type": "string", "description": "Net to pour (default GND)"},
        "layers": {"type": "array", "items": {"type": "string"}, "description": "Copper layers (default [F.Cu, B.Cu])"},
@@ -1190,19 +1274,31 @@ pcb_pour(net="+3V3", layers=["In2.Cu"]) · pcb_pour(fill_only=true)""",
        "thermal_gap": {"type": "number", "description": "Thermal relief gap mm (default 0.5)"},
        "thermal_spoke": {"type": "number", "description": "Thermal spoke width mm (default 0.5)"},
        "pad_connection": {"type": "string", "enum": ["thermal", "solid", "tht_thermal", "none"],
-                          "description": "tht_thermal (default: thermal reliefs on through-hole pads, solid SMD pads — reflow friendly, no starved thermals), thermal, solid, none"},
+                          "description": "tht_thermal (default: reliefs on through-hole pads, SMD pads solid)"},
        "priority": {"type": "integer"},
        "stitch": {"type": "boolean", "description": "Add a grid of stitching vias (only where both layers are filled)"},
        "stitch_pitch": {"type": "number", "description": "Stitching via pitch mm (default 5)"},
        "remove": {"type": "boolean", "description": "Remove this net's zones"},
        "fill_only": {"type": "boolean", "description": "Only refill existing zones"},
+       "region": {"description": "'auto' | [x0,y0,x1,y1] | [[x,y],...] mm",
+                  "anyOf": [{"type": "string"}, {"type": "array"}]},
+       "refs": {"type": "array", "items": {"type": "string"}, "description": "Pour over these parts only"},
+       "region_margin": {"type": "number", "description": "mm (default 1)"},
        "while_open": WHILE_OPEN, "render": RENDER},
       destructive=False, idempotent=True, group="pcb", title="Copper pour / zones")
 def pcb_pour(project=None, net="GND", layers=None, clearance=0.3, min_width=0.25, thermal_gap=0.5, thermal_spoke=0.5,
              pad_connection="tht_thermal", priority=0, stitch=False, stitch_pitch=5.0, remove=False, fill_only=False,
-             while_open="refuse", render=True):
+             while_open="refuse", render=True, region=None, refs=None, region_margin=1.0):
     pr = projmod.resolve(project)
     ops, repair = [], {}
+    if isinstance(region, str) and region.strip() != "auto":
+        try:
+            region = json.loads(region)
+        except ValueError:
+            raise ToolError(f"region must be 'auto', [x0,y0,x1,y1] or [[x,y],...], not {region!r}", code="BAD_ARGUMENT",
+                            fix='region="auto" or region=[100,100,140,130]') from None
+    elif isinstance(region, str):
+        region = "auto"
     if remove:
         if net != "*":
             try:
@@ -1214,7 +1310,10 @@ def pcb_pour(project=None, net="GND", layers=None, clearance=0.3, min_width=0.25
         net = _resolve_net(pr, net)
         ops.append({"op": "zone", "net": net, "layers": layers or ["F.Cu", "B.Cu"], "clearance": clearance,
                     "min_width": min_width, "thermal_gap": thermal_gap, "thermal_spoke": thermal_spoke,
-                    "pad_connection": pad_connection, "priority": priority})
+                    "pad_connection": pad_connection, "priority": priority,
+                    **({"region": region} if region is not None else {}),
+                    **({"refs": list(refs)} if refs else {}),
+                    **({"margin": region_margin} if (region is not None or refs) else {})})
         if stitch:
             ops.append({"op": "fill"})
             ops.append({"op": "stitch", "net": net, "pitch": stitch_pitch, "clearance": max(clearance, 0.3)})
@@ -1328,5 +1427,15 @@ def pcb_edit(project=None, ops=None, while_open="refuse", render=False):
             changed.append(f"{o['op']} ok")
     data = {"changed": changed, "results": res["results"], "revision": res["revision"],
             "verify": {"drc": _drc_brief(d)}, "findings": _findings(d)}
+    ripped = sum(r.get("tracks", 0) + r.get("vias", 0) for o, r in zip(wops, res["results"])
+                 if o["op"] == "delete" and o.get("all_tracks"))
+    if ripped:
+        data["findings"].insert(0, {
+            "severity": "warning", "code": "ALL_TRACKS_DELETED",
+            "message": f"deleted every track and via ({ripped} items): the whole board must be re-routed, which takes "
+                       "tens of minutes on a dense board (one 4-layer, 106-part board: 5 route calls, 32 min)",
+            "fix": "checkpoint(action='restore') undoes it. For a schematic change: pcb_sync(eco=true) rips up only the "
+                   "changed nets / swapped parts, then pcb_route(nets=[...]); for a few bad nets: "
+                   "pcb_edit(ops=[{op:'delete', nets:[...]}]) then pcb_route(nets=[...])"})
     return Result(data, images=_render(pr, "pcb-edit") if render else [],
                   summary=f"pcb_edit: {len(wops)} ops; DRC errors {d['errors']}, unrouted {d['unconnected']}")

@@ -268,14 +268,16 @@ def _next(d: dict) -> str:
     return ""
 
 
-@tool("design_review", """Engineering review of the schematic netlist (and the board, if any): catches what passes ERC but kills boards.
-Decoupling, I2C pull-ups, crystal load caps, USB-C CC resistors, USB ESD, regulator caps and feedback-divider voltage, floating EN/RESET/BOOT pins,
-LED resistors, undriven rails, part sourcing (+ the fab's assembly-class fee), missing footprints, label typos, thin power-path tracks, thermal pads without vias.
-Read-only. Each finding has a `fix`. checks: subset of the enum (default all but schematic_style).
+@tool("design_review", """Engineering review of what ERC misses: decoupling, I2C pull-ups,
+crystal caps, USB-C CC/ESD, regulator caps/divider, floating EN/RESET/BOOT, LED resistors, undriven rails, sourcing, footprints,
+net-name typos, thin power tracks, thermal vias, datasheet limits (part volts, switch/STM32 pins).
+Each finding has a `fix`. checks: enum subset (default: all but schematic_style).
 Example: design_review(checks=['decoupling','usb_c_cc'])""",
       {"checks": {"type": "array", "items": {"type": "string", "enum": DR.CHECKS}},
        "project": PROJECT,
-       "limit": {"type": "integer", "description": "max findings returned (default 40)"}},
+       "limit": {"type": "integer", "description": "max findings returned (default 40)"},
+       "rail_volts": {"type": "object",
+                      "description": "{net: volts}, remembered"}},
       title="Design review", read_only=True, idempotent=True, group="verify",
       help="""## What each group of checks looks for
         - ICs without a decoupling cap on each power pin (measured against the IC's own ground net, so a protection IC
@@ -289,6 +291,18 @@ Example: design_review(checks=['decoupling','usb_c_cc'])""",
         - Named nets with a single pin (label typos, with 'did you mean'); nets whose names differ only by case or separators.
         - Board-aware: power-path nets (inductor, battery, power FET, switch node) narrower than 0.4 mm or left in a thin
           net class; exposed pads of power ICs without thermal vias.
+        - Datasheet rules (numbers + sources in review/data/electrical.json; sch_apply runs them on the parts it touched):
+          cap_voltage — rated voltage (Value '10uF 25V', LCSC record, Samsung/Yageo/Murata MPN code) < 1.5× (ceramic) /
+          1.25× (electrolytic, tantalum) the voltage across it; tvs_clamp — TVS stand-off below its rail, or clamp above an
+          IC's absolute maximum on that rail; ic_supply — supply pins outside the part's range (STM32, ESP32 modules, TJA1051,
+          TPS54202, AMS1117, L78xx, IR21xx/NSG2066 gate drivers …); joined_pins — tact-switch pins joined inside the part
+          (1-2 / 3-4) on two nets, i.e. a permanent short; mcu_pins — STM32 PA13/PA14/PB3 shared between SWD/SWO and
+          another function, STM32G4 PB8 (= BOOT0) driven at reset; crystal_caps also checks C1·C2/(C1+C2)+3–5 pF against
+          the crystal's load capacitance.
+          Rail voltages come from rail_volts, the net name (+12V, 3V3, VBAT_20V), a fixed regulator's output, or — as an upper
+          bound only — a TVS stand-off; a rail with no known voltage is skipped. rail_volts values are volts (24, '24V',
+          '3V3'); they are saved in the project's .copper/verify.json — the review's only write — and reused by later
+          reviews and sch_apply's post-write checks (null forgets a net).
 
         - schematic_style, only when asked for (checks=['schematic_style']): drawing advice read from the saved sheets,
           returned apart under `style` (the same `limit`, applied separately), each entry naming its `rule` (listed at
@@ -304,10 +318,12 @@ Example: design_review(checks=['decoupling','usb_c_cc'])""",
         design_review()
         design_review(checks=['decoupling','usb_c_cc'])
         design_review(checks=['sourcing','footprints'], limit=80)
-        design_review(checks=['schematic_style'])            # drawing style only""")
-def design_review(checks=None, project=None, limit=40):
+        design_review(checks=['schematic_style'])            # drawing style only
+        design_review(checks=['cap_voltage','ic_supply','tvs_clamp'], rail_volts={'VBUS_M': 24})
+        design_review(checks=['joined_pins','mcu_pins','crystal_caps'])""")
+def design_review(checks=None, project=None, limit=40, rail_volts=None):
     pr = P.resolve(project)
-    r = DR.review(pr, checks=checks)
+    r = DR.review(pr, checks=checks, rail_volts=rail_volts)
     c = r["counts"]
     data = {"counts": c, **_listing(r["findings"], limit), "stats": _review_stats(r["stats"]), "checks_run": r["checks_run"]}
     summary = f"design review: {c['error']} error(s), {c['warning']} warning(s), {c['info']} note(s)"
