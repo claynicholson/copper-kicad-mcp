@@ -105,6 +105,13 @@ Copper runs on your machine. Your designs stay there, and there is no telemetry.
 Installing fetches a little more: the `npx` launcher installs Pillow from PyPI if KiCad's Python lacks it, and the
 one-line installers fetch [uv](https://docs.astral.sh/uv/), a Python 3.12 build and Pillow.
 
+Every project Copper creates or edits gets one text variable in its `.kicad_pro`: `COPPER_MCP` = the Copper
+version, e.g. `1.1.1`. It records only that Copper was used, nothing about you or the design. It shows nowhere on
+the sheet or board unless you put `${COPPER_MCP}` in a text item, and you can delete it in KiCad's
+Schematic Setup ▸ Text Variables (Copper writes it again the next time it edits the project). While the project
+is open in KiCad or the Copper app it is left alone, because the editor's next save would overwrite it; the next
+edit with the project closed adds it.
+
 The MCP server and CLI never call a language model. The package also holds `copper_kicad.agent`, a chat sidecar for
 a separate desktop app; nothing in the server or CLI starts it.
 

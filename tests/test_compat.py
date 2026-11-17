@@ -1208,7 +1208,10 @@ def test_subfolder_sheet_upgrade_is_checkpointed_and_restorable():
         d, err = call("checkpoint", action="list", project=str(pr.dir))
         assert not err and "sch/Debugger.kicad_sch" in d["files"], d
         d, err = call("checkpoint", action="diff", id=fu["checkpoint"], project=str(pr.dir))
-        assert not err and [f["file"] for f in d["changed_files"]] == ["sch/Debugger.kicad_sch"], d
+        # besides the sheet, only the .kicad_pro's provenance variable (project.stamp) may differ
+        assert not err and [f["file"] for f in d["changed_files"] if not f["file"].endswith(".kicad_pro")] \
+            == ["sch/Debugger.kicad_sch"], d
+        assert json.loads(pr.pro.read_text(encoding="utf-8"))["text_variables"].get(P.STAMP_VAR), "the edit is stamped"
         d, err = call("checkpoint", action="restore", id=fu["checkpoint"], project=str(pr.dir))
         assert not err and "sch/Debugger.kicad_sch" in d["restored"], d
         for f, b in orig.items():

@@ -177,6 +177,47 @@ def _remember(pr: Project) -> Project:
     return pr
 
 
+# ── provenance ───────────────────────────────────────────────────────────
+STAMP_VAR = "COPPER_MCP"
+
+
+def stamp(pr: Project, since: float | None = None) -> bool:
+    """Record that Copper edited this project: the text variable COPPER_MCP = <Copper version> in the
+    .kicad_pro (KiCad keeps text variables on save; nothing shows on the sheet or board unless a text item
+    uses ${COPPER_MCP}). With `since`, only when a design or project-library file changed at or after that
+    time. Skips shadow checkouts, projects open in KiCad or in an app with a live host (their next save would
+    rewrite the .kicad_pro from memory; the next edit with the project closed stamps it), and anything it cannot
+    parse or write. Returns True when it wrote."""
+    from . import __version__
+    from .host import route
+    try:
+        pro = pr.pro
+        if not pro.is_file() or route.is_shadow(pr.dir) or live_host(pro) is not None:
+            return False
+        if any(is_open_in_kicad(f) for f in (pro, pr.pcb, pr.sch)):
+            return False
+        if since is not None:
+            libs = pr.dir / "libs"
+            files = [*_design_files(pr.dir), *libs.glob("*.kicad_sym"), *libs.glob("*.pretty/*.kicad_mod")]
+            if not any(f.is_file() and f.stat().st_mtime >= since - 0.01 for f in files):
+                return False
+        rev = revision(pro)
+        data = json.loads(pro.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            return False
+        tv = data.get("text_variables")
+        if not isinstance(tv, dict):
+            tv = {}
+        if tv.get(STAMP_VAR) == __version__:
+            return False
+        tv[STAMP_VAR] = __version__
+        data["text_variables"] = tv
+        atomic_write(pro, json.dumps(data, indent=2, ensure_ascii=False) + "\n", base_revision=rev)
+        return True
+    except (OSError, ValueError, ToolError):
+        return False
+
+
 def recent() -> list[str]:
     return _state().get("recent", [])
 

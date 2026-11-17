@@ -8,6 +8,12 @@ All notable changes to Copper for KiCad are documented here. The format follows
 
 ### Added
 
+- Provenance marker: after any tool call that changes a project's files, Copper sets the text variable
+  `COPPER_MCP` = its version in the `.kicad_pro`. Read-only and refused calls, tools that never edit a design
+  (focus, export, fab_export, library), shadow checkouts and projects open in KiCad or the app are left alone.
+  Edits to sub-sheets in subfolders and to the project's own libraries count. Every other project setting is kept,
+  non-ASCII text included. KiCad keeps text variables when it saves. Documented under
+  Privacy in the README.
 - `pcb_sync(eco=true)`: after a schematic change on a routed board, only the copper the change invalidated is
   ripped up (copper of nets that lost a pad, back to the nearest junction; vanished nets; other nets' copper that a
   swapped footprint's pads now collide with), then dangling copper on those nets is pruned. Returns `eco` with what was deleted, the open

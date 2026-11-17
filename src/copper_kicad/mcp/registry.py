@@ -35,6 +35,7 @@ import base64
 import inspect
 import json
 import os
+import time
 import traceback
 from dataclasses import dataclass, field
 from typing import Any, Callable
@@ -301,8 +302,13 @@ def call_tool(name: str, args: dict, progress: Callable[[float, str], None] | No
         if progress is not None and "_progress" in inspect.signature(t.fn).parameters:
             a["_progress"] = progress
         _kicad_begin()
+        stamp = not t.read_only and t.name not in _NO_STAMP
+        started = time.time()
+        before = _stamp_target(a) if stamp else None
         out = t.fn(**a)
         out = _kicad_notes(out)
+        if stamp:
+            _stamp(a, started, before)
         if isinstance(out, Result):
             return out.to_mcp()
         if isinstance(out, dict):
@@ -322,6 +328,36 @@ def call_tool(name: str, args: dict, progress: Callable[[float, str], None] | No
                                             "same way. Try a different approach, or run `copper doctor` and report it "
                                             "with the trace (COPPER_DEBUG=1 prints it)",
                                         data={"retry": False, "trace": tb.splitlines()[-4:]}))
+
+
+# Tools that are not read-only but never edit a design (they write outputs, wait for clicks or only read
+# libraries): a save that lands while they run is not Copper's edit, so they never stamp.
+_NO_STAMP = frozenset({"focus", "export", "fab_export", "library"})
+
+
+def _stamp_target(args: dict):
+    try:
+        from .. import project as projmod
+        p = args.get("project")
+        return projmod._resolve(p if isinstance(p, str) else None, True)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _stamp(args: dict, started: float, before=None):
+    """Note in the project's text variables that Copper edited it (project.stamp; documented in the README).
+    Both the project the call started on and the one active after it (project_create / project_open switch it)
+    are candidates; each is stamped only if its own files changed during the call. Never fails the call."""
+    try:
+        from .. import project as projmod
+        seen = set()
+        for pr in (before, _stamp_target(args)):
+            if pr is None or (pr.dir, pr.name) in seen:
+                continue
+            seen.add((pr.dir, pr.name))
+            projmod.stamp(pr, since=started)
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def _kicad_begin():
